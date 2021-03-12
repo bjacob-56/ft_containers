@@ -14,14 +14,25 @@ int main(void)
 
 	std::cout << "size = " << lst.size() << "\n";
 
+// -------- Iterator --------
 	ft::List<int>::iterator	it;
 	it = lst.begin();
 	while (it != lst.end())
 		std::cout << "content = " << (*it++)->getContent() << "\n";
 
-	it--;
-	it--;
-	std::cout << "content -- -- = " << (*it)->getContent() << "\n";
+std::cout << "\n\n";
+
+// -------- reverse Iterator --------
+	const ft::List<int>	lstc(lst);
+
+	ft::List<int>::const_reverse_iterator	rit = lstc.rbegin();
+	// rit = lst.rbegin();
+	while (rit != lstc.rend())
+		std::cout << "reverse_content = " << (*rit++)->getContent() << "\n";
+
+	rit--;
+	rit--;
+	std::cout << "reverse_content -- -- = " << (*rit)->getContent() << "\n";
 
 	return (0);
 }

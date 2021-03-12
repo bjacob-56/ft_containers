@@ -14,6 +14,12 @@ template <typename T>
 class List
 {
 public:
+
+	typedef MyIterator<List *> iterator;
+	typedef MyIterator<const List *> const_iterator;
+	typedef MyReverseIterator<List *> reverse_iterator;
+	typedef MyReverseIterator<const List *> const_reverse_iterator;
+
 	List(void): _previous(0), _next(0), _content(0) {}
 	List(int nb, T const & content): List()	// a faire
 	{
@@ -27,18 +33,17 @@ public:
 			{
 				List * temp = new List(content);
 				save->add_next(temp);
-				// temp.setNext(save->getNext());
-				// save->setNext(&temp);
-				// temp.setPrevious(save);
 				save = temp;
 			}
 		}
 	}
 
-	List(List const & src)
+	List(List const & src) {*this = src;}
+
+	List(List::iterator begin, List::iterator end)	// a faire
 	{
-		*this = src;
-		return (*this);
+		(void)begin;
+		(void)end;
 	}
 
 	// std::list<int> first;                                // empty list of ints
@@ -56,55 +61,6 @@ public:
 
 // ========  Iterators  ========
 
-	// ------  Class  ------
-
-	typedef MyIterator<List *> iterator;
-	typedef MyIterator<const List *> const_iterator;
-
-	// List(List::iterator begin, List::iterator end)	// a faire
-	// {
-
-	// }
-
-	class reverse_iterator
-	{
-		public:
-
-			reverse_iterator(void): _ptr(0) {};
-			reverse_iterator(List * lst): _ptr(lst) {};
-			~reverse_iterator(void);
-
-			List * getPtr(void) {return _ptr;}
-
-			reverse_iterator &	operator++(void)	// pre increment
-			{
-				this->ptr = this->_ptr->_previous;
-				return (*this);
-			}
-			reverse_iterator	operator++(int)	// post increment
-			{
-				reverse_iterator	temp = *this
-				++(*this);
-				return (temp);
-			}
-			reverse_iterator &	operator--(void)
-			{
-				this->ptr = this->_ptr->_next;
-				return (*this);
-			}
-			reverse_iterator	operator--(int)
-			{
-				reverse_iterator	temp = *this
-				--(*this);
-				return (temp);
-			}
-
-			reverse_iterator	operator*(void) {return _ptr;}
-
-		private:
-			List * _ptr;
-	};
-
 	// ------  Functions  ------
 	// template <typename PointerType>
 	// List::MyIterator<PointerType>	begin(void)
@@ -112,19 +68,16 @@ public:
 	// 	List::MyIterator<PointerType>	it(this);
 	// 	return (it);
 	// }
-
 	iterator	begin(void)
 	{
 		iterator	it(this);
 		return (it);
 	}
-
 	const_iterator	begin(void) const
 	{
 		const_iterator	it(this);
 		return (it);
 	}
-
 
 	iterator	end(void)
 	{
@@ -136,8 +89,6 @@ public:
 		iterator	it(lst);
 		return (it);
 	}
-
-	// MyIterator<const List *>	end(void) const
 	const_iterator	end(void) const
 	{
 		const List * lst;
@@ -149,25 +100,29 @@ public:
 		return (it);
 	}
 
-
-
-
-
-	List::reverse_iterator	& rbegin(void)
+	reverse_iterator	rbegin(void)
 	{
-		List * lst;
-		List::iterator	it = this->end();
-
-		List::reverse_iterator	rit((*(--it)));
+		iterator	it = this->end();
+		reverse_iterator	rit((*(--it)));
+		return (rit);
+	}
+	const_reverse_iterator	rbegin(void) const
+	{
+		const_iterator	it = this->end();
+		const_reverse_iterator	rit((*(--it)));
 		return (rit);
 	}
 
-	List::reverse_iterator	& rend(void)
+	reverse_iterator	rend(void)
 	{
-		List * lst;
-		List::iterator	it = this->begin();
-
-		List::reverse_iterator	rit((*(--it))); // elem avant begin a bien definir
+		iterator	it = this->begin();
+		reverse_iterator	rit((*(--it)));
+		return (rit);
+	}
+	const_reverse_iterator	rend(void) const
+	{
+		const_iterator	it = this->begin();
+		const_reverse_iterator	rit((*(--it)));
 		return (rit);
 	}
 
