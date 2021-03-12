@@ -2,65 +2,69 @@
 # define LIST_HPP
 
 # include <string>
-# include <iostream> 
+# include <iostream>
+# include <limits>
 
-// namespace ft
-// {
+# include "Iterator.hpp"
+
+namespace ft
+{
 
 template <typename T>
 class List
 {
 public:
 	List(void): _previous(0), _next(0), _content(0) {}
-	List(int nb, T content): List()
-	{ _content = content; }
-	List(List::iterator begin, List::iterator end);
-	List(List const & src);
+	List(int nb, T const & content): List()	// a faire
+	{
+		if (nb > 0)
+		{
+			this->initiate_first_elem(content);
+			int i = 0;
+			List	* save;
+			save = this;
+			while (++i < nb)
+			{
+				List temp = new List(content);
+				save->add_next(temp);
+				// temp.setNext(save->getNext());
+				// save->setNext(&temp);
+				// temp.setPrevious(save);
+				save = &temp;
+			}
+		}
+	}
 
-	~List(void) {}
+	List(List const & src)
+	{
+		*this = src;
+		return (*this);
+	}
+
+	// std::list<int> first;                                // empty list of ints
+  	// std::list<int> second (4,100);                       // four ints with value 100
+  	// std::list<int> third (second.begin(),second.end());  // iterating through second
+  	// std::list<int> fourth (third); 
+
+	~List(void)
+	{
+		if (this->size() > 0)
+		{
+			// il faut tout delete
+		}
+	}
 
 // ========  Iterators  ========
 
 	// ------  Class  ------
 
-	class iterator
-	{
-		public:
+	typedef MyIterator<List *> iterator;
+	typedef MyIterator<const List *> const_iterator;
 
-			iterator(void): _ptr(0) {};
-			iterator(List * lst): _ptr(lst) {};
-			~iterator(void);
+	// List(List::iterator begin, List::iterator end)	// a faire
+	// {
 
-			getPtr(void) {return _ptr;}
-
-			iterator &	operator++(void)	// pre increment
-			{
-				this->ptr = this->_ptr->_next;
-				return (*this);
-			}
-			iterator	operator++(int i)	// post increment
-			{
-				iterator	temp = *this
-				++(*this);
-				return (temp);	// quel comportement apres end ?
-			}
-			iterator &	operator--(void) // quel comportement avant begin ?
-			{
-				this->ptr = this->_ptr->_previous;
-				return (*this);
-			}
-			iterator	operator--(int i)
-			{
-				iterator	temp = *this
-				--(*this);
-				return (temp);
-			}
-
-			iterator	operator*(void) {return _ptr;}
-
-		private:
-			List * _ptr;
-	}
+	// }
 
 	class reverse_iterator
 	{
@@ -70,14 +74,14 @@ public:
 			reverse_iterator(List * lst): _ptr(lst) {};
 			~reverse_iterator(void);
 
-			getPtr(void) {return _ptr;}
+			List * getPtr(void) {return _ptr;}
 
 			reverse_iterator &	operator++(void)	// pre increment
 			{
 				this->ptr = this->_ptr->_previous;
 				return (*this);
 			}
-			reverse_iterator	operator++(int i)	// post increment
+			reverse_iterator	operator++(int)	// post increment
 			{
 				reverse_iterator	temp = *this
 				++(*this);
@@ -88,7 +92,7 @@ public:
 				this->ptr = this->_ptr->_next;
 				return (*this);
 			}
-			reverse_iterator	operator--(int i)
+			reverse_iterator	operator--(int)
 			{
 				reverse_iterator	temp = *this
 				--(*this);
@@ -99,33 +103,64 @@ public:
 
 		private:
 			List * _ptr;
-	}
+	};
 
 	// ------  Functions  ------
+	// template <typename PointerType>
+	// List::MyIterator<PointerType>	begin(void)
+	// {
+	// 	List::MyIterator<PointerType>	it(this);
+	// 	return (it);
+	// }
 
-	List::iterator	& begin(void)
+	iterator	begin(void)
 	{
-		List::iterator	it(this);
+		iterator	it(this);
 		return (it);
 	}
 
-	List::iterator	& end(void)
+	const_iterator	begin(void) const
+	{
+		const_iterator	it(this);
+		return (it);
+	}
+
+
+
+
+	iterator	end(void)
 	{
 		List * lst;
 
 		lst = this;
 		while (lst->getNext())
 			lst = lst->getNext();
-		List::iterator	it(lst);
+		iterator	it(lst);
 		return (it);
 	}
+
+	// MyIterator<const List *>	end(void) const
+	const_iterator	end(void) const
+	{
+		const List * lst;
+
+		lst = this;
+		while (lst->getNext())
+			lst = lst->getNext();
+		const_iterator	it(lst);
+		return (it);
+	}
+
+
+
+
 
 	List::reverse_iterator	& rbegin(void)
 	{
 		List * lst;
 		List::iterator	it = this->end();
 
-		List::reverse_iterator	rit((*(--it));
+		List::reverse_iterator	rit((*(--it)));
 		return (rit);
 	}
 
@@ -134,15 +169,25 @@ public:
 		List * lst;
 		List::iterator	it = this->begin();
 
-		List::reverse_iterator	rit((*(--it)); // elem avant begin a bien definir
+		List::reverse_iterator	rit((*(--it))); // elem avant begin a bien definir
 		return (rit);
 	}
 
 // ========  Getters  ========
 
-	List	* getPrevious(void) {return _previous;}
-	List	* getNext(void) {return _next;}
-	List	* getContent(void) {return _content;}
+	List	* getPrevious(void) const {return _previous;}
+	List	* getNext(void) const {return _next;}
+	T		getContent(void) const {return _content;}
+
+
+// ========  Setters  ========
+
+	void	setPrevious(List* pr) {_previous = pr;}
+	void	setNext(List* ne) {_next = ne;}
+	void	setContent(T co) {_content = co;}
+
+
+// ========  Overload  ========
 
 	List &	operator=(List const & rhs)
 	{
@@ -152,18 +197,96 @@ public:
 		return (*this);
 	}
 
-	// std::list<int> first;                                // empty list of ints
-  	// std::list<int> second (4,100);                       // four ints with value 100
-  	// std::list<int> third (second.begin(),second.end());  // iterating through second
-  	// std::list<int> fourth (third); 
+// ========  Capacity  ========
+
+	bool	empty(void) const
+	{
+		if (!this->next)
+			return (true);
+		return (false);
+	}
+
+	int	size(void) const
+	{
+		int count = 0;
+		// const_iterator	it = this->begin();	// iterator bien trouvé ?
+		const_iterator	it;
+		it = this->begin();
+		while (it++ != this->end())
+			count++;
+		return (count);
+	}
+
+	int	max_size() const {return std::numeric_limits<int>::max();} // utiliser size_type ici et pour size ?
+
+
+// ========  Element Access  ========
+
+	List &	front(void)	// besoin de faire la meme en const ?
+	{
+		if (this->size() > 0)
+			return *(this->begin());
+		return (*this);
+	}					// reference sur list ou content ?
+
+	List &	back(void)
+	{
+		if (this->size() > 0)
+		{
+			iterator	ite = this->end();
+			return (**(--(ite)));
+		}
+		return (*this);
+	}
+
+
+// ========  Modifiers  ========
+
+// void assign (int n, const T & val);							// a faire
+// void assign (List::iterator first, List::iterator last);	// a faire
+
+	void push_back (const T & val)
+	{
+		if (!this->_next)
+			this->initiate_first_elem(val);
+		else
+		{
+			// iterator	ite = this->end();
+			// ite--;
+			List * temp = new List();
+			temp->setContent(val);
+			this->back().add_next(*temp);
+			// (ite*).add_next(*temp);
+		}
+	}
 
 private:
 	List *	_previous;
 	List *	_next;
-	<T>		_content;
+	T		_content;
+
+	List(const T & val): _previous(0), _next(0), _content(val) {}
+
+	void	initiate_first_elem(const T & val)
+	{
+		List *before = new List();
+		before->setNext(this);
+		List *after = new List();
+		after->setPrevious(this);
+		this->setPrevious(before);
+		this->setNext(after);
+		this->setContent(val);
+	}
+
+	void	add_next(List & lst)
+	{
+		lst.setNext(this->getNext());
+		this->setNext(&lst);
+		lst.setPrevious(this);
+	}
 
 };
 
-// }
+}
 
 #endif
