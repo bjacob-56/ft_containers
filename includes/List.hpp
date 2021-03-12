@@ -76,12 +76,26 @@ public:
 	// }
 	iterator	begin(void)
 	{
-		iterator	it(this);
+		List * lst;
+
+		lst = this;
+		while (lst->getPrevious())
+			lst = lst->getPrevious();
+		iterator	it(lst);
+		if (_previous)
+			++it;
 		return (it);
 	}
 	const_iterator	begin(void) const
 	{
-		const_iterator	it(this);
+		const List * lst;
+
+		lst = this;
+		while (lst->getPrevious())
+			lst = lst->getPrevious();
+		const_iterator	it(lst);
+		if (_previous)
+			++it;
 		return (it);
 	}
 
@@ -179,13 +193,15 @@ public:
 
 	bool	empty(void) const
 	{
-		if (!this->next)
+		if (!_next)
 			return (true);
 		return (false);
 	}
 
 	int	size(void) const
 	{
+		if (!_next)
+			return (0);
 		int count = 0;
 		const_iterator	it = this->begin();
 		while (it++ != this->end())
@@ -201,7 +217,7 @@ public:
 	List &	front(void)	// besoin de faire la meme en const ?
 	{
 		if (this->size() > 0)
-			return *(this->begin());
+			return **(this->begin());	// possible d'appeler en milieu de list ?
 		return (*this);
 	}					// reference sur list ou content ?
 
@@ -221,7 +237,7 @@ public:
 // void assign (int n, const T & val);							// a faire
 // void assign (List::iterator first, List::iterator last);	// a faire
 
-	void push_back (const T & val)
+	void	push_back (const T & val)
 	{
 		if (!this->_next)
 			this->initiate_first_elem(val);
@@ -231,6 +247,64 @@ public:
 			this->back().add_next(temp);
 		}
 	}
+
+	void	pop_back(void)
+	{
+		if (!_next)
+			return ;
+		else if (this->size() == 1)
+			this->delete_list();
+		else
+			this->erase(--(this->end()));
+	}
+
+	void	push_front (const T & val)
+	{
+		if (!this->_next)
+			this->initiate_first_elem(val);
+		else
+		{
+			List * temp = new List(val);
+			this->front().add_previous(temp);
+		}
+	}
+
+	void	pop_front(void)
+	{
+		if (!_next)
+			return ;
+		else if (this->size() == 1)
+			this->delete_list();
+		else
+		{
+			_content = _next->getContent();
+			this->erase((++this->begin()));
+		}
+	}
+
+	iterator erase (iterator position)
+	{
+		List	* next = (*position)->getNext();
+		List	* previous = (*position)->getPrevious();
+
+		previous->setNext(next);
+		next->setPrevious(previous);
+		(*position)->setPrevious(0);
+		(*position)->setNext(0);
+		delete *position;
+		return (iterator(next));
+	}
+
+
+
+
+
+
+
+
+
+// ************************************************************** //
+// ************************************************************** //
 
 private:
 	List *	_previous;
@@ -258,18 +332,29 @@ private:
 		lst->setPrevious(this);
 	}
 
+	void	add_previous(List * lst)
+	{
+		lst->setPrevious(this->getPrevious());
+		this->getPrevious()->setNext(lst);
+		this->setPrevious(lst);
+		lst->setNext(this);
+	}
+
 	void	delete_list(void)
 	{
 		if (_previous)
 		{
 			_previous->setNext(0);
 			delete _previous;
+			_previous = 0;
 		}
 		if (_next)
 		{
 			_next->setPrevious(0);
 			delete _next;
+			_next = 0;
 		}
+		_content = 0;
 	}
 
 };
