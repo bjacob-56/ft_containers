@@ -17,7 +17,8 @@ template <typename PointerType>
 
 			MyIterator &	operator++(void)	// pre increment
 			{
-				_ptr = _ptr->getNext();
+				if (_ptr->getNext())
+					_ptr = _ptr->getNext();
 				return (*this);
 			}
 			MyIterator	operator++(int)	// post increment
@@ -28,7 +29,8 @@ template <typename PointerType>
 			}
 			MyIterator &	operator--(void) // quel comportement avant begin ?
 			{
-				_ptr = _ptr->getPrevious();
+				if (_ptr->getPrevious())
+					_ptr = _ptr->getPrevious();
 				return (*this);
 			}
 			MyIterator	operator--(int)
@@ -65,7 +67,8 @@ template <typename PointerType>
 
 			MyReverseIterator &	operator++(void)	// pre increment
 			{
-				_ptr = _ptr->getPrevious();
+				if (_ptr->getPrevious())
+					_ptr = _ptr->getPrevious();
 				return (*this);
 			}
 			MyReverseIterator	operator++(int)	// post increment
@@ -76,7 +79,8 @@ template <typename PointerType>
 			}
 			MyReverseIterator &	operator--(void) // quel comportement avant begin ?
 			{
-				_ptr = _ptr->getNext();
+				if (_ptr->getNext())
+					_ptr = _ptr->getNext();
 				return (*this);
 			}
 			MyReverseIterator	operator--(int)
