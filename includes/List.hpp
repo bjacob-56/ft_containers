@@ -25,12 +25,12 @@ public:
 			save = this;
 			while (++i < nb)
 			{
-				List temp = new List(content);
+				List * temp = new List(content);
 				save->add_next(temp);
 				// temp.setNext(save->getNext());
 				// save->setNext(&temp);
 				// temp.setPrevious(save);
-				save = &temp;
+				save = temp;
 			}
 		}
 	}
@@ -124,8 +124,6 @@ public:
 		const_iterator	it(this);
 		return (it);
 	}
-
-
 
 
 	iterator	end(void)
@@ -234,7 +232,7 @@ public:
 		if (this->size() > 0)
 		{
 			iterator	ite = this->end();
-			return (**(--(ite)));
+			return (**(--ite));
 		}
 		return (*this);
 	}
@@ -251,12 +249,8 @@ public:
 			this->initiate_first_elem(val);
 		else
 		{
-			// iterator	ite = this->end();
-			// ite--;
-			List * temp = new List();
-			temp->setContent(val);
-			this->back().add_next(*temp);
-			// (ite*).add_next(*temp);
+			List * temp = new List(val);
+			this->back().add_next(temp);
 		}
 	}
 
@@ -270,19 +264,20 @@ private:
 	void	initiate_first_elem(const T & val)
 	{
 		List *before = new List();
-		before->setNext(this);
 		List *after = new List();
 		after->setPrevious(this);
-		this->setPrevious(before);
 		this->setNext(after);
+		this->setPrevious(before);
+		before->setNext(this);
 		this->setContent(val);
 	}
 
-	void	add_next(List & lst)
+	void	add_next(List * lst)
 	{
-		lst.setNext(this->getNext());
-		this->setNext(&lst);
-		lst.setPrevious(this);
+		lst->setNext(this->getNext());
+		this->getNext()->setPrevious(lst);
+		this->setNext(lst);
+		lst->setPrevious(this);
 	}
 
 };

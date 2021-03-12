@@ -7,9 +7,10 @@ int main(void)
 
 	std::cout << "size = " << lst.size() << "\n";
 
-	lst.push_back(42);
-	lst.push_back(9);
-	lst.push_back(-12);
+	lst.push_back(1);
+	lst.push_back(2);
+	lst.push_back(3);
+	lst.push_back(4);
 
 	std::cout << "size = " << lst.size() << "\n";
 
@@ -18,7 +19,9 @@ int main(void)
 	while (it != lst.end())
 		std::cout << "content = " << (*it++)->getContent() << "\n";
 
-
+	it--;
+	it--;
+	std::cout << "content -- -- = " << (*it)->getContent() << "\n";
 
 	return (0);
 }
