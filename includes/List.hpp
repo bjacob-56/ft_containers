@@ -21,7 +21,7 @@ public:
 	typedef MyReverseIterator<const List *> const_reverse_iterator;
 
 	List(void): _previous(0), _next(0), _content(0) {}
-	List(int nb, T const & content): List()	// a faire
+	List(int nb, T const & content): _previous(0), _next(0), _content(0)
 	{
 		if (nb > 0)
 		{
@@ -38,26 +38,32 @@ public:
 		}
 	}
 
-	List(List const & src) {*this = src;}
+	List(List const & src): _previous(0), _next(0), _content(0) {*this = src;}
 
-	List(List::iterator begin, List::iterator end)	// a faire
+	List(List::iterator begin, List::iterator end): _previous(0), _next(0), _content(0)	// secu a mettre ?
 	{
-		(void)begin;
-		(void)end;
+		this->initiate_first_elem((*begin)->getContent());
+		if (begin != end)
+		{
+			begin++;
+			List	* save;
+			save = this;
+			while (begin != end)
+			{
+				List * temp = new List((*begin)->getContent());
+				save->add_next(temp);
+				save = temp;
+				begin++;
+			}
+		}
 	}
 
 	// std::list<int> first;                                // empty list of ints
   	// std::list<int> second (4,100);                       // four ints with value 100
   	// std::list<int> third (second.begin(),second.end());  // iterating through second
-  	// std::list<int> fourth (third); 
+  	// std::list<int> fourth (third);
 
-	~List(void)
-	{
-		if (this->size() > 0)
-		{
-			// il faut tout delete
-		}
-	}
+	~List(void) {this->delete_list();}
 
 // ========  Iterators  ========
 
@@ -144,9 +150,28 @@ public:
 
 	List &	operator=(List const & rhs)
 	{
-		_previous = rhs.getPrevious();
-		_next = rhs.getNext();
-		_content = rhs.getContent();
+		this->delete_list();
+		if (rhs.size() > 0)
+		{
+			const_iterator	begin = rhs.begin();
+			const_iterator	end = rhs.end();
+			this->initiate_first_elem((*begin)->getContent());
+			if (begin != end)
+			{
+				begin++;
+				List	* save;
+				save = this;
+				while (begin != end)
+				{
+					List * temp = new List((*begin)->getContent());
+					save->add_next(temp);
+					save = temp;
+					begin++;
+				}
+			}
+		}
+		else	
+			_content = rhs.getContent();
 		return (*this);
 	}
 
@@ -162,9 +187,7 @@ public:
 	int	size(void) const
 	{
 		int count = 0;
-		// const_iterator	it = this->begin();	// iterator bien trouvé ?
-		const_iterator	it;
-		it = this->begin();
+		const_iterator	it = this->begin();
 		while (it++ != this->end())
 			count++;
 		return (count);
@@ -233,6 +256,20 @@ private:
 		this->getNext()->setPrevious(lst);
 		this->setNext(lst);
 		lst->setPrevious(this);
+	}
+
+	void	delete_list(void)
+	{
+		if (_previous)
+		{
+			_previous->setNext(0);
+			delete _previous;
+		}
+		if (_next)
+		{
+			_next->setPrevious(0);
+			delete _next;
+		}
 	}
 
 };
