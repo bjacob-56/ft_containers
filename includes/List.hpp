@@ -11,50 +11,88 @@ namespace ft
 {
 
 template <typename T>
+class Node
+{
+	public:
+		Node *	previous;
+		Node *	next;
+		T		value;
+
+		Node(const T & val): previous(0), next(0), value(val) {}
+		Node(Node *pr, Node *ne, const T & val): previous(pr), next(ne), value(val) {}
+		Node(): previous(0), next(0), value(T()) {}
+	
+	void	add_next(Node * node)
+	{
+		node->next = next;
+		node->previous = this;
+		next->previous = node;
+		next = node;
+	}
+
+	void	add_previous(Node * node)
+	{
+		node->next = this;
+		node->previous = previous;
+		previous->next = node;
+		previous = node;
+	}
+};
+
+
+template <typename T>
 class List
 {
 public:
 
-	typedef MyIterator<List *> iterator;
-	typedef MyIterator<const List *> const_iterator;
-	typedef MyReverseIterator<List *> reverse_iterator;
-	typedef MyReverseIterator<const List *> const_reverse_iterator;
+	typedef MyIterator<T, Node<T> *> iterator;
+	typedef MyIterator<const T, const Node<T> *> const_iterator;
+	typedef MyReverseIterator<T, Node<T> *> reverse_iterator;
+	typedef MyReverseIterator<const T, const  Node<T> *> const_reverse_iterator;
 
-	List(void): _previous(0), _next(0), _content(0) {}
-	List(int nb, T const & content): _previous(0), _next(0), _content(0)
+private:
+	Node<T>	*_begin;
+	Node<T>	*_end;
+	Node<T>	*_rend;
+	size_t	_size;
+
+public:
+	List(void): _begin(0), _end(0), _rend(0), _size(0) {}
+	List(int nb, T const & content): _begin(0), _end(0), _rend(0), _size(0)
 	{
 		if (nb > 0)
 		{
 			this->initiate_first_elem(content);
 			int i = 0;
-			List	* save;
-			save = this;
+			Node<T>	* save = _begin;
 			while (++i < nb)
 			{
-				List * temp = new List(content);
-				save->add_next(temp);
+				Node<T> * temp = new Node<T>(	content);
+				save->next = temp;
 				save = temp;
 			}
+			save->next = _end;
+			_size = nb;
 		}
 	}
 
-	List(List const & src): _previous(0), _next(0), _content(0) {*this = src;}
+	List(List const & src): _begin(0), _end(0), _rend(0), _size(0) {*this = src;}
 
-	List(List::iterator begin, List::iterator end): _previous(0), _next(0), _content(0)	// secu a mettre ?
+	List(List::iterator begin, List::iterator end): _begin(0), _end(0), _rend(0), _size(0)	// secu a mettre ?
 	{
-		this->initiate_first_elem((*begin)->getContent());
+		this->initiate_first_elem(*begin);
 		if (begin != end)
 		{
 			begin++;
-			List	* save;
-			save = this;
+			Node<T>	* save = _begin;
 			while (begin != end)
 			{
-				List * temp = new List((*begin)->getContent());
-				save->add_next(temp);
+				Node<T> * temp = new Node<T>(*begin);
+				save->next = temp;
 				save = temp;
 				begin++;
 			}
+			save->next = _end;
 		}
 	}
 
@@ -76,88 +114,67 @@ public:
 	// }
 	iterator	begin(void)
 	{
-		List * lst;
+		Node<T> * node = _begin;
 
-		lst = this;
-		while (lst->getPrevious())
-			lst = lst->getPrevious();
-		iterator	it(lst);
-		if (_previous)
-			++it;
+		iterator	it(node);
 		return (it);
 	}
 	const_iterator	begin(void) const
 	{
-		const List * lst;
+		const Node<T> * node = _begin;
 
-		lst = this;
-		while (lst->getPrevious())
-			lst = lst->getPrevious();
-		const_iterator	it(lst);
-		if (_previous)
-			++it;
+		const_iterator	it(node);
 		return (it);
 	}
 
 	iterator	end(void)
 	{
-		List * lst;
+		Node<T> * node = _end;
 
-		lst = this;
-		while (lst->getNext())
-			lst = lst->getNext();
-		iterator	it(lst);
+		iterator	it(node);
 		return (it);
 	}
 	const_iterator	end(void) const
 	{
-		const List * lst;
+		const Node<T> * node = _end;
 
-		lst = this;
-		while (lst->getNext())
-			lst = lst->getNext();
-		const_iterator	it(lst);
+		const_iterator	it(node);
 		return (it);
 	}
 
 	reverse_iterator	rbegin(void)
 	{
-		iterator	it = this->end();
-		reverse_iterator	rit((*(--it)));
+		Node<T> *	node = 0;
+		
+		if (_size > 0)
+			node = _end->previous;
+		reverse_iterator	rit(node);
 		return (rit);
 	}
 	const_reverse_iterator	rbegin(void) const
 	{
-		const_iterator	it = this->end();
-		const_reverse_iterator	rit((*(--it)));
+		const Node<T> *	node = 0;
+		
+		if (_size > 0)
+			node = _end->previous;
+		const_reverse_iterator	rit(node);
 		return (rit);
 	}
 
 	reverse_iterator	rend(void)
 	{
-		iterator	it = this->begin();
-		reverse_iterator	rit((*(--it)));
+		Node<T> * node = _rend;
+
+		reverse_iterator	rit(node);
 		return (rit);
 	}
 	const_reverse_iterator	rend(void) const
 	{
-		const_iterator	it = this->begin();
-		const_reverse_iterator	rit((*(--it)));
+		const Node<T> * node = _rend;
+
+		const_reverse_iterator	rit(node);
 		return (rit);
 	}
-
-// ========  Getters  ========
-
-	List	* getPrevious(void) const {return _previous;}
-	List	* getNext(void) const {return _next;}
-	T		getContent(void) const {return _content;}
-
-
-// ========  Setters  ========
-
-	void	setPrevious(List* pr) {_previous = pr;}
-	void	setNext(List* ne) {_next = ne;}
-	void	setContent(T co) {_content = co;}
 
 
 // ========  Overload  ========
@@ -169,23 +186,23 @@ public:
 		{
 			const_iterator	begin = rhs.begin();
 			const_iterator	end = rhs.end();
-			this->initiate_first_elem((*begin)->getContent());
+			this->initiate_first_elem(*begin);
 			if (begin != end)
 			{
 				begin++;
-				List	* save;
-				save = this;
+				Node<T>	* save = _begin;
 				while (begin != end)
 				{
-					List * temp = new List((*begin)->getContent());
-					save->add_next(temp);
+					Node<T> * temp = new Node<T>(*begin);
+					save->next = temp;
 					save = temp;
 					begin++;
 				}
+				save->next = _end;
 			}
 		}
-		else	
-			_content = rhs.getContent();
+		// else	
+		// 	_content = rhs.getContent();
 		return (*this);
 	}
 
@@ -193,42 +210,30 @@ public:
 
 	bool	empty(void) const
 	{
-		if (!_next)
+		if (!_size)
 			return (true);
 		return (false);
 	}
 
-	int	size(void) const
-	{
-		if (!_next)
-			return (0);
-		int count = 0;
-		const_iterator	it = this->begin();
-		while (it++ != this->end())
-			count++;
-		return (count);
-	}
+	size_t	size(void) const {return (_size);}
 
-	int	max_size() const {return std::numeric_limits<int>::max();} // utiliser size_type ici et pour size ?
+	size_t	max_size() const {return std::numeric_limits<size_t>::max();} // utiliser size_t ici et pour size ?
 
 
 // ========  Element Access  ========
 
-	List &	front(void)	// besoin de faire la meme en const ?
+	T &	front(void)	// besoin de faire la meme en const ?
 	{
 		if (this->size() > 0)
-			return **(this->begin());	// possible d'appeler en milieu de list ?
-		return (*this);
+			return (_begin->value);	// possible d'appeler en milieu de list ?
+		return (T(0));
 	}					// reference sur list ou content ?
 
-	List &	back(void)
+	T &	back(void)
 	{
 		if (this->size() > 0)
-		{
-			iterator	ite = this->end();
-			return (**(--ite));
-		}
-		return (*this);
+			return (_end->previous->value);
+		return (T(0));
 	}
 
 
@@ -239,20 +244,20 @@ public:
 
 	void	push_back (const T & val)
 	{
-		if (!this->_next)
+		if (!_size)
 			this->initiate_first_elem(val);
 		else
 		{
-			List * temp = new List(val);
-			this->back().add_next(temp);
+			Node<T> * temp = new Node<T>(	val);
+			_end->add_previous(temp);
 		}
 	}
 
 	void	pop_back(void)
 	{
-		if (!_next)
+		if (!_size)
 			return ;
-		else if (this->size() == 1)
+		else if (_size == 1)
 			this->delete_list();
 		else
 			this->erase(--(this->end()));
@@ -260,44 +265,39 @@ public:
 
 	void	push_front (const T & val)
 	{
-		if (!this->_next)
+		if (!_size)
 			this->initiate_first_elem(val);
 		else
 		{
-			List * temp = new List(val);
-			this->front().add_previous(temp);
+			Node<T> * temp = new Node<T>(	val);
+			_rend->add_next(temp);
 		}
 	}
 
 	void	pop_front(void)
 	{
-		if (!_next)
+		if (!_size)
 			return ;
-		else if (this->size() == 1)
+		else if (_size == 1)
 			this->delete_list();
 		else
-		{
-			_content = _next->getContent();
-			this->erase((++this->begin()));
-		}
+			this->erase((this->begin()));
 	}
 
-	iterator erase (iterator position)
+	iterator erase (iterator position)	// range of iterator a gerer
 	{
-		List	* next = (*position)->getNext();
-		List	* previous = (*position)->getPrevious();
-
-		previous->setNext(next);
-		next->setPrevious(previous);
-		(*position)->setPrevious(0);
-		(*position)->setNext(0);
-		delete *position;
-		return (iterator(next));
+		Node<T>	*	temp = _begin;
+		while (iterator(temp) != position && temp != _end)
+			temp = temp->next;
+		if (iterator(temp) == position && temp != _end)
+		{
+			temp->previous->next = temp->next;
+			temp->next->previous = temp->previous;
+			temp = temp->next;
+			delete temp->previous;
+		}
+		return (iterator(temp));
 	}
-
-
-
-
 
 
 
@@ -307,55 +307,31 @@ public:
 // ************************************************************** //
 
 private:
-	List *	_previous;
-	List *	_next;
-	T		_content;
-
-	List(const T & val): _previous(0), _next(0), _content(val) {}
 
 	void	initiate_first_elem(const T & val)
 	{
-		List *before = new List();
-		List *after = new List();
-		after->setPrevious(this);
-		this->setNext(after);
-		this->setPrevious(before);
-		before->setNext(this);
-		this->setContent(val);
-	}
-
-	void	add_next(List * lst)
-	{
-		lst->setNext(this->getNext());
-		this->getNext()->setPrevious(lst);
-		this->setNext(lst);
-		lst->setPrevious(this);
-	}
-
-	void	add_previous(List * lst)
-	{
-		lst->setPrevious(this->getPrevious());
-		this->getPrevious()->setNext(lst);
-		this->setPrevious(lst);
-		lst->setNext(this);
+		_end = new Node<T>();
+		_rend = new Node<T>();
+		_begin = new Node<T>(_rend, _end, val);
 	}
 
 	void	delete_list(void)
 	{
-		if (_previous)
+		Node<T>	* node = _begin;
+
+		if (_size > 0)
 		{
-			_previous->setNext(0);
-			delete _previous;
-			_previous = 0;
+			while (node != _end)
+			{
+				node = node->next;
+				delete node->previous;
+			}
+			delete _end;
+			delete _rend;
+			_size = 0;
 		}
-		if (_next)
-		{
-			_next->setPrevious(0);
-			delete _next;
-			_next = 0;
-		}
-		_content = 0;
 	}
+
 
 };
 

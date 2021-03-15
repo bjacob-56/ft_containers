@@ -7,17 +7,17 @@ void	display_list(ft::List<T> & lst)
 	typename ft::List<T>::iterator	it;
 	it = lst.begin();
 	while (it != lst.end())
-		std::cout << "> " << (*it++)->getContent() << "\n";
+		std::cout << "> " << *(it++) << "\n";
 	std::cout << "\n";
 }
 
 template <typename T>
-void	reverse_display_list(const ft::List<T> & lst)
+void	reverse_display_list(ft::List<T> & lst)
 {
-	typename ft::List<T>::const_reverse_iterator	rit;
-	rit = lst.rbegin();
+	// ft::List<T>::const_reverse_iterator	rit;
+	typename ft::List<T>::reverse_iterator	rit = lst.rbegin();
 	while (rit != lst.rend())
-		std::cout << "> " << (*rit++)->getContent() << "\n";
+		std::cout << "> " << *(rit++) << "\n";
 	std::cout << "\n";
 }
 
@@ -52,7 +52,7 @@ std::cout << "\n-------- Iterator --------\n";
 
 // -------- reverse Iterator --------
 std::cout << "\n-------- reverse Iterator --------\n";
-	const ft::List<int>	lstc(lst);
+	ft::List<int>	lstc(lst);
 
 	reverse_display_list(lstc);
 

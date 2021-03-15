@@ -1,24 +1,27 @@
 #ifndef ITERATOR_HPP
 # define ITERATOR_HPP
 
+#include "List.hpp"
+
 namespace ft
 {
 
-template <typename PointerType>
+template <typename T, typename PointerType>
 	class MyIterator
 	{
 		public:
 
 			MyIterator(void): _ptr(0) {};
 			MyIterator(PointerType ptr): _ptr(ptr) {};
+			// MyIterator(MyIterator it): _ptr() {};
 			~MyIterator(void) {};
 
-			PointerType getPtr(void) const {return _ptr;}
+			PointerType getPtr(void) const {return _ptr;}	// a eviter ? en private ?
 
 			MyIterator &	operator++(void)	// pre increment
 			{
-				if (_ptr->getNext())
-					_ptr = _ptr->getNext();
+				if (_ptr->next)
+					_ptr = _ptr->next;
 				return (*this);
 			}
 			MyIterator	operator++(int)	// post increment
@@ -29,8 +32,8 @@ template <typename PointerType>
 			}
 			MyIterator &	operator--(void) // quel comportement avant begin ?
 			{
-				if (_ptr->getPrevious())
-					_ptr = _ptr->getPrevious();
+				if (_ptr->previous)
+					_ptr = _ptr->previous;
 				return (*this);
 			}
 			MyIterator	operator--(int)
@@ -40,7 +43,7 @@ template <typename PointerType>
 				return (temp);
 			}
 
-			PointerType	operator*(void) {return _ptr;}
+			T &	operator*(void) {return _ptr->value;}
 
 			MyIterator & operator=(MyIterator const & rhs)
 			{
@@ -55,7 +58,7 @@ template <typename PointerType>
 			PointerType _ptr;
 	};
 
-template <typename PointerType>
+template <typename T, typename PointerType>
 	class MyReverseIterator
 	{
 		public:
@@ -67,8 +70,8 @@ template <typename PointerType>
 
 			MyReverseIterator &	operator++(void)	// pre increment
 			{
-				if (_ptr->getPrevious())
-					_ptr = _ptr->getPrevious();
+				if (_ptr->previous)
+					_ptr = _ptr->previous;
 				return (*this);
 			}
 			MyReverseIterator	operator++(int)	// post increment
@@ -79,8 +82,8 @@ template <typename PointerType>
 			}
 			MyReverseIterator &	operator--(void) // quel comportement avant begin ?
 			{
-				if (_ptr->getNext())
-					_ptr = _ptr->getNext();
+				if (_ptr->next)
+					_ptr = _ptr->next;
 				return (*this);
 			}
 			MyReverseIterator	operator--(int)
@@ -90,7 +93,7 @@ template <typename PointerType>
 				return (temp);
 			}
 
-			PointerType	operator*(void) {return _ptr;}
+			T &	operator*(void) {return _ptr->value;}
 
 			MyReverseIterator & operator=(MyReverseIterator const & rhs)
 			{
