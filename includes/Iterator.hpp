@@ -53,6 +53,8 @@ template <typename T, typename PointerType>
 
 			bool operator==(MyIterator const & rhs) const {return (_ptr == rhs.getPtr());}
 			bool operator!=(MyIterator const & rhs) const {return (_ptr != rhs.getPtr());}
+			bool operator==(PointerType const ptr) const {return (_ptr == ptr);}
+			bool operator!=(PointerType const ptr) const {return (_ptr != ptr);}
 
 		private:
 			PointerType _ptr;
@@ -103,6 +105,8 @@ template <typename T, typename PointerType>
 
 			bool operator==(MyReverseIterator const & rhs) const {return (_ptr == rhs.getPtr());}
 			bool operator!=(MyReverseIterator const & rhs) const {return (_ptr != rhs.getPtr());}
+			bool operator==(PointerType const ptr) const {return (_ptr == ptr);}
+			bool operator!=(PointerType const ptr) const {return (_ptr != ptr);}
 
 		private:
 			PointerType _ptr;

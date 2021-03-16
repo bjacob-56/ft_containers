@@ -19,7 +19,11 @@ class Node
 		T		value;
 
 		Node(const T & val): previous(0), next(0), value(val) {}
-		Node(Node *pr, Node *ne, const T & val): previous(pr), next(ne), value(val) {}
+		Node(Node *pr, Node *ne, const T & val): previous(pr), next(ne), value(val)
+		{
+			pr->next = this;
+			ne->previous = this;
+		}
 		Node(): previous(0), next(0), value(T()) {}
 	
 	void	add_next(Node * node)
@@ -80,19 +84,19 @@ public:
 
 	List(List::iterator begin, List::iterator end): _begin(0), _end(0), _rend(0), _size(0)	// secu a mettre ?
 	{
-		this->initiate_first_elem(*begin);
 		if (begin != end)
 		{
+			this->initiate_first_elem(*begin);
 			begin++;
 			Node<T>	* save = _begin;
 			while (begin != end)
 			{
 				Node<T> * temp = new Node<T>(*begin);
-				save->next = temp;
+				save->add_next(temp);
 				save = temp;
 				begin++;
+				_size++;
 			}
-			save->next = _end;
 		}
 	}
 
@@ -194,12 +198,12 @@ public:
 				while (begin != end)
 				{
 					Node<T> * temp = new Node<T>(*begin);
-					save->next = temp;
+					save->add_next(temp);
 					save = temp;
 					begin++;
 				}
-				save->next = _end;
 			}
+			_size = rhs.size();
 		}
 		// else	
 		// 	_content = rhs.getContent();
@@ -225,7 +229,7 @@ public:
 	T &	front(void)	// besoin de faire la meme en const ?
 	{
 		if (this->size() > 0)
-			return (_begin->value);	// possible d'appeler en milieu de list ?
+			return (_begin->value);
 		return (T(0));
 	}					// reference sur list ou content ?
 
@@ -248,8 +252,9 @@ public:
 			this->initiate_first_elem(val);
 		else
 		{
-			Node<T> * temp = new Node<T>(	val);
+			Node<T> * temp = new Node<T>(val);
 			_end->add_previous(temp);
+			_size++;
 		}
 	}
 
@@ -260,7 +265,10 @@ public:
 		else if (_size == 1)
 			this->delete_list();
 		else
+		{
 			this->erase(--(this->end()));
+			_size--;
+		}
 	}
 
 	void	push_front (const T & val)
@@ -269,32 +277,43 @@ public:
 			this->initiate_first_elem(val);
 		else
 		{
-			Node<T> * temp = new Node<T>(	val);
-			_rend->add_next(temp);
+			Node<T> * new_begin = new Node<T>(val);
+			_rend->add_next(new_begin);
+			_begin = new_begin;
+			_size++;
 		}
 	}
 
 	void	pop_front(void)
 	{
+		Node<T>	*	new_begin;
+		
 		if (!_size)
 			return ;
 		else if (_size == 1)
 			this->delete_list();
 		else
+		{
+			new_begin = _begin->next;
 			this->erase((this->begin()));
+			_begin = new_begin;
+			_size--;
+		}
 	}
 
 	iterator erase (iterator position)	// range of iterator a gerer
 	{
 		Node<T>	*	temp = _begin;
-		while (iterator(temp) != position && temp != _end)
+		Node<T>	*	temp_next = _begin;
+
+		while (position != temp && temp != _end)
 			temp = temp->next;
-		if (iterator(temp) == position && temp != _end)
+		if (position == temp && temp != _end)
 		{
+			temp_next = temp->next;
 			temp->previous->next = temp->next;
-			temp->next->previous = temp->previous;
-			temp = temp->next;
-			delete temp->previous;
+			temp_next->previous = temp->previous;
+			delete temp;
 		}
 		return (iterator(temp));
 	}
@@ -313,6 +332,7 @@ private:
 		_end = new Node<T>();
 		_rend = new Node<T>();
 		_begin = new Node<T>(_rend, _end, val);
+		_size = 1;
 	}
 
 	void	delete_list(void)

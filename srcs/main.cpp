@@ -16,6 +16,7 @@ void	reverse_display_list(ft::List<T> & lst)
 {
 	// ft::List<T>::const_reverse_iterator	rit;
 	typename ft::List<T>::reverse_iterator	rit = lst.rbegin();
+
 	while (rit != lst.rend())
 		std::cout << "> " << *(rit++) << "\n";
 	std::cout << "\n";
@@ -29,7 +30,7 @@ int main(void)
 std::cout << "\n-------- push_back --------\n";
 	std::cout << "size = " << lst.size() << "\n";
 	std::cout << "is_empty = " << lst.empty() << "\n";
-
+	
 	lst.push_back(1);
 	lst.push_back(2);
 	lst.push_back(3);
@@ -53,7 +54,7 @@ std::cout << "\n-------- Iterator --------\n";
 // -------- reverse Iterator --------
 std::cout << "\n-------- reverse Iterator --------\n";
 	ft::List<int>	lstc(lst);
-
+	// display_list(lstc);
 	reverse_display_list(lstc);
 
 // -------- Constructors --------
