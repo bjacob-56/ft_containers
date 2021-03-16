@@ -82,7 +82,7 @@ public:
 	List(List const & src): _begin(0), _end(0), _rend(0), _size(0) {*this = src;}
 
 	List(List::iterator begin, List::iterator end): _begin(0), _end(0), _rend(0), _size(0)	// secu a mettre ?
-	{
+	{								// template a ajouter ?
 		if (begin != end)
 		{
 			this->initiate_first_elem(*begin);
@@ -242,8 +242,37 @@ public:
 
 //		----  Assign  ----
 
-// void assign (int n, const T & val);							// a faire
-// void assign (List::iterator first, List::iterator last);	// a faire
+template <class InputIterator>
+void assign (InputIterator first, InputIterator last)
+{
+	Node<T>	*	temp;
+	InputIterator it = first;
+	size_t		n = 0;
+
+	while (it++ != last)
+		n++;
+	this->resize(n);
+	temp = _begin;
+	while (first != last)
+	{
+		temp->value = *first;
+		first++;
+		temp = temp->next;
+	}
+}
+
+void assign (size_t n, const T& val)
+{
+	Node<T>	*	temp;
+
+	this->resize(n);
+	temp = _begin;
+	while (temp != _end)
+	{
+		temp->value = val;
+		temp = temp->next;
+	}
+}
 
 //		----  Push / Pop  ----
 

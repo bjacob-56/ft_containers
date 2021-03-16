@@ -50,7 +50,7 @@ std::cout << "\n-------- Iterator --------\n";
 	display_list(lst, "lst");
 	lst.pop_front();
 	display_list(lst, "lst");
-	lst.push_front(0);
+	lst.push_front(-5);
 	display_list(lst, "lst");
 
 // -------- reverse Iterator --------
@@ -79,6 +79,9 @@ std::cout << "\n-------- Constructor - (begin, end) --------\n";
 	display_list(lst, "lst");
 	lst.erase(itb, ite);
 	display_list(lst, "lst");
+	lst = lst3;
+	display_list(lst, "lst");
+
 
 // -------- Swap --------
 std::cout << "\n-------- Swap --------\n";
@@ -120,6 +123,18 @@ std::cout << "\n-------- Resize --------\n";
 	lst3.resize(5, 7);
 	display_list(lst3, "lst3");
 	lst3.clear();
+	display_list(lst3, "lst3");
+
+// -------- Assign --------
+std::cout << "\n-------- Resize --------\n";
+
+	// lst3.assign(3, 9);			// TEMPLATE FUNCTION CHOSEN --> A comprendre pourquoi
+	display_list(lst3, "lst3");
+
+	itb = lst.begin();
+	ite = lst.end();
+	itb++;
+	lst3.assign(itb, ite);
 	display_list(lst3, "lst3");
 
 	return (0);
