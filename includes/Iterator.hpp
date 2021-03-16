@@ -16,8 +16,6 @@ template <typename T, typename PointerType>
 			// MyIterator(MyIterator it): _ptr() {};
 			~MyIterator(void) {};
 
-			PointerType getPtr(void) const {return _ptr;}	// a eviter ? en private ?
-
 			MyIterator &	operator++(void)	// pre increment
 			{
 				if (_ptr->next)
@@ -47,12 +45,12 @@ template <typename T, typename PointerType>
 
 			MyIterator & operator=(MyIterator const & rhs)
 			{
-				_ptr = rhs.getPtr();
+				_ptr = rhs._ptr;
 				return (*this);
 			}
 
-			bool operator==(MyIterator const & rhs) const {return (_ptr == rhs.getPtr());}
-			bool operator!=(MyIterator const & rhs) const {return (_ptr != rhs.getPtr());}
+			bool operator==(MyIterator const & rhs) const {return (_ptr == rhs._ptr);}
+			bool operator!=(MyIterator const & rhs) const {return (_ptr != rhs._ptr);}
 			bool operator==(PointerType const ptr) const {return (_ptr == ptr);}
 			bool operator!=(PointerType const ptr) const {return (_ptr != ptr);}
 
@@ -67,8 +65,6 @@ template <typename T, typename PointerType>
 			MyReverseIterator(void): _ptr(0) {};
 			MyReverseIterator(PointerType ptr): _ptr(ptr) {};
 			~MyReverseIterator(void) {};
-
-			PointerType getPtr(void) const {return _ptr;}
 
 			MyReverseIterator &	operator++(void)	// pre increment
 			{
@@ -99,12 +95,12 @@ template <typename T, typename PointerType>
 
 			MyReverseIterator & operator=(MyReverseIterator const & rhs)
 			{
-				_ptr = rhs.getPtr();
+				_ptr = rhs._ptr;
 				return (*this);
 			}
 
-			bool operator==(MyReverseIterator const & rhs) const {return (_ptr == rhs.getPtr());}
-			bool operator!=(MyReverseIterator const & rhs) const {return (_ptr != rhs.getPtr());}
+			bool operator==(MyReverseIterator const & rhs) const {return (_ptr == rhs._ptr);}
+			bool operator!=(MyReverseIterator const & rhs) const {return (_ptr != rhs._ptr);}
 			bool operator==(PointerType const ptr) const {return (_ptr == ptr);}
 			bool operator!=(PointerType const ptr) const {return (_ptr != ptr);}
 

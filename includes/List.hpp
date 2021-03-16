@@ -71,11 +71,10 @@ public:
 			Node<T>	* save = _begin;
 			while (++i < nb)
 			{
-				Node<T> * temp = new Node<T>(	content);
-				save->next = temp;
+				Node<T> * temp = new Node<T>(content);
+				save->add_next(temp);
 				save = temp;
 			}
-			save->next = _end;
 			_size = nb;
 		}
 	}
@@ -105,7 +104,7 @@ public:
   	// std::list<int> third (second.begin(),second.end());  // iterating through second
   	// std::list<int> fourth (third);
 
-	~List(void) {this->delete_list();}
+	~List(void) {this->clear();}
 
 // ========  Iterators  ========
 
@@ -185,7 +184,7 @@ public:
 
 	List &	operator=(List const & rhs)
 	{
-		this->delete_list();
+		this->clear();
 		if (rhs.size() > 0)
 		{
 			const_iterator	begin = rhs.begin();
@@ -205,8 +204,6 @@ public:
 			}
 			_size = rhs.size();
 		}
-		// else	
-		// 	_content = rhs.getContent();
 		return (*this);
 	}
 
@@ -231,7 +228,7 @@ public:
 		if (this->size() > 0)
 			return (_begin->value);
 		return (T(0));
-	}					// reference sur list ou content ?
+	}
 
 	T &	back(void)
 	{
@@ -243,8 +240,12 @@ public:
 
 // ========  Modifiers  ========
 
+//		----  Assign  ----
+
 // void assign (int n, const T & val);							// a faire
 // void assign (List::iterator first, List::iterator last);	// a faire
+
+//		----  Push / Pop  ----
 
 	void	push_back (const T & val)
 	{
@@ -263,7 +264,7 @@ public:
 		if (!_size)
 			return ;
 		else if (_size == 1)
-			this->delete_list();
+			this->clear();
 		else
 		{
 			this->erase(--(this->end()));
@@ -291,7 +292,7 @@ public:
 		if (!_size)
 			return ;
 		else if (_size == 1)
-			this->delete_list();
+			this->clear();
 		else
 		{
 			new_begin = _begin->next;
@@ -301,26 +302,179 @@ public:
 		}
 	}
 
-	iterator erase (iterator position)	// range of iterator a gerer
+//		----  Insert  ----
+
+iterator insert (iterator position, const T& val)
+{
+	Node<T>	*	temp = _begin;
+	Node<T>	*	new_node = 0;
+
+	while (position != temp && temp != _end)
+		temp = temp->next;
+	if (position == temp)
+	{
+		new_node = new Node<T>(val);
+		temp->add_previous(new_node);
+		_size++;
+		if (position == _begin)
+			_begin = new_node;
+	}
+	return (iterator(new_node));
+}
+
+void insert (iterator position, size_t n, const T& val)
+{
+	Node<T>	*	temp = _begin;
+	Node<T>	*	new_node = 0;
+
+	while (position != temp && temp != _end)
+		temp = temp->next;
+	if (position == temp)
+	{
+		while (n-- > 0)
+		{
+			new_node = new Node<T>(val);
+			temp->add_previous(new_node);
+			temp = new_node;
+			_size++;
+		}
+		if (position == _begin)
+			_begin = new_node;
+	}
+}
+
+// template <class InputIterator>
+// void insert (iterator position, InputIterator first, InputIterator last)	// garder template ?
+void insert (iterator position, iterator first, iterator last)	// garder template ?
+{
+	Node<T>	*	temp = _begin;
+	Node<T>	*	new_node = 0;
+
+	while (position != temp && temp != _end)
+		temp = temp->next;
+	if (position == temp)
+	{
+		while (first != last)
+		{
+			new_node = new Node<T>(*(--last));
+			temp->add_previous(new_node);
+			temp = new_node;
+			_size++;
+		}
+		if (position == _begin)
+			_begin = new_node;
+	}
+}
+
+//		----  Erase  ----
+
+	iterator erase (iterator position)
 	{
 		Node<T>	*	temp = _begin;
-		Node<T>	*	temp_next = _begin;
+		Node<T>	*	temp_del;
 
 		while (position != temp && temp != _end)
 			temp = temp->next;
 		if (position == temp && temp != _end)
 		{
-			temp_next = temp->next;
-			temp->previous->next = temp->next;
-			temp_next->previous = temp->previous;
-			delete temp;
+			temp_del = temp;
+			temp = temp->next;
+			temp_del->previous->next = temp;
+			temp->previous = temp_del->previous;
+			delete temp_del;
+			_size--;
+		}
+		if (!_size)
+		{
+			this->clear();
+			temp = 0;
 		}
 		return (iterator(temp));
 	}
 
+	iterator erase (iterator first, iterator last)
+	{
+		Node<T>	*	temp = _begin;
+		Node<T>	*	temp_del;
 
+		while (first != temp && temp != _end)
+			temp = temp->next;
+		if (first == temp && temp != _end)
+		{
+			while (last != temp && temp != _end)
+			{
+				temp_del = temp;
+				temp = temp->next;
+				temp_del->previous->next = temp;
+				temp->previous = temp_del->previous;
+				delete temp_del;
+				_size--;
+			}
+		}
+		if (!_size)
+		{
+			this->clear();
+			temp = 0;
+		}
+		return (iterator(temp));
+	}
 
+//		----  Swap  ----
 
+	void swap (List& x)
+	{
+		Node<T> * temp_begin = x._begin;
+		Node<T> * temp_end = x._end;
+		Node<T> * temp_rend = x._rend;
+		size_t	temp_size = x._size;
+
+		x._begin = _begin;
+		x._end = _end;
+		x._rend = _rend;
+		x._size = _size;
+
+		_begin = temp_begin;
+		_end = temp_end;
+		_rend = temp_rend;
+		_size = temp_size;
+	}
+
+//		----  Resize  ----
+
+void resize (size_t n, T val = T())	// c++11 ?
+{
+	if (!n)
+	{
+		this->clear();
+		return ;
+	}
+	while (_size > n)
+		erase(--this->end());
+	while (_size < n)
+		this->push_back(val);
+}
+
+//		----  Clear  ----
+
+void clear()
+{
+	Node<T>	* node = _begin;
+
+	if (_size > 0)
+	{
+		while (node != _end)
+		{
+			node = node->next;
+			delete node->previous;
+		}
+		delete _end;
+		delete _rend;
+	}
+	_begin = 0;
+	_end = 0;
+	_rend = 0;
+	_size = 0;
+}
 
 // ************************************************************** //
 // ************************************************************** //
@@ -335,25 +489,10 @@ private:
 		_size = 1;
 	}
 
-	void	delete_list(void)
-	{
-		Node<T>	* node = _begin;
-
-		if (_size > 0)
-		{
-			while (node != _end)
-			{
-				node = node->next;
-				delete node->previous;
-			}
-			delete _end;
-			delete _rend;
-			_size = 0;
-		}
-	}
-
-
 };
+
+template <typename T>
+void swap (List<T>& x, List<T>& y) {x.swap(y);}
 
 }
 
