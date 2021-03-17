@@ -43,6 +43,17 @@ class Node
 		previous->next = node;
 		previous = node;
 	}
+
+	void	swap_nodes(Node * node)
+	{
+		Node *	temp_previous = previous;
+		Node *	temp_next = next;
+
+		previous = node->previous;
+		next = node->next;
+		node->previous = temp_previous;
+		node->next = temp_next;
+	}
 };
 
 
@@ -298,31 +309,31 @@ public:
 
 //		----  Insert  ----
 
-iterator insert (iterator position, const T& val)
-{
-	Node<T>	*	temp = _begin;
-	Node<T>	*	new_node = 0;
-
-	while (position != temp && temp != _end)
-		temp = temp->next;
-	if (position == temp)
+	iterator insert (iterator position, const T& val)
 	{
-		new_node = new Node<T>(val);
-		temp->add_previous(new_node);
-		_size++;
-		if (position == _begin)
-			_begin = new_node;
+		Node<T>	*	temp = _begin;
+		Node<T>	*	new_node = 0;
+
+		while (position != temp && temp != _end)
+			temp = temp->next;
+		if (position == temp)
+		{
+			new_node = new Node<T>(val);
+			temp->add_previous(new_node);
+			_size++;
+			if (position == _begin)
+				_begin = new_node;
+		}
+		return (iterator(new_node));
 	}
-	return (iterator(new_node));
-}
 
-void insert (iterator position, size_type n, const T& val) { insert_prototype(position, n, val, int()); }
+	void insert (iterator position, size_type n, const T& val) { insert_prototype(position, n, val, int()); }
 
-template <class InputIterator>
-void insert (iterator position, InputIterator first, InputIterator last)
-{
-	insert_prototype(position, first, last, typename ft::is_integral<InputIterator>::type());
-}
+	template <class InputIterator>
+	void insert (iterator position, InputIterator first, InputIterator last)
+	{
+		insert_prototype(position, first, last, typename ft::is_integral<InputIterator>::type());
+	}
 
 //		----  Erase  ----
 
@@ -399,40 +410,40 @@ void insert (iterator position, InputIterator first, InputIterator last)
 
 //		----  Resize  ----
 
-void resize (size_type n, T val = T())
-{
-	if (!n)
+	void resize (size_type n, T val = T())
 	{
-		this->clear();
-		return ;
+		if (!n)
+		{
+			this->clear();
+			return ;
+		}
+		while (_size > n)
+			erase(--this->end());
+		while (_size < n)
+			this->push_back(val);
 	}
-	while (_size > n)
-		erase(--this->end());
-	while (_size < n)
-		this->push_back(val);
-}
 
 //		----  Clear  ----
 
-void clear()
-{
-	Node<T>	* node = _begin;
-
-	if (_size > 0)
+	void clear()
 	{
-		while (node != _end)
+		Node<T>	* node = _begin;
+
+		if (_size > 0)
 		{
-			node = node->next;
-			delete node->previous;
+			while (node != _end)
+			{
+				node = node->next;
+				delete node->previous;
+			}
+			delete _end;
+			delete _rend;
 		}
-		delete _end;
-		delete _rend;
+		_begin = 0;
+		_end = 0;
+		_rend = 0;
+		_size = 0;
 	}
-	_begin = 0;
-	_end = 0;
-	_rend = 0;
-	_size = 0;
-}
 
 
 
@@ -441,95 +452,210 @@ void clear()
 //		----  Splice  ----
 
 
-void splice (iterator position, List& x)
-{
-	this->insert(position, x.begin(), x.end());
-	x.clear();
-}
+	void splice (iterator position, List& x)
+	{
+		this->insert(position, x.begin(), x.end());
+		x.clear();
+	}
 
-void splice (iterator position, List& x, iterator i)
-{
-	this->insert(position, *i);
-	x.erase(i);
-}
+	void splice (iterator position, List& x, iterator i)
+	{
+		this->insert(position, *i);
+		x.erase(i);
+	}
 
-void splice (iterator position, List& x, iterator first, iterator last)
-{
-	this->insert(position, first, last);
-	x.erase(first, last);
-}
+	void splice (iterator position, List& x, iterator first, iterator last)
+	{
+		this->insert(position, first, last);
+		x.erase(first, last);
+	}
 
 //		----  Remove  ----
 
-void remove (const T& val)	// test sur list vide
-{
-	List::iterator	begin(_begin);
-	List::iterator	end(_end);
-
-	while (begin != end)
+	void remove (const T& val)	// test sur list vide
 	{
-		if (*begin == val)
-			begin = this->erase(begin);
-		else
-			begin++;
+		List::iterator	begin(_begin);
+		List::iterator	end(_end);
+
+		while (begin != end)
+		{
+			if (*begin == val)
+				begin = this->erase(begin);
+			else
+				begin++;
+		}
 	}
-}
 
 //		----  Remove_if  ----
 
-template <class Predicate>
-void remove_if (Predicate pred)
-{
-	List::iterator	begin(_begin);
-	List::iterator	end(_end);
-
-	while (begin != end)
+	template <class Predicate>
+	void remove_if (Predicate pred)
 	{
-		if (pred(*begin) == true)
-			begin = this->erase(begin);
-		else
-			begin++;
+		List::iterator	begin(_begin);
+		List::iterator	end(_end);
+
+		while (begin != end)
+		{
+			if (pred(*begin) == true)
+				begin = this->erase(begin);
+			else
+				begin++;
+		}
 	}
-}
 
 //		----  Unique  ----
 
-void unique()
-{
-	List::iterator	begin(_begin);
-	List::iterator	end(_end);
-
-	if (_size > 1)
+	void unique()
 	{
-		begin++;
-		while (begin != end)
+		List::iterator	begin(_begin);
+		List::iterator	begin_previous(_begin);
+		List::iterator	end(_end);
+
+		if (_size > 1)
 		{
-			if (*begin == *(begin - 1))
-				begin = this->erase(begin);
-			else
-				begin++;
+			begin++;
+			while (begin != end)
+			{
+				if (*begin == *(begin_previous))
+					begin = this->erase(begin);
+				else
+				{
+					begin++;
+					begin_previous++;
+				}
+			}
 		}
 	}
-}
 
-template <class BinaryPredicate>
-void unique (BinaryPredicate binary_pred)
-{
-	List::iterator	begin(_begin);
-	List::iterator	end(_end);
-
-	if (_size > 1)
+	template <class BinaryPredicate>
+	void unique (BinaryPredicate binary_pred)
 	{
-		begin++;
-		while (begin != end)
+		List::iterator	begin(_begin);
+		List::iterator	begin_previous(_begin);
+		List::iterator	end(_end);
+
+		if (_size > 1)
 		{
-			if (binary_pred(*begin) == binary_pred(*(begin - 1)))
-				begin = this->erase(begin);
-			else
-				begin++;
+			begin++;
+			while (begin != end)
+			{
+				if (binary_pred(*begin) == binary_pred(*(begin_previous)))
+					begin = this->erase(begin);
+				else
+				{
+					begin++;
+					begin_previous++;
+				}
+			}
 		}
 	}
-}
+
+//		----  Merge  ----
+
+	void merge (List& x)
+	{
+		if (!this->is_sorted_up() || !x.is_sorted_up())
+			return ;
+		List::iterator	it = x.begin();
+		List::iterator	ite = x.end();
+		List::iterator	it_temp;
+		List::iterator	itt = this->begin();
+		List::iterator	itte = this->end();
+		while (it != ite)
+		{
+			while (itt != itte && *itt < *it)
+				itt++;
+			it_temp = ++it;
+			this->splice(itt, x, --it);
+			it = it_temp;
+		}
+		x.clear();
+	}
+
+	template <class Compare>
+	void merge (List& x, Compare comp)
+	{
+		if (!this->is_sorted_up() || !x.is_sorted_up())
+			return ;
+		List::iterator	it = x.begin();
+		List::iterator	ite = x.end();
+		List::iterator	it_temp;
+		List::iterator	itt = this->begin();
+		List::iterator	itte = this->end();
+		while (it != ite)
+		{
+			while (itt != itte && comp(*itt, *it) == true)
+				itt++;
+			it_temp = ++it;
+			this->splice(itt, x, --it);
+			it = it_temp;
+		}
+		x.clear();
+	}
+
+//		----  Sort  ----
+
+	void sort()
+	{
+		if (_size < 2)
+			return ;
+		Node<T> * temp = _begin->next;
+		while (temp != _end)
+		{
+			if (temp->previous->value > temp->value)
+			{
+				if (temp->previous == _begin)
+					_begin = temp;
+				temp->swap_nodes(temp->previous);
+				temp = _begin->next;
+			}
+			else
+				temp = temp->next;
+		}
+	}
+	
+	template <class Compare>
+	void sort (Compare comp)
+	{
+		if (_size < 2)
+			return ;
+		Node<T> * temp = _begin->next;
+		while (temp != _end)
+		{
+			if (comp(temp->previous->value, temp->value) == false)
+			{
+				if (temp->previous == _begin)
+					_begin = temp;
+				temp->swap_nodes(temp->previous);
+				temp = _begin->next;
+			}
+			else
+				temp = temp->next;
+		}	
+	}
+
+//		----  Reverse  ----
+
+	void reverse()
+	{
+		if (_size < 2)
+			return ;
+		Node<T> * temp = _begin;
+		Node<T> * begin_previous = _begin->previous;
+		Node<T> * temp_previous;
+		while (temp != _end)
+		{
+			temp_previous = temp->previous;
+			temp->previous = temp->next;
+			temp->next = temp_previous;
+			temp = temp->previous;
+		}
+		_begin->next = _end;
+		_end->previous->previous = begin_previous;
+		begin_previous->next = _end->previous;
+		_end->previous = _begin;
+		_begin = begin_previous->next;
+	}
 
 // ************************************************************** //
 // ************************************************************** //
@@ -544,6 +670,54 @@ private:
 		_size = 1;
 	}
 
+	int is_sorted_up()
+	{
+		if (_size < 2)
+			return 1;
+		List::iterator	begin(_begin);
+		List::iterator	begin_previous(_begin);
+		List::iterator	end(_end);
+		begin++;
+		while (begin != end)
+		{
+			if (*begin < *(begin_previous))
+				return 0;
+			else
+			{
+				begin++;
+				begin_previous++;
+			}
+		}
+		return 1;
+	}
+
+	// int is_sorted_down()
+	// {
+	// 	if (_size < 2)
+	// 		return 1;
+	// 	List::iterator	begin(_begin);
+	// 	List::iterator	begin_previous(_begin);
+	// 	List::iterator	end(_end);
+	// 	begin++;
+	// 	while (begin != end)
+	// 	{
+	// 		if (*begin > *(begin_previous))
+	// 			return 0;
+	// 		else
+	// 		{
+	// 			begin++;
+	// 			begin_previous++;
+	// 		}
+	// 	}
+	// 	return 1;
+	// }
+
+	// int	is_sorted()
+	// {
+	// 	if (!this->is_sorted_up() && !this->is_sorted_down())
+	// 		return 0;
+	// 	return 1;
+	// }
 
 // ========  Constructor - private  ========
 
