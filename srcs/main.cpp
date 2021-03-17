@@ -161,6 +161,55 @@ std::cout << "\n-------- Assign --------\n";
 
 
 
+// ===========  OPERATIONS  ===========
+std::cout << "\n===========  OPERATIONS  ===========\n";
+
+	lst.clear();
+	lst2.clear();
+	lst3.clear();
+	lstc.clear();
+
+	lst.assign(5, 42);
+	display_list(lst, "lst");
+
+	lst2.assign(2, 1);
+	display_list(lst2, "lst2");
+
+	lst3.push_back(-100);
+	lst3.push_back(-5);
+	lst3.push_back(0);
+	lst3.push_back(5);
+	lst3.push_back(100);
+	display_list(lst3, "lst3");
+
+// -------- Splice --------
+std::cout << "\n-------- Splice --------\n";
+	itb = lst.begin();
+	ite = --lst.end();
+
+	ft::List<int>::iterator	itb3 = ++lst3.begin();
+	lst3.splice(itb3, lst, itb, ite);
+	lst3.splice(itb3, lst2);
+	display_list(lst3, "lst3");
+
+// -------- Remove --------
+std::cout << "\n-------- Remove --------\n";
+
+// -------- Remove_if --------
+std::cout << "\n-------- Remove_if --------\n";
+
+// -------- Unique --------
+std::cout << "\n-------- Unique --------\n";
+
+// -------- Merge --------
+std::cout << "\n-------- Merge --------\n";
+
+// -------- Sort --------
+std::cout << "\n-------- Sort --------\n";
+
+// -------- Reverse --------
+std::cout << "\n-------- Reverse --------\n";
+
 
 // =========== List (real) ===========
 std::cout << "\n=========== List (real) ===========\n";
