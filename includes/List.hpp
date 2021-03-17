@@ -4,8 +4,10 @@
 # include <string>
 # include <iostream>
 # include <limits>
+# include <exception>
 
 # include "Iterator.hpp"
+# include "Is_integral.hpp"
 
 namespace ft
 {
@@ -54,6 +56,8 @@ public:
 	typedef MyReverseIterator<T, Node<T> *> reverse_iterator;
 	typedef MyReverseIterator<const T, const  Node<T> *> const_reverse_iterator;
 
+	typedef	size_t size_type;
+
 private:
 	Node<T>	*_begin;
 	Node<T>	*_end;
@@ -61,42 +65,27 @@ private:
 	size_t	_size;
 
 public:
-	List(void): _begin(0), _end(0), _rend(0), _size(0) {}
-	List(int nb, T const & content): _begin(0), _end(0), _rend(0), _size(0)
+	explicit List(void): _begin(0), _end(0), _rend(0), _size(0) {}
+	explicit List(size_t n, const T& val = T()): _begin(0), _end(0), _rend(0), _size(0)
 	{
-		if (nb > 0)
+		this->initiate_first_elem(val);
+		size_t i = 0;
+		Node<T>	* save = _begin;
+		while (++i < n)
 		{
-			this->initiate_first_elem(content);
-			int i = 0;
-			Node<T>	* save = _begin;
-			while (++i < nb)
-			{
-				Node<T> * temp = new Node<T>(content);
-				save->add_next(temp);
-				save = temp;
-			}
-			_size = nb;
+			Node<T> * temp = new Node<T>(val);
+			save->add_next(temp);
+			save = temp;
 		}
+		_size = n;
 	}
 
-	List(List const & src): _begin(0), _end(0), _rend(0), _size(0) {*this = src;}
+	List(const List& x): _begin(0), _end(0), _rend(0), _size(0) {*this = x;}
 
-	List(List::iterator begin, List::iterator end): _begin(0), _end(0), _rend(0), _size(0)	// secu a mettre ?
-	{								// template a ajouter ?
-		if (begin != end)
-		{
-			this->initiate_first_elem(*begin);
-			begin++;
-			Node<T>	* save = _begin;
-			while (begin != end)
-			{
-				Node<T> * temp = new Node<T>(*begin);
-				save->add_next(temp);
-				save = temp;
-				begin++;
-				_size++;
-			}
-		}
+	template <class InputIterator>
+	List (InputIterator first, InputIterator last): _begin(0), _end(0), _rend(0), _size(0)
+	{								// template a tester
+		constructor_prototype(first, last, typename ft::is_integral<InputIterator>::type());
 	}
 
 	// std::list<int> first;                                // empty list of ints
@@ -182,13 +171,13 @@ public:
 
 // ========  Overload  ========
 
-	List &	operator=(List const & rhs)
+	List &	operator=(const List & x)
 	{
 		this->clear();
-		if (rhs.size() > 0)
+		if (x.size() > 0)
 		{
-			const_iterator	begin = rhs.begin();
-			const_iterator	end = rhs.end();
+			const_iterator	begin = x.begin();
+			const_iterator	end = x.end();
 			this->initiate_first_elem(*begin);
 			if (begin != end)
 			{
@@ -202,7 +191,7 @@ public:
 					begin++;
 				}
 			}
-			_size = rhs.size();
+			_size = x.size();
 		}
 		return (*this);
 	}
@@ -218,7 +207,7 @@ public:
 
 	size_t	size(void) const {return (_size);}
 
-	size_t	max_size() const {return std::numeric_limits<size_t>::max();} // utiliser size_t ici et pour size ?
+	size_t	max_size() const {return std::numeric_limits<size_t>::max();}
 
 
 // ========  Element Access  ========
@@ -242,37 +231,13 @@ public:
 
 //		----  Assign  ----
 
-template <class InputIterator>
-void assign (InputIterator first, InputIterator last)
-{
-	Node<T>	*	temp;
-	InputIterator it = first;
-	size_t		n = 0;
+	void assign (size_type n, const T& val, int) { assign_prototype(n, val, int());}
 
-	while (it++ != last)
-		n++;
-	this->resize(n);
-	temp = _begin;
-	while (first != last)
+	template <class InputIterator>
+	void assign (InputIterator first, InputIterator last)
 	{
-		temp->value = *first;
-		first++;
-		temp = temp->next;
+		assign_prototype(first, last, typename ft::is_integral<InputIterator>::type());
 	}
-}
-
-void assign (size_t n, const T& val)
-{
-	Node<T>	*	temp;
-
-	this->resize(n);
-	temp = _begin;
-	while (temp != _end)
-	{
-		temp->value = val;
-		temp = temp->next;
-	}
-}
 
 //		----  Push / Pop  ----
 
@@ -351,48 +316,12 @@ iterator insert (iterator position, const T& val)
 	return (iterator(new_node));
 }
 
-void insert (iterator position, size_t n, const T& val)
+void insert (iterator position, size_type n, const T& val) { insert_prototype(position, n, val, int()); }
+
+template <class InputIterator>
+void insert (iterator position, InputIterator first, InputIterator last)
 {
-	Node<T>	*	temp = _begin;
-	Node<T>	*	new_node = 0;
-
-	while (position != temp && temp != _end)
-		temp = temp->next;
-	if (position == temp)
-	{
-		while (n-- > 0)
-		{
-			new_node = new Node<T>(val);
-			temp->add_previous(new_node);
-			temp = new_node;
-			_size++;
-		}
-		if (position == _begin)
-			_begin = new_node;
-	}
-}
-
-// template <class InputIterator>
-// void insert (iterator position, InputIterator first, InputIterator last)	// garder template ?
-void insert (iterator position, iterator first, iterator last)	// garder template ?
-{
-	Node<T>	*	temp = _begin;
-	Node<T>	*	new_node = 0;
-
-	while (position != temp && temp != _end)
-		temp = temp->next;
-	if (position == temp)
-	{
-		while (first != last)
-		{
-			new_node = new Node<T>(*(--last));
-			temp->add_previous(new_node);
-			temp = new_node;
-			_size++;
-		}
-		if (position == _begin)
-			_begin = new_node;
-	}
+	insert_prototype(position, first, last, typename ft::is_integral<InputIterator>::type());
 }
 
 //		----  Erase  ----
@@ -470,7 +399,7 @@ void insert (iterator position, iterator first, iterator last)	// garder templat
 
 //		----  Resize  ----
 
-void resize (size_t n, T val = T())	// c++11 ?
+void resize (size_type n, T val = T())
 {
 	if (!n)
 	{
@@ -505,6 +434,103 @@ void clear()
 	_size = 0;
 }
 
+
+
+// ========  Operations  ========
+
+//		----  Splice  ----
+
+
+void splice (iterator position, List& x)
+{
+	this->insert(position, x.begin(), x.end());
+	x.clear();
+}
+
+void splice (iterator position, List& x, iterator i)
+{
+	this->insert(position, *i);
+	x.erase(i);
+}
+
+void splice (iterator position, List& x, iterator first, iterator last)
+{
+	this->insert(position, first, last);
+	x.erase(first, last);
+}
+
+//		----  Remove  ----
+
+void remove (const T& val)	// test sur list vide
+{
+	List::iterator	begin(_begin);
+	List::iterator	end(_end);
+
+	while (begin != end)
+	{
+		if (*begin == val)
+			begin = this->erase(begin);
+		else
+			begin++;
+	}
+}
+
+//		----  Remove_if  ----
+
+template <class Predicate>
+void remove_if (Predicate pred)
+{
+	List::iterator	begin(_begin);
+	List::iterator	end(_end);
+
+	while (begin != end)
+	{
+		if (pred(*begin) == true)
+			begin = this->erase(begin);
+		else
+			begin++;
+	}
+}
+
+//		----  Unique  ----
+
+void unique()
+{
+	List::iterator	begin(_begin);
+	List::iterator	end(_end);
+
+	if (_size > 1)
+	{
+		begin++;
+		while (begin != end)
+		{
+			if (*begin == *(begin - 1))
+				begin = this->erase(begin);
+			else
+				begin++;
+		}
+	}
+}
+
+template <class BinaryPredicate>
+void unique (BinaryPredicate binary_pred)
+{
+	List::iterator	begin(_begin);
+	List::iterator	end(_end);
+
+	if (_size > 1)
+	{
+		begin++;
+		while (begin != end)
+		{
+			if (binary_pred(*begin) == binary_pred(*(begin - 1)))
+				begin = this->erase(begin);
+			else
+				begin++;
+		}
+	}
+}
+
 // ************************************************************** //
 // ************************************************************** //
 
@@ -518,7 +544,132 @@ private:
 		_size = 1;
 	}
 
+
+// ========  Constructor - private  ========
+
+	template <class InputIterator>
+	void constructor_prototype (InputIterator first, InputIterator last, int)
+	{
+		this->initiate_first_elem(last);
+		int i = 0;
+		Node<T>	* save = _begin;
+		while (++i < first)
+		{
+			Node<T> * temp = new Node<T>(last);
+			save->add_next(temp);
+			save = temp;
+		}
+		_size = first;
+	}
+
+	template <class InputIterator>
+	void	constructor_prototype (InputIterator first, InputIterator last, void *)
+	{
+		if (first != last)
+		{
+			Node<T> * temp;
+			this->initiate_first_elem(*first);
+			first++;
+			Node<T>	* save = _begin;
+			while (first != last)
+			{
+				temp = new Node<T>(*first);
+				save->add_next(temp);
+				save = temp;
+				first++;
+				_size++;
+			}
+		}
+	}
+
+
+// ========  Modifiers - private  ========
+
+//		----  Assign  ----
+
+	template <class InputIterator>
+	void assign_prototype (InputIterator & first, InputIterator & last, int)
+	{
+		Node<T>	*	temp;
+
+		this->resize(first);
+		temp = _begin;
+		while (temp != _end)
+		{
+			temp->value = last;
+			temp = temp->next;
+		}
+	}
+
+	template <class InputIterator>
+	void assign_prototype (InputIterator & first, InputIterator & last, void *)
+	{
+		Node<T>	*	temp;
+		InputIterator it = first;
+		size_t		n = 0;
+
+		while (it++ != last)
+			n++;
+		this->resize(n);
+		temp = _begin;
+		while (first != last)
+		{
+			temp->value = *first;
+			first++;
+			temp = temp->next;
+		}
+	}
+
+
+//		----  Insert  ----
+
+	template <class InputIterator>
+	void insert_prototype (iterator position, InputIterator first, InputIterator last, int)
+	{
+		Node<T>	*	temp = _begin;
+		Node<T>	*	new_node = 0;
+
+		while (position != temp && temp != _end)
+			temp = temp->next;
+		if (position == temp)
+		{
+			while (first-- > 0)
+			{
+				new_node = new Node<T>(last);
+				temp->add_previous(new_node);
+				temp = new_node;
+				_size++;
+			}
+			if (position == _begin)
+				_begin = new_node;
+		}
+	}
+
+	template <class InputIterator>
+	void insert_prototype (iterator position, InputIterator first, InputIterator last, void *)
+	{
+		Node<T>	*	temp = _begin;
+		Node<T>	*	new_node = 0;
+
+		while (position != temp && temp != _end)
+			temp = temp->next;
+		if (position == temp)
+		{
+			while (first != last)
+			{
+				new_node = new Node<T>(*(--last));
+				temp->add_previous(new_node);
+				temp = new_node;
+				_size++;
+			}
+			if (position == _begin)
+				_begin = new_node;
+		}
+	}
+
 };
+
+
 
 template <typename T>
 void swap (List<T>& x, List<T>& y) {x.swap(y);}

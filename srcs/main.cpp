@@ -1,6 +1,8 @@
 #include "../includes/List.hpp"
 #include "../includes/Iterator.hpp"
 
+#include <list>
+
 template <typename T>
 void	display_list(ft::List<T> & lst, std::string title)
 {
@@ -23,6 +25,25 @@ void	reverse_display_list(ft::List<T> & lst)
 		std::cout << "> " << *(rit++) << "\n";
 	std::cout << "\n";
 }
+
+template <typename T>
+void	display_real_list(std::list<T> & lst, std::string title)
+{
+	if (title != "")
+		std::cout << "... " << title << " ...\n";
+	typename std::list<T>::iterator	it;
+	it = lst.begin();
+	while (it != lst.end())
+		std::cout << "> " << *(it++) << "\n";
+	std::cout << "\n";
+}
+
+
+
+
+
+
+
 
 int main(void)
 {
@@ -126,9 +147,9 @@ std::cout << "\n-------- Resize --------\n";
 	display_list(lst3, "lst3");
 
 // -------- Assign --------
-std::cout << "\n-------- Resize --------\n";
+std::cout << "\n-------- Assign --------\n";
 
-	// lst3.assign(3, 9);			// TEMPLATE FUNCTION CHOSEN --> A comprendre pourquoi
+	lst3.assign(3, 9);			// Template function a gerer
 	display_list(lst3, "lst3");
 
 	itb = lst.begin();
@@ -136,6 +157,22 @@ std::cout << "\n-------- Resize --------\n";
 	itb++;
 	lst3.assign(itb, ite);
 	display_list(lst3, "lst3");
+
+
+
+
+
+// =========== List (real) ===========
+std::cout << "\n=========== List (real) ===========\n";
+
+	std::list<int> real_l;
+
+	// real_l.assign(-2147483647, 9);
+
+	display_real_list(real_l, "real_l");
+
+
+
 
 	return (0);
 }
