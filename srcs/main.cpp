@@ -98,6 +98,7 @@ std::cout << "\n-------- Constructor - (begin, end) --------\n";
 
 	lst3 = lst;
 	display_list(lst, "lst");
+	// lst.erase(--itb, ++ite);
 	lst.erase(itb, ite);
 	display_list(lst, "lst");
 	lst = lst3;
@@ -186,6 +187,10 @@ std::cout << "\n===========  OPERATIONS  ===========\n";
 std::cout << "\n-------- Splice --------\n";
 	itb = lst.begin();
 	ite = --lst.end();
+	// ite = lst.end();
+	// lst.erase(itb, --ite);
+	// display_list(lst, "lst");
+
 
 	ft::List<int>::iterator	itb3 = ++lst3.begin();
 	lst3.splice(itb3, lst, itb, ite);
@@ -221,6 +226,10 @@ std::cout << "\n=========== List (real) ===========\n";
 	display_real_list(real_l, "real_l");
 
 
+	// lstc.~List();
+	// lst3.~List();
+	// lst2.~List();
+	// lst.~List();
 
 
 	return (0);

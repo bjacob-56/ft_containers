@@ -20,13 +20,14 @@ class Node
 		Node *	next;
 		T		value;
 
+		Node(): previous(0), next(0), value(T()) {}
 		Node(const T & val): previous(0), next(0), value(val) {}
 		Node(Node *pr, Node *ne, const T & val): previous(pr), next(ne), value(val)
 		{
 			pr->next = this;
 			ne->previous = this;
 		}
-		Node(): previous(0), next(0), value(T()) {}
+		~Node() {}
 	
 	void	add_next(Node * node)
 	{
@@ -271,10 +272,7 @@ public:
 		else if (_size == 1)
 			this->clear();
 		else
-		{
 			this->erase(--(this->end()));
-			_size--;
-		}
 	}
 
 	void	push_front (const T & val)
@@ -291,20 +289,13 @@ public:
 	}
 
 	void	pop_front(void)
-	{
-		Node<T>	*	new_begin;
-		
+	{		
 		if (!_size)
 			return ;
 		else if (_size == 1)
 			this->clear();
 		else
-		{
-			new_begin = _begin->next;
 			this->erase((this->begin()));
-			_begin = new_begin;
-			_size--;
-		}
 	}
 
 //		----  Insert  ----
@@ -348,6 +339,8 @@ public:
 		{
 			temp_del = temp;
 			temp = temp->next;
+			if (_begin == temp_del)
+				_begin = temp;
 			temp_del->previous->next = temp;
 			temp->previous = temp_del->previous;
 			delete temp_del;
@@ -374,6 +367,8 @@ public:
 			{
 				temp_del = temp;
 				temp = temp->next;
+				if (_begin == temp_del)
+					_begin = temp;
 				temp_del->previous->next = temp;
 				temp->previous = temp_del->previous;
 				delete temp_del;
