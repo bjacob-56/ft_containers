@@ -1,5 +1,5 @@
-SRCS =	srcs/main.cpp
-SRCS_BIS =	srcs/main_bis.cpp
+SRCS =	srcs/main.cpp srcs/utils_main.cpp
+SRCS_BIS =	srcs/main_bis.cpp srcs/utils_main.cpp
 
 INC =	includes/List.hpp includes/Iterator.hpp
 

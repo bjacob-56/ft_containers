@@ -1,48 +1,9 @@
 #include "../includes/List.hpp"
 #include "../includes/Iterator.hpp"
 
+#include "utils_main.hpp"
+
 #include <list>
-
-template <typename T>
-void	display_list(ft::List<T> & lst, std::string title)
-{
-	if (title != "")
-		std::cout << "... " << title << " ...\n";
-	typename ft::List<T>::iterator	it;
-	it = lst.begin();
-	while (it != lst.end())
-		std::cout << "> " << *(it++) << "\n";
-	std::cout << "\n";
-}
-
-template <typename T>
-void	reverse_display_list(ft::List<T> & lst)
-{
-	// ft::List<T>::const_reverse_iterator	rit;
-	typename ft::List<T>::reverse_iterator	rit = lst.rbegin();
-
-	while (rit != lst.rend())
-		std::cout << "> " << *(rit++) << "\n";
-	std::cout << "\n";
-}
-
-template <typename T>
-void	display_real_list(std::list<T> & lst, std::string title)
-{
-	if (title != "")
-		std::cout << "... " << title << " ...\n";
-	typename std::list<T>::iterator	it;
-	it = lst.begin();
-	while (it != lst.end())
-		std::cout << "> " << *(it++) << "\n";
-	std::cout << "\n";
-}
-
-
-
-
-
-
 
 
 int main(void)
@@ -187,10 +148,6 @@ std::cout << "\n===========  OPERATIONS  ===========\n";
 std::cout << "\n-------- Splice --------\n";
 	itb = lst.begin();
 	ite = --lst.end();
-	// ite = lst.end();
-	// lst.erase(itb, --ite);
-	// display_list(lst, "lst");
-
 
 	ft::List<int>::iterator	itb3 = ++lst3.begin();
 	lst3.splice(itb3, lst, itb, ite);
@@ -199,21 +156,55 @@ std::cout << "\n-------- Splice --------\n";
 
 // -------- Remove --------
 std::cout << "\n-------- Remove --------\n";
+	lst3.remove(42);
+	display_list(lst3, "lst3");
+	lst3.remove(-100);
+	lst3.remove(13);
+	display_list(lst3, "lst3");
+	
 
 // -------- Remove_if --------
 std::cout << "\n-------- Remove_if --------\n";
+	lst3.remove_if(is_even);
+	display_list(lst3, "lst3");
 
 // -------- Unique --------
 std::cout << "\n-------- Unique --------\n";
+	lst3.unique();
+	display_list(lst3, "lst3");
+	lst3.unique(is_factor_five);
+	display_list(lst3, "lst3");
 
 // -------- Merge --------
 std::cout << "\n-------- Merge --------\n";
+	lst2.push_back(-10);
+	lst2.push_back(-2);
+	lst2.push_back(9);
+	display_list(lst2, "lst2");
+	lst3.sort();
+	display_list(lst3, "lst3");
+	lst3.merge(lst2);
+	display_list(lst3, "lst3");
+	display_list(lst2, "lst2");
 
-// -------- Sort --------
-std::cout << "\n-------- Sort --------\n";
+std::cout << "\n-------- Merge_comp --------\n";
 
-// -------- Reverse --------
-std::cout << "\n-------- Reverse --------\n";
+	lst2.push_back(2);
+	lst2.push_back(-3);
+	lst3.reverse();
+	display_list(lst3, "lst3");
+	display_list(lst2, "lst2");
+	lst3.merge(lst2, is_greater);
+	display_list(lst3, "lst3");
+	display_list(lst2, "lst2");
+
+// -------- Sort and Reverse --------
+std::cout << "\n-------- Sort and Reverse --------\n";
+	lst3.sort();
+	display_list(lst3, "lst3");
+	lst3.reverse();
+	display_list(lst3, "lst3");
+
 
 
 // =========== List (real) ===========

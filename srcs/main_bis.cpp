@@ -48,48 +48,18 @@ void	display_real_list(std::list<T> & lst, std::string title)
 int main(void)
 {
 	ft::List<int>	lst;
-
-// -------- push_back --------
-std::cout << "\n-------- push_back --------\n";
-	std::cout << "size = " << lst.size() << "\n";
-	std::cout << "is_empty = " << lst.empty() << "\n";
+	ft::List<int>	lst2;	
 	
-	lst.push_back(1); // end et rend
-	lst.push_back(2); //
-	lst.push_back(3);
-	lst.push_back(4); //
-	lst.push_back(5);
-
-	std::cout << "size = " << lst.size() << "\n";
-	std::cout << "is_empty = " << lst.empty() << "\n";
-
-// -------- Iterator --------
-std::cout << "\n-------- Iterator --------\n";
-
+	lst.push_back(1);
+	lst.push_back(-5);
+	lst2.push_back(2);
+	lst2.push_back(9);
+	display_list(lst2, "lst2");
+	lst.sort();
 	display_list(lst, "lst");
-	lst.pop_back();
+	// lst.merge(lst2);
 	display_list(lst, "lst");
-	lst.pop_front();
-	display_list(lst, "lst");
-	lst.push_front(-5);
-	display_list(lst, "lst");
-
-// -------- Constructors --------
-
-std::cout << "\n-------- Constructor - (begin, end) --------\n";
-	ft::List<int>::iterator	itb = lst.begin();
-	ft::List<int>::iterator	ite = lst.end();
-	itb++;
-	ite--;
-
-	std::cout << "size lst = " << lst.size() << "\n";
-
-
-	display_list(lst, "lst");
-	// lst.erase(--itb, ++ite);
-	lst.erase(itb, ite);
-	display_list(lst, "lst");
-
+	display_list(lst2, "lst2");
 
 	return (0);
 }

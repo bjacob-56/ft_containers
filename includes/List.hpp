@@ -55,6 +55,19 @@ class Node
 		node->previous = temp_previous;
 		node->next = temp_next;
 	}
+
+	void	swap_following_nodes(Node * node_next)
+	{
+		Node * next_next = node_next->next;
+		Node * previous_current = previous;
+		
+		next = node_next->next;
+		node_next->previous = previous;
+		previous = node_next;
+		node_next->next = this;
+		next_next->previous = this;
+		previous_current->next = node_next;
+	}
 };
 
 
@@ -434,6 +447,13 @@ public:
 			delete _end;
 			delete _rend;
 		}
+		else
+		{
+			if (_end)
+				delete _end;
+			if (_rend)
+				delete _rend;
+		}
 		_begin = 0;
 		_end = 0;
 		_rend = 0;
@@ -570,7 +590,7 @@ public:
 	template <class Compare>
 	void merge (List& x, Compare comp)
 	{
-		if (!this->is_sorted_up() || !x.is_sorted_up())
+		if (!this->is_sorted_comp(comp) || !x.is_sorted_comp(comp))
 			return ;
 		List::iterator	it = x.begin();
 		List::iterator	ite = x.end();
@@ -601,7 +621,7 @@ public:
 			{
 				if (temp->previous == _begin)
 					_begin = temp;
-				temp->swap_nodes(temp->previous);
+				temp->previous->swap_following_nodes(temp);
 				temp = _begin->next;
 			}
 			else
@@ -621,7 +641,7 @@ public:
 			{
 				if (temp->previous == _begin)
 					_begin = temp;
-				temp->swap_nodes(temp->previous);
+				temp->previous->swap_following_nodes(temp);
 				temp = _begin->next;
 			}
 			else
@@ -676,6 +696,28 @@ private:
 		while (begin != end)
 		{
 			if (*begin < *(begin_previous))
+				return 0;
+			else
+			{
+				begin++;
+				begin_previous++;
+			}
+		}
+		return 1;
+	}
+
+	template <class Compare>
+	int is_sorted_comp(Compare comp)
+	{
+		if (_size < 2)
+			return 1;
+		List::iterator	begin(_begin);
+		List::iterator	begin_previous(_begin);
+		List::iterator	end(_end);
+		begin++;
+		while (begin != end)
+		{
+			if (comp(*begin, *begin_previous) == true)
 				return 0;
 			else
 			{
