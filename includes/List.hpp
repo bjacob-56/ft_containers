@@ -237,19 +237,9 @@ public:
 
 // ========  Element Access  ========
 
-	T &	front(void)	// besoin de faire la meme en const ?
-	{
-		if (this->size() > 0)
-			return (_begin->value);
-		return (T(0));
-	}
+	T &	front(void) {return (_begin->value);}	// besoin de faire la meme en const ?
 
-	T &	back(void)
-	{
-		if (this->size() > 0)
-			return (_end->previous->value);
-		return (T(0));
-	}
+	T &	back(void) {return (_end->previous->value);}
 
 
 // ========  Modifiers  ========
