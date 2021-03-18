@@ -6,8 +6,8 @@
 #include <iostream>
 #include <sstream>
 
-#define PRINT_VALUE 1
-#define PRINT_ERROR 1
+#define PRINT_VALUE 0
+#define PRINT_ERROR 0
 
 bool	is_even(const int & i);
 bool	are_factor_five(const int & i, const int & j);

@@ -675,6 +675,8 @@ public:
 		_begin = begin_previous->next;
 	}
 
+
+
 // ************************************************************** //
 // ************************************************************** //
 
@@ -882,6 +884,84 @@ private:
 	}
 
 };
+
+
+
+// ========  Comparison  ========
+
+template <class T>
+bool operator== (const List<T>& lhs, const List<T>& rhs)
+{
+	if (lhs.size() != rhs.size())
+		return false;
+	if (!lhs.size())
+		return true;
+	ft::List<int>::const_iterator		it1 = lhs.begin();
+	ft::List<int>::const_iterator		it2 = rhs.begin();
+	while (it1 != lhs.end() && it2 != rhs.end())
+	{
+		if (*it1++ != *it2++)
+			return false;
+	}
+	if (it1 == lhs.end() && it2 == rhs.end())
+		return true;
+	return false;
+}
+
+template <class T>
+bool operator!= (const List<T>& lhs, const List<T>& rhs) {return !(lhs == rhs);}
+
+template <class T>
+bool operator< (const List<T>& lhs, const List<T>& rhs)
+{
+	if (!lhs.size() && rhs.size())
+		return true;
+	if (lhs.size() && !rhs.size())
+		return false;
+	ft::List<int>::const_iterator		it1 = lhs.begin();
+	ft::List<int>::const_iterator		it2 = rhs.begin();
+	while (it1 != lhs.end() && it2 != rhs.end() && *it1 == *it2)
+	{
+		it1++;
+		it2++;
+	}
+	if (it2 == rhs.end())
+		return false;
+	if (it1 == lhs.end())
+		return true;
+	if (*it1 < *it2)
+		return true;
+	return false;
+}
+
+template <class T>
+bool operator> (const List<T>& lhs, const List<T>& rhs)
+{
+	if (lhs.size() && !rhs.size())
+		return true;
+	if (!lhs.size() && rhs.size())
+		return false;
+	ft::List<int>::const_iterator		it1 = lhs.begin();
+	ft::List<int>::const_iterator		it2 = rhs.begin();
+	while (it1 != lhs.end() && it2 != rhs.end() && *it1 == *it2)
+	{
+		it1++;
+		it2++;
+	}
+	if (it1 == lhs.end())
+		return false;
+	if (it2 == rhs.end())
+		return true;
+	if (*it1 > *it2)
+		return true;
+	return false;
+}
+
+template <class T>
+bool operator<= (const List<T>& lhs, const List<T>& rhs) {return !(lhs > rhs);}
+
+template <class T>
+bool operator>= (const List<T>& lhs, const List<T>& rhs) {return !(lhs < rhs);}
 
 
 

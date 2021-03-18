@@ -175,14 +175,17 @@ void	check_value(T & valF, T & valS)
 
 	if (PRINT_VALUE)
 	{
-		std::cout << "\nvalF = " << valF << "\n";
+		std::cout << "\n";
+		std::cout << "valF = " << valF << "\n";
 		std::cout << "valS = " << valS << "\n";
 	}
 	if (PRINT_ERROR && valF != valS && !PRINT_VALUE)
 	{
-		std::cout << "\nvalF = " << valF << "\n";
+		std::cout << "\n";
+		std::cout << "valF = " << valF << "\n";
 		std::cout << "valS = " << valS << "\n";
 	}
+
 }
 
 void	check_constructors(void)
@@ -393,14 +396,19 @@ void	check_modifiers(void)
 	check_list(lstF, lstS);
 	check_list(lstF2, lstS2);
 
+	swap(lstF, lstF2);
+	swap(lstS, lstS2);
+	check_list(lstF, lstS);
+	check_list(lstF2, lstS2);
+
 	std::cout << "\n  --- Resize ---\n";
-	lstF.resize(0);
-	lstS.resize(0);
-	check_list(lstF, lstS);
+	lstF2.resize(0);
+	lstS2.resize(0);
+	check_list(lstF2, lstS2);
 	
-	lstF.resize(12, -42);
-	lstS.resize(12, -42);
-	check_list(lstF, lstS);
+	lstF2.resize(12, -42);
+	lstS2.resize(12, -42);
+	check_list(lstF2, lstS2);
 
 	std::cout << "\n  --- Clear ---\n";
 	lstF.clear();
@@ -468,7 +476,7 @@ void	check_operations(void)
 	check_list(lstF, lstS);
 	check_list(lstF2, lstS2);
 
-	std::cout << "  --- Remove/Remove_if ---\n";
+	std::cout << "\n  --- Remove/Remove_if ---\n";
 
 	lstF.push_back(2);
 	lstS.push_back(2);
@@ -480,7 +488,7 @@ void	check_operations(void)
 	lstS.remove_if(is_even);
 	check_list(lstF, lstS);
 
-	std::cout << "  --- Unique ---\n";
+	std::cout << "\n  --- Unique ---\n";
 
 	lstF.push_front(10);
 	lstF.push_front(10);
@@ -502,7 +510,7 @@ void	check_operations(void)
 	lstS.unique(are_factor_five);
 	check_list(lstF, lstS);
 
-	std::cout << "  --- Merge ---\n";
+	std::cout << "\n  --- Merge ---\n";
 	lstF.merge(lstF2);
 	lstS.merge(lstS2);
 	check_list(lstF, lstS);
@@ -523,7 +531,7 @@ void	check_operations(void)
 	check_list(lstF, lstS);
 	check_list(lstF2, lstS2);
 
-	std::cout << "  --- Sort ---\n";
+	std::cout << "\n  --- Sort ---\n";
 
 	lstF2.push_back(100);
 	lstF2.push_back(-22);
@@ -568,7 +576,7 @@ void	check_operations(void)
 	lstS2.sort(is_greater);
 	check_list(lstF2, lstS2);
 
-	std::cout << "  --- Reverse ---\n";
+	std::cout << "\n  --- Reverse ---\n";
 
 	lstF2.reverse();
 	lstS2.reverse();
@@ -580,6 +588,246 @@ void	check_operations(void)
 
 }
 
+void	check_comparison(void)
+{
+	std::cout << "\033[1;36m\n===== Comparison =====\033[0m\n";
+
+	std::cout << "  ---  ==  ---\n";
+	ft::List<int>	lstF;
+	std::list<int>	lstS;
+
+	ft::List<int>	lstF2;
+	std::list<int>	lstS2;
+
+	lstF.push_back(1);
+	lstF.push_back(5);
+	lstF.push_back(4);
+
+	lstF2.push_back(1);
+	lstF2.push_back(5);
+
+	lstS.push_back(1);
+	lstS.push_back(5);
+	lstS.push_back(4);
+
+	lstS2.push_back(1);
+	lstS2.push_back(5);
+
+	bool	valF;
+	bool	valS;
+
+	valF = (lstF == lstF2);
+	valS = (lstS == lstS2);
+	check_value(valF, valS);
+
+	lstF2.push_back(6);
+	lstS2.push_back(6);
+	valF = (lstF == lstF2);
+	valS = (lstS == lstS2);
+	check_value(valF, valS);
+
+	lstF2.pop_back();
+	lstS2.pop_back();
+	lstF2.push_back(4);
+	lstS2.push_back(4);
+	valF = (lstF == lstF2);
+	valS = (lstS == lstS2);
+	check_value(valF, valS);
+
+	std::cout << "\n  ---  !=  ---\n";
+	lstF.clear();
+	lstF2.clear();
+	lstS.clear();
+	lstS2.clear();
+
+	lstF.push_back(1);
+	lstF.push_back(5);
+	lstF.push_back(4);
+
+	lstF2.push_back(1);
+	lstF2.push_back(5);
+
+	lstS.push_back(1);
+	lstS.push_back(5);
+	lstS.push_back(4);
+
+	lstS2.push_back(1);
+	lstS2.push_back(5);
+
+	valF = (lstF != lstF2);
+	valS = (lstS != lstS2);
+	check_value(valF, valS);
+
+	lstF2.push_back(6);
+	lstS2.push_back(6);
+	valF = (lstF != lstF2);
+	valS = (lstS != lstS2);
+	check_value(valF, valS);
+
+	lstF2.pop_back();
+	lstS2.pop_back();
+	lstF2.push_back(4);
+	lstS2.push_back(4);
+	valF = (lstF != lstF2);
+	valS = (lstS != lstS2);
+	check_value(valF, valS);
+
+	std::cout << "\n  ---  >  ---\n";
+	lstF.clear();
+	lstF2.clear();
+	lstS.clear();
+	lstS2.clear();
+
+	lstF.push_back(1);
+	lstF.push_back(5);
+	lstF.push_back(4);
+
+	lstF2.push_back(1);
+	lstF2.push_back(5);
+
+	lstS.push_back(1);
+	lstS.push_back(5);
+	lstS.push_back(4);
+
+	lstS2.push_back(1);
+	lstS2.push_back(5);
+
+	valF = (lstF > lstF2);
+	valS = (lstS > lstS2);
+	check_value(valF, valS);
+
+	lstF2.push_back(6);
+	lstS2.push_back(6);
+	valF = (lstF > lstF2);
+	valS = (lstS > lstS2);
+	check_value(valF, valS);
+
+	lstF2.pop_back();
+	lstS2.pop_back();
+	lstF2.push_back(4);
+	lstS2.push_back(4);
+	valF = (lstF > lstF2);
+	valS = (lstS > lstS2);
+	check_value(valF, valS);
+
+	std::cout << "\n  ---  <  ---\n";
+	lstF.clear();
+	lstF2.clear();
+	lstS.clear();
+	lstS2.clear();
+
+	lstF.push_back(1);
+	lstF.push_back(5);
+	lstF.push_back(4);
+
+	lstF2.push_back(1);
+	lstF2.push_back(5);
+
+	lstS.push_back(1);
+	lstS.push_back(5);
+	lstS.push_back(4);
+
+	lstS2.push_back(1);
+	lstS2.push_back(5);
+
+	valF = (lstF < lstF2);
+	valS = (lstS < lstS2);
+	check_value(valF, valS);
+
+	lstF2.push_back(6);
+	lstS2.push_back(6);
+	valF = (lstF < lstF2);
+	valS = (lstS < lstS2);
+	check_value(valF, valS);
+
+	lstF2.pop_back();
+	lstS2.pop_back();
+	lstF2.push_back(4);
+	lstS2.push_back(4);
+	valF = (lstF < lstF2);
+	valS = (lstS < lstS2);
+	check_value(valF, valS);
+
+	std::cout << "\n  ---  >=  ---\n";
+	lstF.clear();
+	lstF2.clear();
+	lstS.clear();
+	lstS2.clear();
+
+	lstF.push_back(1);
+	lstF.push_back(5);
+	lstF.push_back(4);
+
+	lstF2.push_back(1);
+	lstF2.push_back(5);
+
+	lstS.push_back(1);
+	lstS.push_back(5);
+	lstS.push_back(4);
+
+	lstS2.push_back(1);
+	lstS2.push_back(5);
+
+	valF = (lstF >= lstF2);
+	valS = (lstS >= lstS2);
+	check_value(valF, valS);
+
+	lstF2.push_back(6);
+	lstS2.push_back(6);
+	valF = (lstF >= lstF2);
+	valS = (lstS >= lstS2);
+	check_value(valF, valS);
+
+	lstF2.pop_back();
+	lstS2.pop_back();
+	lstF2.push_back(4);
+	lstS2.push_back(4);
+	valF = (lstF >= lstF2);
+	valS = (lstS >= lstS2);
+	check_value(valF, valS);
+
+	std::cout << "\n  ---  <=  ---\n";
+	lstF.clear();
+	lstF2.clear();
+	lstS.clear();
+	lstS2.clear();
+
+	lstF.push_back(1);
+	lstF.push_back(5);
+	lstF.push_back(4);
+
+	lstF2.push_back(1);
+	lstF2.push_back(5);
+
+	lstS.push_back(1);
+	lstS.push_back(5);
+	lstS.push_back(4);
+
+	lstS2.push_back(1);
+	lstS2.push_back(5);
+
+	valF = (lstF <= lstF2);
+	valS = (lstS <= lstS2);
+	check_value(valF, valS);
+
+	lstF2.push_back(6);
+	lstS2.push_back(6);
+	valF = (lstF <= lstF2);
+	valS = (lstS <= lstS2);
+	check_value(valF, valS);
+
+	lstF2.pop_back();
+	lstS2.pop_back();
+	lstF2.push_back(4);
+	lstS2.push_back(4);
+	valF = (lstF <= lstF2);
+	valS = (lstS <= lstS2);
+	check_value(valF, valS);
+
+	std::cout << "\n";
+
+}
+
 int main(void)
 {
 	check_constructors();
@@ -588,6 +836,7 @@ int main(void)
 	check_element_access();
 	check_modifiers();
 	check_operations();
+	check_comparison();
 
 	return 0;
 }
