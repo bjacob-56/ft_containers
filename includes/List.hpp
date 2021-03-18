@@ -77,7 +77,7 @@ class List
 public:
 
 	typedef MyIterator<T, Node<T> *> iterator;
-	typedef MyIterator<const T, const Node<T> *> const_iterator;
+	typedef MyConstIterator<const T, Node<const T> *> const_iterator;
 	typedef MyReverseIterator<T, Node<T> *> reverse_iterator;
 	typedef MyReverseIterator<const T, const  Node<T> *> const_reverse_iterator;
 
@@ -129,6 +129,7 @@ public:
 	// 	List::MyIterator<PointerType>	it(this);
 	// 	return (it);
 	// }
+
 	iterator	begin(void)
 	{
 		Node<T> * node = _begin;
@@ -138,7 +139,8 @@ public:
 	}
 	const_iterator	begin(void) const
 	{
-		const Node<T> * node = _begin;
+		// const Node<T> * node = _begin;
+		Node<const T> * node = reinterpret_cast<Node<const T> *>(_begin);
 
 		const_iterator	it(node);
 		return (it);
@@ -153,7 +155,8 @@ public:
 	}
 	const_iterator	end(void) const
 	{
-		const Node<T> * node = _end;
+		// const Node<T> * node = _end;
+		Node<const T> * node = reinterpret_cast<Node<const T> *>(_end);
 
 		const_iterator	it(node);
 		return (it);
@@ -230,16 +233,26 @@ public:
 		return (false);
 	}
 
-	size_t	size(void) const {return (_size);}
+	size_type	size(void) const {return (_size);}
 
-	size_t	max_size() const {return std::numeric_limits<size_t>::max();}
+	size_type	max_size() const {return (std::numeric_limits<size_type>::max() / sizeof(Node<T>));}
 
 
 // ========  Element Access  ========
 
-	T &	front(void) {return (_begin->value);}	// besoin de faire la meme en const ?
+	T &	front(void)
+	{
+		if (_begin)
+			return (_begin->value);
+		throw std::exception();
+	}	// besoin de faire la meme en const ?
 
-	T &	back(void) {return (_end->previous->value);}
+	T &	back(void)
+	{
+		if (_end)
+			return (_end->previous->value);
+		throw std::exception();
+	}
 
 
 // ========  Modifiers  ========
@@ -544,7 +557,7 @@ public:
 			begin++;
 			while (begin != end)
 			{
-				if (binary_pred(*begin) == binary_pred(*(begin_previous)))
+				if (binary_pred(*begin, *begin_previous) == true)
 					begin = this->erase(begin);
 				else
 				{
@@ -627,7 +640,7 @@ public:
 		Node<T> * temp = _begin->next;
 		while (temp != _end)
 		{
-			if (comp(temp->previous->value, temp->value) == false)
+			if (comp(temp->previous->value, temp->value) == false && temp->previous->value != temp->value)
 			{
 				if (temp->previous == _begin)
 					_begin = temp;

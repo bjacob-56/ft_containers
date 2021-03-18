@@ -13,10 +13,9 @@ template <typename T, typename PointerType>
 
 			MyIterator(void): _ptr(0) {};
 			MyIterator(PointerType ptr): _ptr(ptr) {};
-			// MyIterator(MyIterator it): _ptr() {};
 			~MyIterator(void) {};
 
-			MyIterator &	operator++(void)	// pre increment
+			MyIterator &	operator++(void)// pre increment
 			{
 				if (_ptr->next)
 					_ptr = _ptr->next;
@@ -26,9 +25,9 @@ template <typename T, typename PointerType>
 			{
 				MyIterator	temp(*this);
 				++(*this);
-				return (temp);	// quel comportement apres end ?
+				return (temp);
 			}
-			MyIterator &	operator--(void) // quel comportement avant begin ?
+			MyIterator &	operator--(void)
 			{
 				if (_ptr->previous)
 					_ptr = _ptr->previous;
@@ -51,6 +50,57 @@ template <typename T, typename PointerType>
 
 			bool operator==(MyIterator const & rhs) const {return (_ptr == rhs._ptr);}
 			bool operator!=(MyIterator const & rhs) const {return (_ptr != rhs._ptr);}
+			bool operator==(PointerType const ptr) const {return (_ptr == ptr);}
+			bool operator!=(PointerType const ptr) const {return (_ptr != ptr);}
+
+		private:
+			PointerType _ptr;
+	};
+
+template <typename T, typename PointerType>
+	class MyConstIterator
+	{
+		public:
+
+			MyConstIterator(void): _ptr(0) {};
+			MyConstIterator(PointerType ptr): _ptr(ptr) {};
+			~MyConstIterator(void) {};
+
+			MyConstIterator &	operator++(void)// pre increment
+			{
+				if (_ptr->next)
+					_ptr = _ptr->next;
+				return (*this);
+			}
+			MyConstIterator	operator++(int)	// post increment
+			{
+				MyConstIterator	temp(*this);
+				++(*this);
+				return (temp);
+			}
+			MyConstIterator &	operator--(void)
+			{
+				if (_ptr->previous)
+					_ptr = _ptr->previous;
+				return (*this);
+			}
+			MyConstIterator	operator--(int)
+			{
+				MyConstIterator	temp(*this);
+				--(*this);
+				return (temp);
+			}
+
+			T &	operator*(void) {return _ptr->value;}
+
+			MyConstIterator & operator=(MyConstIterator const & rhs)
+			{
+				_ptr = rhs._ptr;
+				return (*this);
+			}
+
+			bool operator==(MyConstIterator const & rhs) const {return (_ptr == rhs._ptr);}
+			bool operator!=(MyConstIterator const & rhs) const {return (_ptr != rhs._ptr);}
 			bool operator==(PointerType const ptr) const {return (_ptr == ptr);}
 			bool operator!=(PointerType const ptr) const {return (_ptr != ptr);}
 

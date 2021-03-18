@@ -47,6 +47,7 @@ struct is_integral<unsigned long> { typedef int type; };
 template <>
 struct is_integral<unsigned long long> { typedef int type; };
 
+
 }
 
 #endif
