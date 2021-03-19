@@ -293,8 +293,8 @@ void	check_element_access(void)
 	ft::List<int>	lstF;
 	std::list<int>	lstS;
 
-	size_t	valF;
-	size_t	valS;
+	int		valF;
+	int		valS;
 
 	lstF.push_back(1);
 	lstF.push_back(2);
@@ -307,9 +307,17 @@ void	check_element_access(void)
 	valS = lstS.front();
 	check_value(valF, valS);
 
+	const int		cvalF = lstF.front();
+	const int		cvalS = lstS.front();
+	check_value(cvalF, cvalS);
+
 	valF = lstF.back();
 	valS = lstS.back();
 	check_value(valF, valS);
+
+	const int	cvalF2 = lstF.back();
+	const int	cvalS2 = lstS.back();
+	check_value(cvalF2, cvalS2);
 
 	std::cout << "\n";
 }
@@ -482,8 +490,19 @@ void	check_operations(void)
 
 	std::cout << "\n  --- Remove/Remove_if ---\n";
 
+	ft::List<int>	lstF3;
+	std::list<int>	lstS3;
+
+	lstF3.remove(2);
+	lstS3.remove(2);
+	check_list(lstF3, lstS3);
+
 	lstF.push_back(2);
 	lstS.push_back(2);
+	lstF.remove(2);
+	lstS.remove(2);
+	check_list(lstF, lstS);
+
 	lstF.remove(2);
 	lstS.remove(2);
 	check_list(lstF, lstS);

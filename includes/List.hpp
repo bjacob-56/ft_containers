@@ -70,7 +70,6 @@ class Node
 	}
 };
 
-
 template <typename T>
 class List
 {
@@ -113,22 +112,11 @@ public:
 		constructor_prototype(first, last, typename ft::is_integral<InputIterator>::type());
 	}
 
-	// std::list<int> first;                                // empty list of ints
-  	// std::list<int> second (4,100);                       // four ints with value 100
-  	// std::list<int> third (second.begin(),second.end());  // iterating through second
-  	// std::list<int> fourth (third);
 
 	~List(void) {this->clear();}
 
-// ========  Iterators  ========
 
-	// ------  Functions  ------
-	// template <typename PointerType>
-	// List::MyIterator<PointerType>	begin(void)
-	// {
-	// 	List::MyIterator<PointerType>	it(this);
-	// 	return (it);
-	// }
+// ========  Iterators  ========
 
 	iterator	begin(void)
 	{
@@ -245,9 +233,23 @@ public:
 		if (_begin)
 			return (_begin->value);
 		throw std::exception();
-	}	// besoin de faire la meme en const ?
+	}
+
+	const T &	front(void) const
+	{
+		if (_begin)
+			return (_begin->value);
+		throw std::exception();
+	}
 
 	T &	back(void)
+	{
+		if (_end)
+			return (_end->previous->value);
+		throw std::exception();
+	}
+
+	const T &	back(void) const
 	{
 		if (_end)
 			return (_end->previous->value);
@@ -490,7 +492,7 @@ public:
 
 //		----  Remove  ----
 
-	void remove (const T& val)	// test sur list vide
+	void remove (const T& val)
 	{
 		List::iterator	begin(_begin);
 		List::iterator	end(_end);
@@ -733,33 +735,6 @@ private:
 		return 1;
 	}
 
-	// int is_sorted_down()
-	// {
-	// 	if (_size < 2)
-	// 		return 1;
-	// 	List::iterator	begin(_begin);
-	// 	List::iterator	begin_previous(_begin);
-	// 	List::iterator	end(_end);
-	// 	begin++;
-	// 	while (begin != end)
-	// 	{
-	// 		if (*begin > *(begin_previous))
-	// 			return 0;
-	// 		else
-	// 		{
-	// 			begin++;
-	// 			begin_previous++;
-	// 		}
-	// 	}
-	// 	return 1;
-	// }
-
-	// int	is_sorted()
-	// {
-	// 	if (!this->is_sorted_up() && !this->is_sorted_down())
-	// 		return 0;
-	// 	return 1;
-	// }
 
 // ========  Constructor - private  ========
 
