@@ -3,6 +3,9 @@
 int	print_value = 0;
 int	print_error = 0;
 
+int	nb_OK = 0;
+int	nb_KO = 0;
+
 
 template <typename T>
 std::stringstream stream_list(ft::List<T> & lst)
@@ -97,9 +100,15 @@ void	check_list(ft::List<T> & myLst, std::list<T> & realLst, int clearFlag = 0)
 	ss_std << "]\n";
 
 	if (!ss_std.str().compare(ss_ft.str()))
+	{
 		std::cout << "\033[1;32mOK \033[0m";
+		nb_OK++;
+	}
 	else
+	{
 		std::cout << "\033[1;31mKO \033[0m";
+		nb_KO++;
+	}
 
 	if (print_value)
 	{
@@ -148,9 +157,15 @@ void	check_list_const(const ft::List<T> & myLst, const std::list<T> & realLst)
 	ss_std << "]\n";
 	
 	if (!ss_std.str().compare(ss_ft.str()))
-		std::cout << "\033[1;32mCOK \033[0m";
+	{
+		std::cout << "\033[1;32mOK \033[0m";
+		nb_OK++;
+	}
 	else
-		std::cout << "\033[1;31mCKO \033[0m";
+	{
+		std::cout << "\033[1;31mKO \033[0m";
+		nb_KO++;
+	}
 
 	if (print_value)
 	{
@@ -193,9 +208,15 @@ void	check_list_reverse(ft::List<T> & myLst, std::list<T> & realLst, int clearFl
 	ss_std << "]\n";
 	
 	if (!ss_std.str().compare(ss_ft.str()))
-		std::cout << "\033[1;32mROK \033[0m";
+	{
+		std::cout << "\033[1;32mOK \033[0m";
+		nb_OK++;
+	}
 	else
-		std::cout << "\033[1;31mRKO \033[0m";
+	{
+		std::cout << "\033[1;31mKO \033[0m";
+		nb_KO++;
+	}
 
 	if (print_value)
 	{
@@ -245,9 +266,15 @@ void	check_list_const_reverse(const ft::List<T> & myLst, const std::list<T> & re
 	ss_std << "]\n";
 	
 	if (!ss_std.str().compare(ss_ft.str()))
-		std::cout << "\033[1;32mCROK \033[0m";
+	{
+		std::cout << "\033[1;32mOK \033[0m";
+		nb_OK++;
+	}
 	else
-		std::cout << "\033[1;31mCRKO \033[0m";
+	{
+		std::cout << "\033[1;31mKO \033[0m";
+		nb_KO++;
+	}
 
 	if (print_value)
 	{
@@ -267,9 +294,15 @@ template <typename T>
 void	check_value(T & valF, T & valS)
 {
 	if (valF == valS)
+	{
 		std::cout << "\033[1;32mOK \033[0m";
+		nb_OK++;
+	}
 	else
+	{
 		std::cout << "\033[1;31mKO \033[0m";
+		nb_KO++;
+	}
 
 	if (print_value)
 	{
@@ -1530,6 +1563,16 @@ int main(int argc, char **argv)
 	check_operations_string();
 	check_comparison();
 	check_comparison_string();
+
+	std::cout << "\033[1;36m\n=====================================\033[0m\n";
+	std::cout << "\033[1;36m=============== Total ===============\033[0m\n";
+	std::cout << "\033[1;36m=====================================\033[0m\n";
+
+	std::cout << "\033[1;32mNb test OK : " << nb_OK << "/" << nb_OK + nb_KO << "\n\033[0m";
+	if (nb_KO)
+		std::cout << "\033[1;31mNb test KO : " << nb_KO << "/" << nb_OK + nb_KO << "\n\033[0m";
+	std::cout << "\n";
+
 
 	return 0;
 }

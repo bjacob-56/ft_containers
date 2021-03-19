@@ -1,18 +1,18 @@
 SRCS =	srcs/main.cpp srcs/utils_main.cpp
 SRCS_BIS =	srcs/main_bis.cpp srcs/utils_main.cpp
-SRCS_TEST =	srcs/mainList.cpp srcs/utils_main.cpp
+SRCS_LIST =	srcs/mainList.cpp srcs/utils_main.cpp
 
 INC =	includes/List.hpp includes/Iterator.hpp srcs/utils_main.hpp
 
 NAME = main
 NAME_BIS = bis
-TEST = test
+LIST = test_list
 
 CC = clang++
-# CFLAGS = -Wall -Wextra -Werror -std=c++98 -g3 -fsanitize=address
-CFLAGS = -Wall -Wextra -Werror -std=c++98 -g3
+CFLAGS = -Wall -Wextra -Werror -std=c++98 -g3 -fsanitize=address
+# CFLAGS = -Wall -Wextra -Werror -std=c++98 -g3
 
-all:	$(TEST)
+all:	$(LIST)
 
 $(NAME):	$(SRCS) $(INC)
 	$(CC) $(CFLAGS) $(SRCS) -o $(NAME)
@@ -22,16 +22,16 @@ $(NAME_BIS):	$(SRCS_BIS) $(INC)
 	$(CC) $(CFLAGS) $(SRCS_BIS) -o $(NAME_BIS)
 	@echo "----- \033[32m $@ created\033[0m  -----"
 
-$(TEST):	$(SRCS_TEST) $(INC)
+$(LIST):	$(SRCS_LIST) $(INC)
 	clear
-	$(CC) $(CFLAGS) $(SRCS_TEST) -o $(TEST)
+	$(CC) $(CFLAGS) $(SRCS_LIST) -o $(LIST)
 	@echo "----- \033[32m $@ created\033[0m  -----"
-	@./$(TEST) 2
+	@./$(LIST) 2
 
 clean:
 	rm -f $(NAME)
 	rm -f $(NAME_BIS)
-	rm -f $(TEST)
+	rm -f $(LIST)
 
 fclean: 	clean
 
