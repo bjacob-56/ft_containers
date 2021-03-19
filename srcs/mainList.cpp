@@ -1,5 +1,9 @@
 #include "utils_main.hpp"
 
+int	print_value = 0;
+int	print_error = 0;
+
+
 template <typename T>
 std::stringstream stream_list(ft::List<T> & lst)
 {
@@ -88,13 +92,13 @@ void	check_list(ft::List<T> & myLst, std::list<T> & realLst, int clearFlag = 0)
 	else
 		std::cout << "\033[1;31mKO \033[0m";
 
-	if (PRINT_VALUE)
+	if (print_value)
 	{
 		std::cout << "\n";
 		display_list(myLst);
 		display_real_list(realLst);
 	}
-	if (PRINT_ERROR && ss_std.str().compare(ss_ft.str()) && !PRINT_VALUE)
+	if (print_error && ss_std.str().compare(ss_ft.str()) && !print_value)
 	{
 		std::cout << "\n";
 		display_list(myLst);
@@ -173,13 +177,13 @@ void	check_value(T & valF, T & valS)
 	else
 		std::cout << "\033[1;31mKO \033[0m";
 
-	if (PRINT_VALUE)
+	if (print_value)
 	{
 		std::cout << "\n";
 		std::cout << "valF = " << valF << "\n";
 		std::cout << "valS = " << valS << "\n";
 	}
-	if (PRINT_ERROR && valF != valS && !PRINT_VALUE)
+	if (print_error && valF != valS && !print_value)
 	{
 		std::cout << "\n";
 		std::cout << "valF = " << valF << "\n";
@@ -828,8 +832,13 @@ void	check_comparison(void)
 
 }
 
-int main(void)
+int main(int argc, char **argv)
 {
+	if (argc == 2 && *(argv[1]) == '1')
+		print_value = 1;
+	if (argc == 2 && *(argv[1]) == '2')
+		print_error = 1;
+
 	check_constructors();
 	check_iterators();
 	check_capacity();
