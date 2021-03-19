@@ -1,5 +1,5 @@
-#ifndef LIST_HPP
-# define LIST_HPP
+#ifndef VECTOR_HPP
+# define VECTOR_HPP
 
 # include <string>
 # include <iostream>
@@ -12,102 +12,36 @@
 namespace ft
 {
 
-template <typename T>
-class Node
-{
-	public:
-		Node *	previous;
-		Node *	next;
-		T		value;
-
-		Node(): previous(0), next(0), value(T()) {}
-		Node(const T & val): previous(0), next(0), value(val) {}
-		Node(Node *pr, Node *ne, const T & val): previous(pr), next(ne), value(val)
-		{
-			pr->next = this;
-			ne->previous = this;
-		}
-		~Node() {}
-	
-	void	add_next(Node * node)
-	{
-		node->next = next;
-		node->previous = this;
-		next->previous = node;
-		next = node;
-	}
-
-	void	add_previous(Node * node)
-	{
-		node->next = this;
-		node->previous = previous;
-		previous->next = node;
-		previous = node;
-	}
-
-	void	move_to_previous(Node * node)
-	{
-		node->previous->next = node->next;
-		node->next->previous = node->previous;
-		this->add_previous(node);
-	}
-
-	void	swap_nodes(Node * node)
-	{
-		Node *	temp_previous = previous;
-		Node *	temp_next = next;
-
-		previous = node->previous;
-		next = node->next;
-		node->previous = temp_previous;
-		node->next = temp_next;
-	}
-
-	void	swap_following_nodes(Node * node_next)
-	{
-		Node * next_next = node_next->next;
-		Node * previous_current = previous;
-		
-		next = node_next->next;
-		node_next->previous = previous;
-		previous = node_next;
-		node_next->next = this;
-		next_next->previous = this;
-		previous_current->next = node_next;
-	}
-};
-
 template <typename T, class Alloc = std::allocator<T> >
-class List
+class Vector
 {
 public:
 
-	typedef ListIterator<T, Node<T> *> iterator;
-	typedef ListConstIterator<const T, Node<const T> *> const_iterator;
-	typedef ListReverseIterator<T, Node<T> *> reverse_iterator;
-	typedef ListConstReverseIterator<const T,  Node<const T> *> const_reverse_iterator;
+	typedef VectorIterator<T> iterator;
+	typedef VectorConstIterator<const T> const_iterator;
+	typedef VectorReverseIterator<T> reverse_iterator;
+	typedef VectorConstReverseIterator<const T> const_reverse_iterator;
 	
 	typedef typename std::allocator<T> allocator_type;
 
 	typedef	size_t size_type;
 
 private:
-	Node<T>	*_begin;
-	Node<T>	*_end;
-	Node<T>	*_rend;
-	size_t	_size;
+	T*				_array;
+	size_t			_size;
+	size_t			_capacity;
 	allocator_type	_alloc;
 
 public:
-	explicit List(const allocator_type& alloc = allocator_type()): _begin(0), _end(0), _rend(0), _size(0), _alloc(alloc) {}
-	explicit List(size_t n, const T& val = T(), const allocator_type& alloc = allocator_type()): _begin(0), _end(0), _rend(0), _size(0), _alloc(alloc)
+	explicit Vector(const allocator_type& alloc = allocator_type()): _begin(0), _end(0), _rend(0), _size(0), _alloc(alloc) {}
+	explicit Vector(size_t n, const T& val = T(), const allocator_type& alloc = allocator_type()): _begin(0), _end(0), _rend(0), _size(0), _alloc(alloc)
 	{
 		this->initiate_first_elem(val);
 		size_t i = 0;
-		Node<T>	* save = _begin;
+		Array<T>	* save = _begin;
 		while (++i < n)
 		{
-			Node<T> * temp = new Node<T>(val);
+			Array<T> * temp = new Array<T>(val);
 			save->add_next(temp);
 			save = temp;
 		}
@@ -115,14 +49,14 @@ public:
 	}
 
 	template <class InputIterator>
-	List (InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type()): _begin(0), _end(0), _rend(0), _size(0), _alloc(alloc)
+	Vector (InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type()): _begin(0), _end(0), _rend(0), _size(0), _alloc(alloc)
 	{								// template a tester
 		constructor_prototype(first, last, typename ft::is_integral<InputIterator>::type());
 	}
 
-	List(const List& x): _begin(0), _end(0), _rend(0), _size(0) {*this = x;}
+	Vector(const Vector& x): _begin(0), _end(0), _rend(0), _size(0) {*this = x;}
 
-	~List(void) {this->clear();}
+	~Vector(void) {this->clear();}
 
 
 // ========  Iterators  ========
@@ -130,12 +64,12 @@ public:
 	iterator	begin(void)
 	{return (iterator(_begin));}
 	const_iterator	begin(void) const
-	{return (const_iterator(reinterpret_cast<Node<const T> *>(_begin)));}
+	{return (const_iterator(reinterpret_cast<Array<const T> *>(_begin)));}
 
 	iterator	end(void)
 	{return (iterator(_end));}
 	const_iterator	end(void) const
-	{return (const_iterator(reinterpret_cast<Node<const T> *>(_end)));}
+	{return (const_iterator(reinterpret_cast<Array<const T> *>(_end)));}
 
 	reverse_iterator	rbegin(void)
 	{		
@@ -146,19 +80,19 @@ public:
 	const_reverse_iterator	rbegin(void) const
 	{
 		if (_size > 0)
-			return const_reverse_iterator(reinterpret_cast<Node<const T> *>(_end->previous));
+			return const_reverse_iterator(reinterpret_cast<Array<const T> *>(_end->previous));
 		return const_reverse_iterator(0);
 	}
 
 	reverse_iterator	rend(void)
 	{return (reverse_iterator(_rend));}
 	const_reverse_iterator	rend(void) const
-	{return (const_reverse_iterator(reinterpret_cast<Node<const T> *>(_rend))); }
+	{return (const_reverse_iterator(reinterpret_cast<Array<const T> *>(_rend))); }
 
 
 // ========  Overload  ========
 
-	List &	operator=(const List & x)
+	Vector &	operator=(const Vector & x)
 	{
 		this->clear();
 		if (x.size() > 0)
@@ -169,10 +103,10 @@ public:
 			if (begin != end)
 			{
 				begin++;
-				Node<T>	* save = _begin;
+				Array<T>	* save = _begin;
 				while (begin != end)
 				{
-					Node<T> * temp = new Node<T>(*begin);
+					Array<T> * temp = new Array<T>(*begin);
 					save->add_next(temp);
 					save = temp;
 					begin++;
@@ -195,7 +129,7 @@ public:
 
 	size_type	size(void) const {return (_size);}
 
-	size_type	max_size() const {return (std::numeric_limits<size_type>::max() / sizeof(Node<T>));}
+	size_type	max_size() const {return (std::numeric_limits<size_type>::max() / sizeof(Array<T>));}
 
 
 // ========  Element Access  ========
@@ -249,7 +183,7 @@ public:
 			this->initiate_first_elem(val);
 		else
 		{
-			Node<T> * temp = new Node<T>(val);
+			Array<T> * temp = new Array<T>(val);
 			_end->add_previous(temp);
 			_size++;
 		}
@@ -271,7 +205,7 @@ public:
 			this->initiate_first_elem(val);
 		else
 		{
-			Node<T> * new_begin = new Node<T>(val);
+			Array<T> * new_begin = new Array<T>(val);
 			_rend->add_next(new_begin);
 			_begin = new_begin;
 			_size++;
@@ -292,20 +226,20 @@ public:
 
 	iterator insert (iterator position, const T& val)
 	{
-		Node<T>	*	temp = _begin;
-		Node<T>	*	new_node = 0;
+		Array<T>	*	temp = _begin;
+		Array<T>	*	new_Array = 0;
 
 		while (position != temp && temp != _end)
 			temp = temp->next;
 		if (position == temp)
 		{
-			new_node = new Node<T>(val);
-			temp->add_previous(new_node);
+			new_Array = new Array<T>(val);
+			temp->add_previous(new_Array);
 			_size++;
 			if (position == _begin)
-				_begin = new_node;
+				_begin = new_Array;
 		}
-		return (iterator(new_node));
+		return (iterator(new_Array));
 	}
 
 	void insert (iterator position, size_type n, const T& val) { insert_prototype(position, n, val, int()); }
@@ -320,8 +254,8 @@ public:
 
 	iterator erase (iterator position)
 	{
-		Node<T>	*	temp = _begin;
-		Node<T>	*	temp_del;
+		Array<T>	*	temp = _begin;
+		Array<T>	*	temp_del;
 
 		while (position != temp && temp != _end)
 			temp = temp->next;
@@ -346,8 +280,8 @@ public:
 
 	iterator erase (iterator first, iterator last)
 	{
-		Node<T>	*	temp = _begin;
-		Node<T>	*	temp_del;
+		Array<T>	*	temp = _begin;
+		Array<T>	*	temp_del;
 
 		while (first != temp && temp != _end)
 			temp = temp->next;
@@ -375,11 +309,11 @@ public:
 
 //		----  Swap  ----
 
-	void swap (List& x)
+	void swap (Vector& x)
 	{
-		Node<T> * temp_begin = x._begin;
-		Node<T> * temp_end = x._end;
-		Node<T> * temp_rend = x._rend;
+		Array<T> * temp_begin = x._begin;
+		Array<T> * temp_end = x._end;
+		Array<T> * temp_rend = x._rend;
 		size_t	temp_size = x._size;
 
 		x._begin = _begin;
@@ -412,14 +346,14 @@ public:
 
 	void clear()
 	{
-		Node<T>	* node = _begin;
+		Array<T>	* Array = _begin;
 
 		if (_size > 0)
 		{
-			while (node != _end)
+			while (Array != _end)
 			{
-				node = node->next;
-				delete node->previous;
+				Array = Array->next;
+				delete Array->previous;
 			}
 			delete _end;
 			delete _rend;
@@ -444,19 +378,19 @@ public:
 //		----  Splice  ----
 
 
-	void splice (iterator position, List& x)
+	void splice (iterator position, Vector& x)
 	{
 		this->insert(position, x.begin(), x.end());
 		x.clear();
 	}
 
-	void splice (iterator position, List& x, iterator i)
+	void splice (iterator position, Vector& x, iterator i)
 	{
 		this->insert(position, *i);
 		x.erase(i);
 	}
 
-	void splice (iterator position, List& x, iterator first, iterator last)
+	void splice (iterator position, Vector& x, iterator first, iterator last)
 	{
 		this->insert(position, first, last);
 		x.erase(first, last);
@@ -466,8 +400,8 @@ public:
 
 	void remove (const T& val)
 	{
-		List::iterator	begin(_begin);
-		List::iterator	end(_end);
+		Vector::iterator	begin(_begin);
+		Vector::iterator	end(_end);
 
 		while (begin != end)
 		{
@@ -483,8 +417,8 @@ public:
 	template <class Predicate>
 	void remove_if (Predicate pred)
 	{
-		List::iterator	begin(_begin);
-		List::iterator	end(_end);
+		Vector::iterator	begin(_begin);
+		Vector::iterator	end(_end);
 
 		while (begin != end)
 		{
@@ -499,9 +433,9 @@ public:
 
 	void unique()
 	{
-		List::iterator	begin(_begin);
-		List::iterator	begin_previous(_begin);
-		List::iterator	end(_end);
+		Vector::iterator	begin(_begin);
+		Vector::iterator	begin_previous(_begin);
+		Vector::iterator	end(_end);
 
 		if (_size > 1)
 		{
@@ -522,9 +456,9 @@ public:
 	template <class BinaryPredicate>
 	void unique (BinaryPredicate binary_pred)
 	{
-		List::iterator	begin(_begin);
-		List::iterator	begin_previous(_begin);
-		List::iterator	end(_end);
+		Vector::iterator	begin(_begin);
+		Vector::iterator	begin_previous(_begin);
+		Vector::iterator	end(_end);
 
 		if (_size > 1)
 		{
@@ -544,15 +478,15 @@ public:
 
 //		----  Merge  ----
 
-	void merge (List& x)
+	void merge (Vector& x)
 	{
 		if (!this->is_sorted_up() || !x.is_sorted_up())
 			return ;
-		List::iterator	it = x.begin();
-		List::iterator	ite = x.end();
-		List::iterator	it_temp;
-		List::iterator	itt = this->begin();
-		List::iterator	itte = this->end();
+		Vector::iterator	it = x.begin();
+		Vector::iterator	ite = x.end();
+		Vector::iterator	it_temp;
+		Vector::iterator	itt = this->begin();
+		Vector::iterator	itte = this->end();
 		while (it != ite)
 		{
 			while (itt != itte && *itt < *it)
@@ -565,15 +499,15 @@ public:
 	}
 
 	template <class Compare>
-	void merge (List& x, Compare comp)
+	void merge (Vector& x, Compare comp)
 	{
 		if (!this->is_sorted_comp(comp) || !x.is_sorted_comp(comp))
 			return ;
-		List::iterator	it = x.begin();
-		List::iterator	ite = x.end();
-		List::iterator	it_temp;
-		List::iterator	itt = this->begin();
-		List::iterator	itte = this->end();
+		Vector::iterator	it = x.begin();
+		Vector::iterator	ite = x.end();
+		Vector::iterator	it_temp;
+		Vector::iterator	itt = this->begin();
+		Vector::iterator	itte = this->end();
 		while (it != ite)
 		{
 			while (itt != itte &&
@@ -593,14 +527,14 @@ public:
 	{
 		if (_size < 2)
 			return ;
-		Node<T> * temp = _begin->next;
+		Array<T> * temp = _begin->next;
 		while (temp != _end)
 		{
 			if (temp->previous->value > temp->value)
 			{
 				if (temp->previous == _begin)
 					_begin = temp;
-				temp->previous->swap_following_nodes(temp);
+				temp->previous->swap_following_Arrays(temp);
 				temp = _begin->next;
 			}
 			else
@@ -613,9 +547,9 @@ public:
 	{
 		if (_size < 2)
 			return ;
-		Node<T> * temp;
-		Node<T> * temp_bis;
-		Node<T> * begin = _begin;
+		Array<T> * temp;
+		Array<T> * temp_bis;
+		Array<T> * begin = _begin;
 
 		while (begin != _end->previous)
 		{
@@ -651,9 +585,9 @@ public:
 	{
 		if (_size < 2)
 			return ;
-		Node<T> * temp = _begin;
-		Node<T> * begin_previous = _begin->previous;
-		Node<T> * temp_previous;
+		Array<T> * temp = _begin;
+		Array<T> * begin_previous = _begin->previous;
+		Array<T> * temp_previous;
 		while (temp != _end)
 		{
 			temp_previous = temp->previous;
@@ -677,9 +611,9 @@ private:
 
 	void	initiate_first_elem(const T & val)
 	{
-		_end = new Node<T>();
-		_rend = new Node<T>();
-		_begin = new Node<T>(_rend, _end, val);
+		_end = new Array<T>();
+		_rend = new Array<T>();
+		_begin = new Array<T>(_rend, _end, val);
 		_size = 1;
 	}
 
@@ -687,9 +621,9 @@ private:
 	{
 		if (_size < 2)
 			return 1;
-		List::iterator	begin(_begin);
-		List::iterator	begin_previous(_begin);
-		List::iterator	end(_end);
+		Vector::iterator	begin(_begin);
+		Vector::iterator	begin_previous(_begin);
+		Vector::iterator	end(_end);
 		begin++;
 		while (begin != end)
 		{
@@ -709,9 +643,9 @@ private:
 	{
 		if (_size < 2)
 			return 1;
-		List::iterator	begin(_begin);
-		List::iterator	begin_previous(_begin);
-		List::iterator	end(_end);
+		Vector::iterator	begin(_begin);
+		Vector::iterator	begin_previous(_begin);
+		Vector::iterator	end(_end);
 		begin++;
 		while (begin != end)
 		{
@@ -736,10 +670,10 @@ private:
 	{
 		this->initiate_first_elem(last);
 		int i = 0;
-		Node<T>	* save = _begin;
+		Array<T>	* save = _begin;
 		while (++i < first)
 		{
-			Node<T> * temp = new Node<T>(last);
+			Array<T> * temp = new Array<T>(last);
 			save->add_next(temp);
 			save = temp;
 		}
@@ -751,13 +685,13 @@ private:
 	{
 		if (first != last)
 		{
-			Node<T> * temp;
+			Array<T> * temp;
 			this->initiate_first_elem(*first);
 			first++;
-			Node<T>	* save = _begin;
+			Array<T>	* save = _begin;
 			while (first != last)
 			{
-				temp = new Node<T>(*first);
+				temp = new Array<T>(*first);
 				save->add_next(temp);
 				save = temp;
 				first++;
@@ -774,7 +708,7 @@ private:
 	template <class InputIterator, class InputIterator2>
 	void assign_prototype (InputIterator & first, InputIterator2 & last, int)
 	{
-		Node<T>	*	temp;
+		Array<T>	*	temp;
 
 		this->resize(first);
 		temp = _begin;
@@ -788,7 +722,7 @@ private:
 	template <class InputIterator, class InputIterator2>
 	void assign_prototype (InputIterator & first, InputIterator2 & last, void *)
 	{
-		Node<T>	*	temp;
+		Array<T>	*	temp;
 		InputIterator it = first;
 		size_t		n = 0;
 
@@ -810,8 +744,8 @@ private:
 	template <class InputIterator, class InputIterator2>
 	void insert_prototype (iterator position, InputIterator first, InputIterator2 last, int)
 	{
-		Node<T>	*	temp = _begin;
-		Node<T>	*	new_node = 0;
+		Array<T>	*	temp = _begin;
+		Array<T>	*	new_Array = 0;
 
 		while (position != temp && temp != _end)
 			temp = temp->next;
@@ -819,21 +753,21 @@ private:
 		{
 			while (first-- > 0)
 			{
-				new_node = new Node<T>(last);
-				temp->add_previous(new_node);
-				temp = new_node;
+				new_Array = new Array<T>(last);
+				temp->add_previous(new_Array);
+				temp = new_Array;
 				_size++;
 			}
 			if (position == _begin)
-				_begin = new_node;
+				_begin = new_Array;
 		}
 	}
 
 	template <class InputIterator, class InputIterator2>
 	void insert_prototype (iterator position, InputIterator first, InputIterator2 last, void *)
 	{
-		Node<T>	*	temp = _begin;
-		Node<T>	*	new_node = 0;
+		Array<T>	*	temp = _begin;
+		Array<T>	*	new_Array = 0;
 
 		while (position != temp && temp != _end)
 			temp = temp->next;
@@ -841,13 +775,13 @@ private:
 		{
 			while (first != last)
 			{
-				new_node = new Node<T>(*(--last));
-				temp->add_previous(new_node);
-				temp = new_node;
+				new_Array = new Array<T>(*(--last));
+				temp->add_previous(new_Array);
+				temp = new_Array;
 				_size++;
 			}
 			if (position == _begin)
-				_begin = new_node;
+				_begin = new_Array;
 		}
 	}
 
@@ -858,14 +792,14 @@ private:
 // ========  Comparison  ========
 
 template <typename T, class Alloc>
-bool operator== (const List<T, Alloc>& lhs, const List<T, Alloc>& rhs)
+bool operator== (const Vector<T, Alloc>& lhs, const Vector<T, Alloc>& rhs)
 {
 	if (lhs.size() != rhs.size())
 		return false;
 	if (!lhs.size())
 		return true;
-	typename ft::List<T, Alloc>::const_iterator		it1 = lhs.begin();
-	typename ft::List<T, Alloc>::const_iterator		it2 = rhs.begin();
+	typename ft::Vector<T, Alloc>::const_iterator		it1 = lhs.begin();
+	typename ft::Vector<T, Alloc>::const_iterator		it2 = rhs.begin();
 	while (it1 != lhs.end() && it2 != rhs.end())
 	{
 		if (*it1++ != *it2++)
@@ -877,17 +811,17 @@ bool operator== (const List<T, Alloc>& lhs, const List<T, Alloc>& rhs)
 }
 
 template <typename T, class Alloc>
-bool operator!= (const List<T, Alloc>& lhs, const List<T, Alloc>& rhs) {return !(lhs == rhs);}
+bool operator!= (const Vector<T, Alloc>& lhs, const Vector<T, Alloc>& rhs) {return !(lhs == rhs);}
 
 template <typename T, class Alloc>
-bool operator< (const List<T, Alloc>& lhs, const List<T, Alloc>& rhs)
+bool operator< (const Vector<T, Alloc>& lhs, const Vector<T, Alloc>& rhs)
 {
 	if (!lhs.size() && rhs.size())
 		return true;
 	if (lhs.size() && !rhs.size())
 		return false;
-	typename ft::List<T, Alloc>::const_iterator		it1 = lhs.begin();
-	typename ft::List<T, Alloc>::const_iterator		it2 = rhs.begin();
+	typename ft::Vector<T, Alloc>::const_iterator		it1 = lhs.begin();
+	typename ft::Vector<T, Alloc>::const_iterator		it2 = rhs.begin();
 	while (it1 != lhs.end() && it2 != rhs.end() && *it1 == *it2)
 	{
 		it1++;
@@ -903,14 +837,14 @@ bool operator< (const List<T, Alloc>& lhs, const List<T, Alloc>& rhs)
 }
 
 template <typename T, class Alloc>
-bool operator> (const List<T, Alloc>& lhs, const List<T, Alloc>& rhs)
+bool operator> (const Vector<T, Alloc>& lhs, const Vector<T, Alloc>& rhs)
 {
 	if (lhs.size() && !rhs.size())
 		return true;
 	if (!lhs.size() && rhs.size())
 		return false;
-	typename ft::List<T, Alloc>::const_iterator		it1 = lhs.begin();
-	typename ft::List<T, Alloc>::const_iterator		it2 = rhs.begin();
+	typename ft::Vector<T, Alloc>::const_iterator		it1 = lhs.begin();
+	typename ft::Vector<T, Alloc>::const_iterator		it2 = rhs.begin();
 	while (it1 != lhs.end() && it2 != rhs.end() && *it1 == *it2)
 	{
 		it1++;
@@ -926,15 +860,15 @@ bool operator> (const List<T, Alloc>& lhs, const List<T, Alloc>& rhs)
 }
 
 template <typename T, class Alloc>
-bool operator<= (const List<T, Alloc>& lhs, const List<T, Alloc>& rhs) {return !(lhs > rhs);}
+bool operator<= (const Vector<T, Alloc>& lhs, const Vector<T, Alloc>& rhs) {return !(lhs > rhs);}
 
 template <class T, class Alloc>
-bool operator>= (const List<T, Alloc>& lhs, const List<T, Alloc>& rhs) {return !(lhs < rhs);}
+bool operator>= (const Vector<T, Alloc>& lhs, const Vector<T, Alloc>& rhs) {return !(lhs < rhs);}
 
 
 
 template <typename T, class Alloc>
-void swap (List<T, Alloc>& x, List<T, Alloc>& y) {x.swap(y);}
+void swap (Vector<T, Alloc>& x, Vector<T, Alloc>& y) {x.swap(y);}
 
 }
 

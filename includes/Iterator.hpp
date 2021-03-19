@@ -2,55 +2,60 @@
 # define ITERATOR_HPP
 
 #include "List.hpp"
+#include "Vector.hpp"
 
 namespace ft
 {
 
+// **********************************************************************************
+// ************************************   LIST   ************************************
+// **********************************************************************************
+
 template <typename T, typename PointerType>
-	class MyIterator
+	class ListIterator
 	{
 		public:
 
-			MyIterator(void): _ptr(0) {};
-			MyIterator(PointerType ptr): _ptr(ptr) {};
-			MyIterator(const MyIterator & src): _ptr(src._ptr) {};
-			~MyIterator(void) {};
+			ListIterator(void): _ptr(0) {};
+			ListIterator(PointerType ptr): _ptr(ptr) {};
+			ListIterator(const ListIterator & src): _ptr(src._ptr) {};
+			~ListIterator(void) {};
 
-			MyIterator &	operator++(void)// pre increment
+			ListIterator &	operator++(void)// pre increment
 			{
 				if (_ptr->next)
 					_ptr = _ptr->next;
 				return (*this);
 			}
-			MyIterator	operator++(int)	// post increment
+			ListIterator	operator++(int)	// post increment
 			{
-				MyIterator	temp(*this);
+				ListIterator	temp(*this);
 				++(*this);
 				return (temp);
 			}
-			MyIterator &	operator--(void)
+			ListIterator &	operator--(void)
 			{
 				if (_ptr->previous)
 					_ptr = _ptr->previous;
 				return (*this);
 			}
-			MyIterator	operator--(int)
+			ListIterator	operator--(int)
 			{
-				MyIterator	temp(*this);
+				ListIterator	temp(*this);
 				--(*this);
 				return (temp);
 			}
 
 			T &	operator*(void) {return _ptr->value;}
 
-			MyIterator & operator=(MyIterator const & rhs)
+			ListIterator & operator=(ListIterator const & rhs)
 			{
 				_ptr = rhs._ptr;
 				return (*this);
 			}
 
-			bool operator==(MyIterator const & rhs) const {return (_ptr == rhs._ptr);}
-			bool operator!=(MyIterator const & rhs) const {return (_ptr != rhs._ptr);}
+			bool operator==(ListIterator const & rhs) const {return (_ptr == rhs._ptr);}
+			bool operator!=(ListIterator const & rhs) const {return (_ptr != rhs._ptr);}
 			bool operator==(PointerType const ptr) const {return (_ptr == ptr);}
 			bool operator!=(PointerType const ptr) const {return (_ptr != ptr);}
 
@@ -59,50 +64,50 @@ template <typename T, typename PointerType>
 	};
 
 template <typename T, typename PointerType>
-	class MyConstIterator
+	class ListConstIterator
 	{
 		public:
 
-			MyConstIterator(void): _ptr(0) {};
-			MyConstIterator(PointerType ptr): _ptr(ptr) {};
-			MyConstIterator(const MyConstIterator & src): _ptr(src._ptr) {};
-			~MyConstIterator(void) {};
+			ListConstIterator(void): _ptr(0) {};
+			ListConstIterator(PointerType ptr): _ptr(ptr) {};
+			ListConstIterator(const ListConstIterator & src): _ptr(src._ptr) {};
+			~ListConstIterator(void) {};
 
-			MyConstIterator &	operator++(void)// pre increment
+			ListConstIterator &	operator++(void)// pre increment
 			{
 				if (_ptr->next)
 					_ptr = _ptr->next;
 				return (*this);
 			}
-			MyConstIterator	operator++(int)	// post increment
+			ListConstIterator	operator++(int)	// post increment
 			{
-				MyConstIterator	temp(*this);
+				ListConstIterator	temp(*this);
 				++(*this);
 				return (temp);
 			}
-			MyConstIterator &	operator--(void)
+			ListConstIterator &	operator--(void)
 			{
 				if (_ptr->previous)
 					_ptr = _ptr->previous;
 				return (*this);
 			}
-			MyConstIterator	operator--(int)
+			ListConstIterator	operator--(int)
 			{
-				MyConstIterator	temp(*this);
+				ListConstIterator	temp(*this);
 				--(*this);
 				return (temp);
 			}
 
 			T &	operator*(void) {return _ptr->value;}
 
-			MyConstIterator & operator=(MyConstIterator & rhs)
+			ListConstIterator & operator=(ListConstIterator & rhs)
 			{
 				_ptr = rhs._ptr;
 				return (*this);
 			}
 
-			bool operator==(MyConstIterator const & rhs) const {return (_ptr == rhs._ptr);}
-			bool operator!=(MyConstIterator const & rhs) const {return (_ptr != rhs._ptr);}
+			bool operator==(ListConstIterator const & rhs) const {return (_ptr == rhs._ptr);}
+			bool operator!=(ListConstIterator const & rhs) const {return (_ptr != rhs._ptr);}
 			bool operator==(PointerType const ptr) const {return (_ptr == ptr);}
 			bool operator!=(PointerType const ptr) const {return (_ptr != ptr);}
 
@@ -112,106 +117,168 @@ template <typename T, typename PointerType>
 
 
 template <typename T, typename PointerType>
-	class MyReverseIterator
+	class ListReverseIterator
 	{
 		public:
-			MyReverseIterator(void): _ptr(0) {};
-			MyReverseIterator(PointerType ptr): _ptr(ptr) {};
-			MyReverseIterator(const MyReverseIterator & src): _ptr(src._ptr) {};
-			~MyReverseIterator(void) {};
+			ListReverseIterator(void): _ptr(0) {};
+			ListReverseIterator(PointerType ptr): _ptr(ptr) {};
+			ListReverseIterator(const ListReverseIterator & src): _ptr(src._ptr) {};
+			~ListReverseIterator(void) {};
 
-			MyReverseIterator &	operator++(void)	// pre increment
+			ListReverseIterator &	operator++(void)	// pre increment
 			{
 				if (_ptr->previous)
 					_ptr = _ptr->previous;
 				return (*this);
 			}
-			MyReverseIterator	operator++(int)	// post increment
+			ListReverseIterator	operator++(int)	// post increment
 			{
-				MyReverseIterator	temp(*this);
-				++(*this);
-				return (temp);	// quel comportement apres end ?
-			}
-			MyReverseIterator &	operator--(void) // quel comportement avant begin ?
-			{
-				if (_ptr->next)
-					_ptr = _ptr->next;
-				return (*this);
-			}
-			MyReverseIterator	operator--(int)
-			{
-				MyReverseIterator	temp(*this);
-				--(*this);
-				return (temp);
-			}
-
-			T &	operator*(void) {return _ptr->value;}
-
-			MyReverseIterator & operator=(MyReverseIterator const & rhs)
-			{
-				_ptr = rhs._ptr;
-				return (*this);
-			}
-
-			bool operator==(MyReverseIterator const & rhs) const {return (_ptr == rhs._ptr);}
-			bool operator!=(MyReverseIterator const & rhs) const {return (_ptr != rhs._ptr);}
-			bool operator==(PointerType const ptr) const {return (_ptr == ptr);}
-			bool operator!=(PointerType const ptr) const {return (_ptr != ptr);}
-
-		private:
-			PointerType _ptr;
-	};
-
-template <typename T, typename PointerType>
-	class MyConstReverseIterator
-	{
-		public:
-			MyConstReverseIterator(void): _ptr(0) {};
-			MyConstReverseIterator(PointerType ptr): _ptr(ptr) {};
-			MyConstReverseIterator(const MyConstReverseIterator & src): _ptr(src._ptr) {};
-			~MyConstReverseIterator(void) {};
-
-			MyConstReverseIterator &	operator++(void)	// pre increment
-			{
-				if (_ptr->previous)
-					_ptr = _ptr->previous;
-				return (*this);
-			}
-			MyConstReverseIterator	operator++(int)	// post increment
-			{
-				MyConstReverseIterator	temp(*this);
+				ListReverseIterator	temp(*this);
 				++(*this);
 				return (temp);	// quel comportement apres end ?
 			}
-			MyConstReverseIterator &	operator--(void) // quel comportement avant begin ?
+			ListReverseIterator &	operator--(void) // quel comportement avant begin ?
 			{
 				if (_ptr->next)
 					_ptr = _ptr->next;
 				return (*this);
 			}
-			MyConstReverseIterator	operator--(int)
+			ListReverseIterator	operator--(int)
 			{
-				MyConstReverseIterator	temp(*this);
+				ListReverseIterator	temp(*this);
 				--(*this);
 				return (temp);
 			}
 
 			T &	operator*(void) {return _ptr->value;}
 
-			MyConstReverseIterator & operator=(MyConstReverseIterator const & rhs)
+			ListReverseIterator & operator=(ListReverseIterator const & rhs)
 			{
 				_ptr = rhs._ptr;
 				return (*this);
 			}
 
-			bool operator==(MyConstReverseIterator const & rhs) const {return (_ptr == rhs._ptr);}
-			bool operator!=(MyConstReverseIterator const & rhs) const {return (_ptr != rhs._ptr);}
+			bool operator==(ListReverseIterator const & rhs) const {return (_ptr == rhs._ptr);}
+			bool operator!=(ListReverseIterator const & rhs) const {return (_ptr != rhs._ptr);}
 			bool operator==(PointerType const ptr) const {return (_ptr == ptr);}
 			bool operator!=(PointerType const ptr) const {return (_ptr != ptr);}
 
 		private:
 			PointerType _ptr;
 	};
+
+template <typename T, typename PointerType>
+	class ListConstReverseIterator
+	{
+		public:
+			ListConstReverseIterator(void): _ptr(0) {};
+			ListConstReverseIterator(PointerType ptr): _ptr(ptr) {};
+			ListConstReverseIterator(const ListConstReverseIterator & src): _ptr(src._ptr) {};
+			~ListConstReverseIterator(void) {};
+
+			ListConstReverseIterator &	operator++(void)	// pre increment
+			{
+				if (_ptr->previous)
+					_ptr = _ptr->previous;
+				return (*this);
+			}
+			ListConstReverseIterator	operator++(int)	// post increment
+			{
+				ListConstReverseIterator	temp(*this);
+				++(*this);
+				return (temp);	// quel comportement apres end ?
+			}
+			ListConstReverseIterator &	operator--(void) // quel comportement avant begin ?
+			{
+				if (_ptr->next)
+					_ptr = _ptr->next;
+				return (*this);
+			}
+			ListConstReverseIterator	operator--(int)
+			{
+				ListConstReverseIterator	temp(*this);
+				--(*this);
+				return (temp);
+			}
+
+			T &	operator*(void) {return _ptr->value;}
+
+			ListConstReverseIterator & operator=(ListConstReverseIterator const & rhs)
+			{
+				_ptr = rhs._ptr;
+				return (*this);
+			}
+
+			bool operator==(ListConstReverseIterator const & rhs) const {return (_ptr == rhs._ptr);}
+			bool operator!=(ListConstReverseIterator const & rhs) const {return (_ptr != rhs._ptr);}
+			bool operator==(PointerType const ptr) const {return (_ptr == ptr);}
+			bool operator!=(PointerType const ptr) const {return (_ptr != ptr);}
+
+		private:
+			PointerType _ptr;
+	};
+
+
+
+// **********************************************************************************
+// ***********************************   VECTOR   ***********************************
+// **********************************************************************************
+
+template <typename T>
+	class VectorIterator
+	{
+		public:
+
+			VectorIterator(void): _index(0), _vector(0) {};
+			VectorIterator(size_t index, Vector<T> vector): _index(index), _vector(vector) {};
+			VectorIterator(const VectorIterator & src): _index(src._index), _vector(src.vector) {};
+			~VectorIterator(void) {};
+
+			VectorIterator &	operator++(void) // pre increment
+			{
+				if (_index < _vector.capacity() - 1)
+					_index++;
+				return (*this);
+			}
+			VectorIterator	operator++(int)	// post increment
+			{
+				VectorIterator	temp(*this);
+				++(*this);
+				return (temp);
+			}
+			VectorIterator &	operator--(void)
+			{
+				if (_index > 0)
+					_index--;
+				return (*this);
+			}
+			VectorIterator	operator--(int)
+			{
+				VectorIterator	temp(*this);
+				--(*this);
+				return (temp);
+			}
+
+			T &	operator*(void) {return _vector[_index];}
+
+			VectorIterator & operator=(VectorIterator const & rhs)
+			{
+				_index = rhs._index;
+				_vector = rhs._vector;
+				return (*this);
+			}
+
+			bool operator==(VectorIterator const & rhs) const {return (_index == rhs._index && _vector == rhs._vector);}
+			bool operator!=(VectorIterator const & rhs) const {return (_index != rhs._index || _vector != rhs._vector);}
+			// bool operator==(PointerType const ptr) const {return (_index == ptr);}
+			// bool operator!=(PointerType const ptr) const {return (_index != ptr);}
+
+		private:
+			size_t		_index;
+			Vector<T>	_vector;
+	};
+
+
 
 }
 
