@@ -45,6 +45,13 @@ class Node
 		previous = node;
 	}
 
+	void	move_to_previous(Node * node)
+	{
+		node->previous->next = node->next;
+		node->next->previous = node->previous;
+		this->add_previous(node);
+	}
+
 	void	swap_nodes(Node * node)
 	{
 		Node *	temp_previous = previous;
@@ -78,7 +85,7 @@ public:
 	typedef MyIterator<T, Node<T> *> iterator;
 	typedef MyConstIterator<const T, Node<const T> *> const_iterator;
 	typedef MyReverseIterator<T, Node<T> *> reverse_iterator;
-	typedef MyReverseIterator<const T, const  Node<T> *> const_reverse_iterator;
+	typedef MyConstReverseIterator<const T,  Node<const T> *> const_reverse_iterator;
 
 	typedef	size_t size_type;
 
@@ -119,70 +126,32 @@ public:
 // ========  Iterators  ========
 
 	iterator	begin(void)
-	{
-		Node<T> * node = _begin;
-
-		iterator	it(node);
-		return (it);
-	}
+	{return (iterator(_begin));}
 	const_iterator	begin(void) const
-	{
-		// const Node<T> * node = _begin;
-		Node<const T> * node = reinterpret_cast<Node<const T> *>(_begin);
-
-		const_iterator	it(node);
-		return (it);
-	}
+	{return (const_iterator(reinterpret_cast<Node<const T> *>(_begin)));}
 
 	iterator	end(void)
-	{
-		Node<T> * node = _end;
-
-		iterator	it(node);
-		return (it);
-	}
+	{return (iterator(_end));}
 	const_iterator	end(void) const
-	{
-		// const Node<T> * node = _end;
-		Node<const T> * node = reinterpret_cast<Node<const T> *>(_end);
-
-		const_iterator	it(node);
-		return (it);
-	}
+	{return (const_iterator(reinterpret_cast<Node<const T> *>(_end)));}
 
 	reverse_iterator	rbegin(void)
-	{
-		Node<T> *	node = 0;
-		
+	{		
 		if (_size > 0)
-			node = _end->previous;
-		reverse_iterator	rit(node);
-		return (rit);
+			return reverse_iterator(_end->previous);
+		return (reverse_iterator(0));
 	}
 	const_reverse_iterator	rbegin(void) const
 	{
-		const Node<T> *	node = 0;
-		
 		if (_size > 0)
-			node = _end->previous;
-		const_reverse_iterator	rit(node);
-		return (rit);
+			return const_reverse_iterator(reinterpret_cast<Node<const T> *>(_end->previous));
+		return const_reverse_iterator(0);
 	}
 
 	reverse_iterator	rend(void)
-	{
-		Node<T> * node = _rend;
-
-		reverse_iterator	rit(node);
-		return (rit);
-	}
+	{return (reverse_iterator(_rend));}
 	const_reverse_iterator	rend(void) const
-	{
-		const Node<T> * node = _rend;
-
-		const_reverse_iterator	rit(node);
-		return (rit);
-	}
+	{return (const_reverse_iterator(reinterpret_cast<Node<const T> *>(_rend))); }
 
 
 // ========  Overload  ========
@@ -263,8 +232,8 @@ public:
 
 	void assign (size_type n, const T& val, int) { assign_prototype(n, val, int());}
 
-	template <class InputIterator>
-	void assign (InputIterator first, InputIterator last)
+	template <class InputIterator, class InputIterator2>
+	void assign (InputIterator first, InputIterator2 last)
 	{
 		assign_prototype(first, last, typename ft::is_integral<InputIterator>::type());
 	}
@@ -338,8 +307,8 @@ public:
 
 	void insert (iterator position, size_type n, const T& val) { insert_prototype(position, n, val, int()); }
 
-	template <class InputIterator>
-	void insert (iterator position, InputIterator first, InputIterator last)
+	template <class InputIterator, class InputIterator2>
+	void insert (iterator position, InputIterator first, InputIterator2 last)
 	{
 		insert_prototype(position, first, last, typename ft::is_integral<InputIterator>::type());
 	}
@@ -604,7 +573,9 @@ public:
 		List::iterator	itte = this->end();
 		while (it != ite)
 		{
-			while (itt != itte && comp(*itt, *it) == true)
+			while (itt != itte &&
+				comp(*itt, *it) == true &&
+				comp(*it, *itt) == false)
 				itt++;
 			it_temp = ++it;
 			this->splice(itt, x, --it);
@@ -639,20 +610,37 @@ public:
 	{
 		if (_size < 2)
 			return ;
-		Node<T> * temp = _begin->next;
-		while (temp != _end)
+		Node<T> * temp;
+		Node<T> * temp_bis;
+		Node<T> * begin = _begin;
+
+		while (begin != _end->previous)
 		{
-			if (comp(temp->previous->value, temp->value) == false && temp->previous->value != temp->value)
+			temp = begin->next;
+			temp_bis = begin;
+			while (temp != _end)
 			{
-				if (temp->previous == _begin)
-					_begin = temp;
-				temp->previous->swap_following_nodes(temp);
-				temp = _begin->next;
+				if (comp(temp->value, temp_bis->value) == true &&
+				(temp_bis == begin || comp(temp_bis->value, temp->value) == false))
+					temp_bis = temp;
+				temp = temp->next;
+			}
+			if (temp_bis != begin)
+			{					
+				if (begin == _begin)
+					_begin = temp_bis;
+				if (temp_bis == _end->previous)
+					_end->previous = temp_bis->previous;
+				begin->move_to_previous(temp_bis);
+				if (comp(temp_bis->value, begin->value) == true &&
+					comp(begin->value, temp_bis->value) == true)
+					begin = begin->next;
 			}
 			else
-				temp = temp->next;
+				begin = begin->next;
 		}	
 	}
+
 
 //		----  Reverse  ----
 
@@ -724,7 +712,9 @@ private:
 		begin++;
 		while (begin != end)
 		{
-			if (comp(*begin, *begin_previous) == true)
+			if (comp(*begin, *begin_previous) == true &&
+				comp(*begin_previous, *begin) == false &&
+				*begin != *begin_previous)
 				return 0;
 			else
 			{
@@ -778,8 +768,8 @@ private:
 
 //		----  Assign  ----
 
-	template <class InputIterator>
-	void assign_prototype (InputIterator & first, InputIterator & last, int)
+	template <class InputIterator, class InputIterator2>
+	void assign_prototype (InputIterator & first, InputIterator2 & last, int)
 	{
 		Node<T>	*	temp;
 
@@ -792,8 +782,8 @@ private:
 		}
 	}
 
-	template <class InputIterator>
-	void assign_prototype (InputIterator & first, InputIterator & last, void *)
+	template <class InputIterator, class InputIterator2>
+	void assign_prototype (InputIterator & first, InputIterator2 & last, void *)
 	{
 		Node<T>	*	temp;
 		InputIterator it = first;
@@ -814,8 +804,8 @@ private:
 
 //		----  Insert  ----
 
-	template <class InputIterator>
-	void insert_prototype (iterator position, InputIterator first, InputIterator last, int)
+	template <class InputIterator, class InputIterator2>
+	void insert_prototype (iterator position, InputIterator first, InputIterator2 last, int)
 	{
 		Node<T>	*	temp = _begin;
 		Node<T>	*	new_node = 0;
@@ -836,8 +826,8 @@ private:
 		}
 	}
 
-	template <class InputIterator>
-	void insert_prototype (iterator position, InputIterator first, InputIterator last, void *)
+	template <class InputIterator, class InputIterator2>
+	void insert_prototype (iterator position, InputIterator first, InputIterator2 last, void *)
 	{
 		Node<T>	*	temp = _begin;
 		Node<T>	*	new_node = 0;
@@ -871,8 +861,8 @@ bool operator== (const List<T>& lhs, const List<T>& rhs)
 		return false;
 	if (!lhs.size())
 		return true;
-	ft::List<int>::const_iterator		it1 = lhs.begin();
-	ft::List<int>::const_iterator		it2 = rhs.begin();
+	typename ft::List<T>::const_iterator		it1 = lhs.begin();
+	typename ft::List<T>::const_iterator		it2 = rhs.begin();
 	while (it1 != lhs.end() && it2 != rhs.end())
 	{
 		if (*it1++ != *it2++)
@@ -893,8 +883,8 @@ bool operator< (const List<T>& lhs, const List<T>& rhs)
 		return true;
 	if (lhs.size() && !rhs.size())
 		return false;
-	ft::List<int>::const_iterator		it1 = lhs.begin();
-	ft::List<int>::const_iterator		it2 = rhs.begin();
+	typename ft::List<T>::const_iterator		it1 = lhs.begin();
+	typename ft::List<T>::const_iterator		it2 = rhs.begin();
 	while (it1 != lhs.end() && it2 != rhs.end() && *it1 == *it2)
 	{
 		it1++;
@@ -916,8 +906,8 @@ bool operator> (const List<T>& lhs, const List<T>& rhs)
 		return true;
 	if (!lhs.size() && rhs.size())
 		return false;
-	ft::List<int>::const_iterator		it1 = lhs.begin();
-	ft::List<int>::const_iterator		it2 = rhs.begin();
+	typename ft::List<T>::const_iterator		it1 = lhs.begin();
+	typename ft::List<T>::const_iterator		it2 = rhs.begin();
 	while (it1 != lhs.end() && it2 != rhs.end() && *it1 == *it2)
 	{
 		it1++;

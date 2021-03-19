@@ -13,6 +13,7 @@ template <typename T, typename PointerType>
 
 			MyIterator(void): _ptr(0) {};
 			MyIterator(PointerType ptr): _ptr(ptr) {};
+			MyIterator(const MyIterator & src): _ptr(src._ptr) {};
 			~MyIterator(void) {};
 
 			MyIterator &	operator++(void)// pre increment
@@ -64,6 +65,7 @@ template <typename T, typename PointerType>
 
 			MyConstIterator(void): _ptr(0) {};
 			MyConstIterator(PointerType ptr): _ptr(ptr) {};
+			MyConstIterator(const MyConstIterator & src): _ptr(src._ptr) {};
 			~MyConstIterator(void) {};
 
 			MyConstIterator &	operator++(void)// pre increment
@@ -93,7 +95,7 @@ template <typename T, typename PointerType>
 
 			T &	operator*(void) {return _ptr->value;}
 
-			MyConstIterator & operator=(MyConstIterator const & rhs)
+			MyConstIterator & operator=(MyConstIterator & rhs)
 			{
 				_ptr = rhs._ptr;
 				return (*this);
@@ -108,12 +110,14 @@ template <typename T, typename PointerType>
 			PointerType _ptr;
 	};
 
+
 template <typename T, typename PointerType>
 	class MyReverseIterator
 	{
 		public:
 			MyReverseIterator(void): _ptr(0) {};
 			MyReverseIterator(PointerType ptr): _ptr(ptr) {};
+			MyReverseIterator(const MyReverseIterator & src): _ptr(src._ptr) {};
 			~MyReverseIterator(void) {};
 
 			MyReverseIterator &	operator++(void)	// pre increment
@@ -151,6 +155,57 @@ template <typename T, typename PointerType>
 
 			bool operator==(MyReverseIterator const & rhs) const {return (_ptr == rhs._ptr);}
 			bool operator!=(MyReverseIterator const & rhs) const {return (_ptr != rhs._ptr);}
+			bool operator==(PointerType const ptr) const {return (_ptr == ptr);}
+			bool operator!=(PointerType const ptr) const {return (_ptr != ptr);}
+
+		private:
+			PointerType _ptr;
+	};
+
+template <typename T, typename PointerType>
+	class MyConstReverseIterator
+	{
+		public:
+			MyConstReverseIterator(void): _ptr(0) {};
+			MyConstReverseIterator(PointerType ptr): _ptr(ptr) {};
+			MyConstReverseIterator(const MyConstReverseIterator & src): _ptr(src._ptr) {};
+			~MyConstReverseIterator(void) {};
+
+			MyConstReverseIterator &	operator++(void)	// pre increment
+			{
+				if (_ptr->previous)
+					_ptr = _ptr->previous;
+				return (*this);
+			}
+			MyConstReverseIterator	operator++(int)	// post increment
+			{
+				MyConstReverseIterator	temp(*this);
+				++(*this);
+				return (temp);	// quel comportement apres end ?
+			}
+			MyConstReverseIterator &	operator--(void) // quel comportement avant begin ?
+			{
+				if (_ptr->next)
+					_ptr = _ptr->next;
+				return (*this);
+			}
+			MyConstReverseIterator	operator--(int)
+			{
+				MyConstReverseIterator	temp(*this);
+				--(*this);
+				return (temp);
+			}
+
+			T &	operator*(void) {return _ptr->value;}
+
+			MyConstReverseIterator & operator=(MyConstReverseIterator const & rhs)
+			{
+				_ptr = rhs._ptr;
+				return (*this);
+			}
+
+			bool operator==(MyConstReverseIterator const & rhs) const {return (_ptr == rhs._ptr);}
+			bool operator!=(MyConstReverseIterator const & rhs) const {return (_ptr != rhs._ptr);}
 			bool operator==(PointerType const ptr) const {return (_ptr == ptr);}
 			bool operator!=(PointerType const ptr) const {return (_ptr != ptr);}
 

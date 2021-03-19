@@ -9,8 +9,8 @@ NAME_BIS = bis
 TEST = test
 
 CC = clang++
-CFLAGS = -Wall -Wextra -Werror -std=c++98 -g3 -fsanitize=address
-# CFLAGS = -Wall -Wextra -Werror -std=c++98 -g3
+# CFLAGS = -Wall -Wextra -Werror -std=c++98 -g3 -fsanitize=address
+CFLAGS = -Wall -Wextra -Werror -std=c++98 -g3
 
 all:	$(TEST)
 
@@ -23,9 +23,10 @@ $(NAME_BIS):	$(SRCS_BIS) $(INC)
 	@echo "----- \033[32m $@ created\033[0m  -----"
 
 $(TEST):	$(SRCS_TEST) $(INC)
+	clear
 	$(CC) $(CFLAGS) $(SRCS_TEST) -o $(TEST)
 	@echo "----- \033[32m $@ created\033[0m  -----"
-	@./$(TEST)
+	@./$(TEST) 2
 
 clean:
 	rm -f $(NAME)

@@ -35,7 +35,6 @@ void	display_list(ft::List<T> & lst)
 template <typename T>
 void	reverse_display_list(ft::List<T> & lst)
 {
-	// ft::List<T>::const_reverse_iterator	rit;
 	typename ft::List<T>::reverse_iterator	rit = lst.rbegin();
 
 	while (rit != lst.rend())
@@ -78,15 +77,25 @@ void	check_list(ft::List<T> & myLst, std::list<T> & realLst, int clearFlag = 0)
 	std::stringstream ss_std;
 
 	typename ft::List<T>::iterator	itF = myLst.begin();
+	ss_ft << "[";
 	while (itF != myLst.end())
-		ss_ft << "> " << *(itF++) << "\n";
-	ss_ft << "\n";
-	
+	{
+		ss_ft << *(itF++);
+		if (itF != myLst.end())
+			ss_ft << ", ";
+	}
+	ss_ft << "]\n";
+
 	typename std::list<T>::iterator	itS = realLst.begin();
+	ss_std << "[";
 	while (itS != realLst.end())
-		ss_std << "> " << *(itS++) << "\n";
-	ss_std << "\n";
-	
+	{
+		ss_std << *(itS++);
+		if (itS != realLst.end())
+			ss_std << ", ";
+	}
+	ss_std << "]\n";
+
 	if (!ss_std.str().compare(ss_ft.str()))
 		std::cout << "\033[1;32mOK \033[0m";
 	else
@@ -95,14 +104,14 @@ void	check_list(ft::List<T> & myLst, std::list<T> & realLst, int clearFlag = 0)
 	if (print_value)
 	{
 		std::cout << "\n";
-		display_list(myLst);
-		display_real_list(realLst);
+		std::cout << ss_ft.str();
+		std::cout << ss_std.str();
 	}
 	if (print_error && ss_std.str().compare(ss_ft.str()) && !print_value)
 	{
 		std::cout << "\n";
-		display_list(myLst);
-		display_real_list(realLst);
+		std::cout << ss_ft.str();
+		std::cout << ss_std.str();
 	}
 
 	if (clearFlag)
@@ -112,34 +121,50 @@ void	check_list(ft::List<T> & myLst, std::list<T> & realLst, int clearFlag = 0)
 	}
 }
 
-// template <typename T>
-// void	check_list_const(ft::List<T> & myLst, std::list<T> & realLst, int clearFlag = 0)
-// {
-// 	std::stringstream ss_ft;
-// 	std::stringstream ss_std;
+template <typename T>
+void	check_list_const(const ft::List<T> & myLst, const std::list<T> & realLst)
+{
+	std::stringstream ss_ft;
+	std::stringstream ss_std;
 
-// 	// typename ft::List<T>::iterator	itF = myLst.begin();
-// 	typename ft::List<T>::const_iterator	itF = myLst.begin();
-// 	while (itF != myLst.end())
-// 		ss_ft << "> " << *(itF++) << "\n";
-// 	ss_ft << "\n";
+	typename ft::List<T>::const_iterator	itF = myLst.begin();
+	ss_ft << "[";
+	while (itF != myLst.end())
+	{
+		ss_ft << *(itF++);
+		if (itF != myLst.end())
+			ss_ft << ", ";
+	}
+	ss_ft << "]\n";
 	
-// 	typename std::list<T>::const_iterator	itS = realLst.begin();
-// 	while (itS != realLst.end())
-// 		ss_std << "> " << *(itS++) << "\n";
-// 	ss_std << "\n";
+	typename std::list<T>::const_iterator	itS = realLst.begin();
+	ss_std << "[";
+	while (itS != realLst.end())
+	{
+		ss_std << *(itS++);
+		if (itS != realLst.end())
+			ss_std << ", ";
+	}
+	ss_std << "]\n";
 	
-// 	if (!ss_std.str().compare(ss_ft.str()))
-// 		std::cout << "\033[1;32mCOK \033[0m";
-// 	else
-// 		std::cout << "\033[1;31mCKO \033[0m";
+	if (!ss_std.str().compare(ss_ft.str()))
+		std::cout << "\033[1;32mCOK \033[0m";
+	else
+		std::cout << "\033[1;31mCKO \033[0m";
 
-// 	if (clearFlag)
-// 	{
-// 		myLst.clear();
-// 		realLst.clear();
-// 	}
-// }
+	if (print_value)
+	{
+		std::cout << "\n";
+		std::cout << ss_ft.str();
+		std::cout << ss_std.str();
+	}
+	if (print_error && ss_std.str().compare(ss_ft.str()) && !print_value)
+	{
+		std::cout << "\n";
+		std::cout << ss_ft.str();
+		std::cout << ss_std.str();
+	}
+}
 
 template <typename T>
 void	check_list_reverse(ft::List<T> & myLst, std::list<T> & realLst, int clearFlag = 0)
@@ -148,24 +173,93 @@ void	check_list_reverse(ft::List<T> & myLst, std::list<T> & realLst, int clearFl
 	std::stringstream ss_std;
 
 	typename ft::List<T>::reverse_iterator	itF = myLst.rbegin();
+	ss_ft << "[";
 	while (itF != myLst.rend())
-		ss_ft << "> " << *(itF++) << "\n";
-	ss_ft << "\n";
+	{
+		ss_ft << *(itF++);
+		if (itF != myLst.rend())
+			ss_ft << ", ";
+	}
+	ss_ft << "]\n";
 	
 	typename std::list<T>::reverse_iterator	itS = realLst.rbegin();
+	ss_std << "[";
 	while (itS != realLst.rend())
-		ss_std << "> " << *(itS++) << "\n";
-	ss_std << "\n";
+	{
+		ss_std << *(itS++);
+		if (itS != realLst.rend())
+			ss_std << ", ";
+	}
+	ss_std << "]\n";
 	
 	if (!ss_std.str().compare(ss_ft.str()))
 		std::cout << "\033[1;32mROK \033[0m";
 	else
 		std::cout << "\033[1;31mRKO \033[0m";
 
+	if (print_value)
+	{
+		std::cout << "\n";
+		std::cout << ss_ft.str();
+		std::cout << ss_std.str();
+	}
+	if (print_error && ss_std.str().compare(ss_ft.str()) && !print_value)
+	{
+		std::cout << "\n";
+		std::cout << ss_ft.str();
+		std::cout << ss_std.str();
+	}
+
 	if (clearFlag)
 	{
 		myLst.clear();
 		realLst.clear();
+	}
+}
+
+
+template <typename T>
+void	check_list_const_reverse(const ft::List<T> & myLst, const std::list<T> & realLst)
+{
+	std::stringstream ss_ft;
+	std::stringstream ss_std;
+
+	typename ft::List<T>::const_reverse_iterator	itF = myLst.rbegin();
+	ss_ft << "[";
+	while (itF != myLst.rend())
+	{
+		ss_ft << *(itF++);
+		if (itF != myLst.rend())
+			ss_ft << ", ";
+	}
+	ss_ft << "]\n";
+	
+	typename std::list<T>::const_reverse_iterator	itS = realLst.rbegin();
+	ss_std << "[";
+	while (itS != realLst.rend())
+	{
+		ss_std << *(itS++);
+		if (itS != realLst.rend())
+			ss_std << ", ";
+	}
+	ss_std << "]\n";
+	
+	if (!ss_std.str().compare(ss_ft.str()))
+		std::cout << "\033[1;32mCROK \033[0m";
+	else
+		std::cout << "\033[1;31mCRKO \033[0m";
+
+	if (print_value)
+	{
+		std::cout << "\n";
+		std::cout << ss_ft.str();
+		std::cout << ss_std.str();
+	}
+	if (print_error && ss_std.str().compare(ss_ft.str()) && !print_value)
+	{
+		std::cout << "\n";
+		std::cout << ss_ft.str();
+		std::cout << ss_std.str();
 	}
 }
 
@@ -191,6 +285,10 @@ void	check_value(T & valF, T & valS)
 	}
 
 }
+
+// ************************************************************* //
+// ************************************************************* //
+
 
 void	check_constructors(void)
 {
@@ -224,12 +322,45 @@ void	check_constructors(void)
 	std::cout << "\n";
 }
 
+void	check_constructors_string(void)
+{
+	std::cout << "\033[1;36m\n===== Constructors string =====\033[0m\n";
+
+	ft::List<std::string>	lstF;
+	std::list<std::string>	lstS;
+	check_list(lstF, lstS);
+
+	ft::List<std::string>	lstF2(5, "test");
+	std::list<std::string>	lstS2(5, "test");
+	check_list(lstF2, lstS2);
+
+	ft::List<std::string>::iterator		itbF = lstF2.begin()++;
+	ft::List<std::string>::iterator		iteF = lstF2.end();
+	std::list<std::string>::iterator	itbS = lstS2.begin()++;
+	std::list<std::string>::iterator	iteS = lstS2.end();
+
+	ft::List<std::string>	lstF3(itbF, iteF);
+	std::list<std::string>	lstS3(itbS, iteS);
+	check_list(lstF3, lstS3);
+
+	ft::List<std::string>	lstF4(lstF3);
+	std::list<std::string>	lstS4(lstS3);
+	check_list(lstF4, lstS4);
+
+	lstF = lstF4;
+	lstS2 = lstS4;
+	check_list(lstF, lstS2);
+
+	std::cout << "\n";
+}
+
 
 void	check_iterators(void)
 {
 	std::cout << "\033[1;36m\n===== Iterators =====\033[0m\n";
 
 	ft::List<int>	lstF;
+	// ft::List<int>	lstF2;
 	std::list<int>	lstS;
 
 	lstF.push_back(1);
@@ -240,9 +371,9 @@ void	check_iterators(void)
 	lstS.push_back(3);
 
 	check_list	(lstF, lstS);
-	// check_list_const(lstF, lstS);
+	check_list_const(lstF, lstS);
 	check_list_reverse(lstF, lstS);
-	// check_list_const_reverse(lstF, lstS);
+	check_list_const_reverse(lstF, lstS);
 
 	std::cout << "\n";
 }
@@ -433,6 +564,117 @@ void	check_modifiers(void)
 	std::cout << "\n";
 }
 
+void	check_modifiers_string(void)
+{
+	std::cout << "\033[1;36m\n===== Modifiers string =====\033[0m\n";
+
+	std::cout << "  --- Assign ---\n";
+	ft::List<std::string>	lstF;
+	std::list<std::string>	lstS;
+
+	lstF.assign(5, "test");
+	lstS.assign(5, "test");
+	check_list(lstF, lstS);
+
+	ft::List<std::string>	lstF2;
+	std::list<std::string>	lstS2;
+
+	ft::List<std::string>::iterator		itbF = lstF.begin()++;
+	ft::List<std::string>::iterator		iteF = lstF.end()--;
+	std::list<std::string>::iterator	itbS = lstS.begin()++;
+	std::list<std::string>::iterator	iteS = lstS.end()--;
+	
+	lstF.assign(itbF, iteF);
+	lstS.assign(itbS, iteS);
+	check_list(lstF2, lstS2, 1);
+
+	std::cout << "\n  --- Push/Pop_Front/Back ---\n";
+
+	lstF2.push_front("bla");
+	lstF2.push_front("tree");
+	lstS2.push_front("bla");
+	lstS2.push_front("tree");
+	check_list(lstF2, lstS2);
+
+	lstF2.push_back("What is this?");
+	lstF2.push_back("Yellow Sub");
+	lstS2.push_back("What is this?");
+	lstS2.push_back("Yellow Sub");
+	check_list(lstF2, lstS2);
+
+	lstF2.pop_front();
+	lstS2.pop_front();
+	check_list(lstF2, lstS2);
+
+	lstF2.pop_back();
+	lstS2.pop_back();
+	check_list(lstF2, lstS2);
+
+
+	std::cout << "\n  --- Insert ---\n";
+
+	ft::List<std::string>::iterator		itbF2 = ++lstF2.begin();
+	std::list<std::string>::iterator	itbS2 = ++lstS2.begin();
+
+	itbF2 = lstF2.insert(itbF2, "42");
+	itbS2 = lstS2.insert(itbS2, "42");
+	check_list(lstF2, lstS2);
+
+	lstF2.insert(itbF2, 5, "Ab64");
+	lstS2.insert(itbS2, 5, "Ab64");
+	check_list(lstF2, lstS2);
+
+	lstF2.insert(itbF2, itbF, iteF);
+	lstS2.insert(itbS2, itbS, iteS);
+	check_list(lstF2, lstS2);
+
+	std::cout << "\n  --- Erase ---\n";
+	itbF2 = lstF2.erase(--itbF2);
+	itbS2 = lstS2.erase(--itbS2);
+	check_list(lstF2, lstS2);
+
+	ft::List<std::string>::iterator		iteF2 = --lstF2.end();
+	std::list<std::string>::iterator	iteS2 = --lstS2.end();
+
+	itbF2 = ++lstF2.begin();
+	itbS2 = ++lstS2.begin();
+
+	lstF2.erase(itbF2, iteF2);
+	lstS2.erase(itbS2, iteS2);
+	check_list(lstF2, lstS2);
+
+
+	std::cout << "\n  --- Swap ---\n";
+	lstF.swap(lstF2);
+	lstS.swap(lstS2);
+	check_list(lstF, lstS);
+	check_list(lstF2, lstS2);
+
+	swap(lstF, lstF2);
+	swap(lstS, lstS2);
+	check_list(lstF, lstS);
+	check_list(lstF2, lstS2);
+
+	std::cout << "\n  --- Resize ---\n";
+	lstF2.resize(0);
+	lstS2.resize(0);
+	check_list(lstF2, lstS2);
+	
+	lstF2.resize(12, "new str");
+	lstS2.resize(12, "new str");
+	check_list(lstF2, lstS2);
+
+	std::cout << "\n  --- Clear ---\n";
+	lstF.clear();
+	lstF2.clear();
+	lstS.clear();
+	lstS2.clear();
+	check_list(lstF, lstS);
+	check_list(lstF2, lstS2);
+
+	std::cout << "\n";
+}
+
 void	check_operations(void)
 {
 	std::cout << "\033[1;36m\n===== Operations =====\033[0m\n";
@@ -597,6 +839,185 @@ void	check_operations(void)
 
 	lstF2.sort(is_greater);
 	lstS2.sort(is_greater);
+	check_list(lstF2, lstS2);
+
+	std::cout << "\n  --- Reverse ---\n";
+
+	lstF2.reverse();
+	lstS2.reverse();
+	check_list(lstF2, lstS2);
+
+	lstF2.reverse();
+	lstS2.reverse();
+	check_list(lstF2, lstS2);
+
+}
+
+void	check_operations_string(void)
+{
+	std::cout << "\033[1;36m\n===== Operations String =====\033[0m\n";
+
+	std::cout << "  --- Splice ---\n";
+	ft::List<std::string>	lstF;
+	std::list<std::string>	lstS;
+
+	ft::List<std::string>	lstF2;
+	std::list<std::string>	lstS2;
+
+	lstF.push_back("test");
+	lstF.push_back("bla");
+	lstF.push_back("tree");
+
+	lstF2.push_back("abc");
+	lstF2.push_back("abcd");
+
+	lstS.push_back("test");
+	lstS.push_back("bla");
+	lstS.push_back("tree");
+
+	lstS2.push_back("abc");
+	lstS2.push_back("abcd");
+
+	ft::List<std::string>::iterator		itbF = ++lstF.begin();
+	std::list<std::string>::iterator	itbS = ++lstS.begin();
+
+	lstF.splice(itbF, lstF2);
+	lstS.splice(itbS, lstS2);
+	check_list(lstF, lstS);
+	check_list(lstF2, lstS2);
+
+	lstF2.push_back("abce");
+	lstF2.push_back("abcf");
+	lstF2.push_back("abcg");
+	lstF2.push_back("abch");
+	lstF2.push_back("abci");
+
+	lstS2.push_back("abce");
+	lstS2.push_back("abcf");
+	lstS2.push_back("abcg");
+	lstS2.push_back("abch");
+	lstS2.push_back("abci");
+
+	lstF.splice(lstF.end(), lstF2, ++lstF2.begin());
+	lstS.splice(lstS.end(), lstS2, ++lstS2.begin());
+	check_list(lstF, lstS);
+	check_list(lstF2, lstS2);
+
+	lstF.splice(lstF.end(), lstF2, ++lstF2.begin(), --lstF2.end());
+	lstS.splice(lstS.end(), lstS2, ++lstS2.begin(), --lstS2.end());
+	check_list(lstF, lstS);
+	check_list(lstF2, lstS2);
+
+	std::cout << "\n  --- Remove/Remove_if ---\n";
+
+	ft::List<std::string>	lstF3;
+	std::list<std::string>	lstS3;
+
+	lstF3.remove("abc");
+	lstS3.remove("abc");
+	check_list(lstF3, lstS3);
+
+	lstF.push_back("abc");
+	lstS.push_back("abc");
+	lstF.remove("abc");
+	lstS.remove("abc");
+	check_list(lstF, lstS);
+
+	lstF.remove("abc");
+	lstS.remove("abc");
+	check_list(lstF, lstS);
+
+	lstF.remove_if(has_length_3);
+	lstS.remove_if(has_length_3);
+	check_list(lstF, lstS);
+
+	std::cout << "\n  --- Unique ---\n";
+
+	lstF.push_front("bcd");
+	lstF.push_front("bcd");
+	lstS.push_front("bcd");
+	lstS.push_front("bcd");
+	lstF.push_front("bbb");
+	lstF.push_front("bbb");
+	lstS.push_front("bbb");
+	lstS.push_front("bbb");
+	lstF.push_front("bcc");
+	lstF.push_front("bcc");
+	lstS.push_front("bcc");
+	lstS.push_front("bcc");
+	lstF.unique();
+	lstS.unique();
+	check_list(lstF, lstS);
+
+	lstF.unique(same_length);
+	lstS.unique(same_length);
+	check_list(lstF, lstS);
+
+	std::cout << "\n  --- Merge ---\n";
+	lstF.merge(lstF2);
+	lstS.merge(lstS2);
+	check_list(lstF, lstS);
+	check_list(lstF2, lstS2);
+
+	lstF2.push_back("abcg");
+	lstF2.push_back("abch");
+	lstF2.push_back("abce");
+
+	lstS2.push_back("abcg");
+	lstS2.push_back("abch");
+	lstS2.push_back("abce");
+
+	lstF.reverse();
+	lstS.reverse();
+	check_list(lstF, lstS);
+
+
+	lstF.merge(lstF2, same_length);
+	lstS.merge(lstS2, same_length);
+	check_list(lstF, lstS);
+	check_list(lstF2, lstS2);
+
+	std::cout << "\n  --- Sort ---\n";
+
+	lstF2.push_back("hello");
+	lstF2.push_back("Hello");
+	lstF2.push_back("Hola");
+	lstF2.push_back("hola");
+
+	lstS2.push_back("hello");
+	lstS2.push_back("Hello");
+	lstS2.push_back("Hola");
+	lstS2.push_back("hola");
+
+	lstF2.sort();
+	lstS2.sort();
+	check_list(lstF2, lstS2);
+
+	lstF2.clear();
+	lstS2.clear();
+
+	lstF2.push_back("Hello");
+	lstF2.push_back("Hello1");
+	lstF2.push_back("Hello2");
+	lstF2.push_back("hello");
+	lstF2.push_back("Hola");
+	lstF2.push_back("hola");
+	lstF2.push_back("hellO");
+
+	lstS2.push_back("Hello");
+	lstS2.push_back("Hello1");
+	lstS2.push_back("Hello2");
+	lstS2.push_back("hello");
+	lstS2.push_back("Hola");
+	lstS2.push_back("hola");
+	lstS2.push_back("hellO");
+
+	lstF2.sort(same_length);
+	lstS2.sort(same_length);
+	check_list(lstF2, lstS2);
+
+	lstF2.sort(is_greaters);
+	lstS2.sort(is_greaters);
 	check_list(lstF2, lstS2);
 
 	std::cout << "\n  --- Reverse ---\n";
@@ -851,6 +1272,246 @@ void	check_comparison(void)
 
 }
 
+void	check_comparison_string(void)
+{
+	std::cout << "\033[1;36m\n===== Comparison string =====\033[0m\n";
+
+	std::cout << "  ---  ==  ---\n";
+	ft::List<std::string>	lstF;
+	std::list<std::string>	lstS;
+
+	ft::List<std::string>	lstF2;
+	std::list<std::string>	lstS2;
+
+	lstF.push_back("abc");
+	lstF.push_back("abcd");
+	lstF.push_back("abce");
+
+	lstF2.push_back("abc");
+	lstF2.push_back("abcd");
+
+	lstS.push_back("abc");
+	lstS.push_back("abcd");
+	lstS.push_back("abce");
+
+	lstS2.push_back("abc");
+	lstS2.push_back("abcd");
+
+	bool	valF;
+	bool	valS;
+
+	valF = (lstF == lstF2);
+	valS = (lstS == lstS2);
+	check_value(valF, valS);
+
+	lstF2.push_back("ab");
+	lstS2.push_back("ab");
+	valF = (lstF == lstF2);
+	valS = (lstS == lstS2);
+	check_value(valF, valS);
+
+	lstF2.pop_back();
+	lstS2.pop_back();
+	lstF2.push_back("abce");
+	lstS2.push_back("abce");
+	valF = (lstF == lstF2);
+	valS = (lstS == lstS2);
+	check_value(valF, valS);
+
+	std::cout << "\n  ---  !=  ---\n";
+	lstF.clear();
+	lstF2.clear();
+	lstS.clear();
+	lstS2.clear();
+
+	lstF.push_back("abc");
+	lstF.push_back("abcd");
+	lstF.push_back("abce");
+
+	lstF2.push_back("abc");
+	lstF2.push_back("abcd");
+
+	lstS.push_back("abc");
+	lstS.push_back("abcd");
+	lstS.push_back("abce");
+
+	lstS2.push_back("abc");
+	lstS2.push_back("abcd");
+
+	valF = (lstF != lstF2);
+	valS = (lstS != lstS2);
+	check_value(valF, valS);
+
+	lstF2.push_back("ab");
+	lstS2.push_back("ab");
+	valF = (lstF != lstF2);
+	valS = (lstS != lstS2);
+	check_value(valF, valS);
+
+	lstF2.pop_back();
+	lstS2.pop_back();
+	lstF2.push_back("abce");
+	lstS2.push_back("abce");
+	valF = (lstF != lstF2);
+	valS = (lstS != lstS2);
+	check_value(valF, valS);
+
+	std::cout << "\n  ---  >  ---\n";
+	lstF.clear();
+	lstF2.clear();
+	lstS.clear();
+	lstS2.clear();
+
+	lstF.push_back("abc");
+	lstF.push_back("abcd");
+	lstF.push_back("abce");
+
+	lstF2.push_back("abc");
+	lstF2.push_back("abcd");
+
+	lstS.push_back("abc");
+	lstS.push_back("abcd");
+	lstS.push_back("abce");
+
+	lstS2.push_back("abc");
+	lstS2.push_back("abcd");
+
+	valF = (lstF > lstF2);
+	valS = (lstS > lstS2);
+	check_value(valF, valS);
+
+	lstF2.push_back("ab");
+	lstS2.push_back("ab");
+	valF = (lstF > lstF2);
+	valS = (lstS > lstS2);
+	check_value(valF, valS);
+
+	lstF2.pop_back();
+	lstS2.pop_back();
+	lstF2.push_back("abce");
+	lstS2.push_back("abce");
+	valF = (lstF > lstF2);
+	valS = (lstS > lstS2);
+	check_value(valF, valS);
+
+	std::cout << "\n  ---  <  ---\n";
+	lstF.clear();
+	lstF2.clear();
+	lstS.clear();
+	lstS2.clear();
+
+	lstF.push_back("abc");
+	lstF.push_back("abcd");
+	lstF.push_back("abce");
+
+	lstF2.push_back("abc");
+	lstF2.push_back("abcd");
+
+	lstS.push_back("abc");
+	lstS.push_back("abcd");
+	lstS.push_back("abce");
+
+	lstS2.push_back("abc");
+	lstS2.push_back("abcd");
+
+	valF = (lstF < lstF2);
+	valS = (lstS < lstS2);
+	check_value(valF, valS);
+
+	lstF2.push_back("ab");
+	lstS2.push_back("ab");
+	valF = (lstF < lstF2);
+	valS = (lstS < lstS2);
+	check_value(valF, valS);
+
+	lstF2.pop_back();
+	lstS2.pop_back();
+	lstF2.push_back("abce");
+	lstS2.push_back("abce");
+	valF = (lstF < lstF2);
+	valS = (lstS < lstS2);
+	check_value(valF, valS);
+
+	std::cout << "\n  ---  >=  ---\n";
+	lstF.clear();
+	lstF2.clear();
+	lstS.clear();
+	lstS2.clear();
+
+	lstF.push_back("abc");
+	lstF.push_back("abcd");
+	lstF.push_back("abce");
+
+	lstF2.push_back("abc");
+	lstF2.push_back("abcd");
+
+	lstS.push_back("abc");
+	lstS.push_back("abcd");
+	lstS.push_back("abce");
+
+	lstS2.push_back("abc");
+	lstS2.push_back("abcd");
+
+	valF = (lstF >= lstF2);
+	valS = (lstS >= lstS2);
+	check_value(valF, valS);
+
+	lstF2.push_back("ab");
+	lstS2.push_back("ab");
+	valF = (lstF >= lstF2);
+	valS = (lstS >= lstS2);
+	check_value(valF, valS);
+
+	lstF2.pop_back();
+	lstS2.pop_back();
+	lstF2.push_back("abce");
+	lstS2.push_back("abce");
+	valF = (lstF >= lstF2);
+	valS = (lstS >= lstS2);
+	check_value(valF, valS);
+
+	std::cout << "\n  ---  <=  ---\n";
+	lstF.clear();
+	lstF2.clear();
+	lstS.clear();
+	lstS2.clear();
+
+	lstF.push_back("abc");
+	lstF.push_back("abcd");
+	lstF.push_back("abce");
+
+	lstF2.push_back("abc");
+	lstF2.push_back("abcd");
+
+	lstS.push_back("abc");
+	lstS.push_back("abcd");
+	lstS.push_back("abce");
+
+	lstS2.push_back("abc");
+	lstS2.push_back("abcd");
+
+	valF = (lstF <= lstF2);
+	valS = (lstS <= lstS2);
+	check_value(valF, valS);
+
+	lstF2.push_back("ab");
+	lstS2.push_back("ab");
+	valF = (lstF <= lstF2);
+	valS = (lstS <= lstS2);
+	check_value(valF, valS);
+
+	lstF2.pop_back();
+	lstS2.pop_back();
+	lstF2.push_back("abce");
+	lstS2.push_back("abce");
+	valF = (lstF <= lstF2);
+	valS = (lstS <= lstS2);
+	check_value(valF, valS);
+
+	std::cout << "\n";
+
+}
+
 int main(int argc, char **argv)
 {
 	if (argc == 2 && *(argv[1]) == '1')
@@ -859,12 +1520,16 @@ int main(int argc, char **argv)
 		print_error = 1;
 
 	check_constructors();
+	check_constructors_string();
 	check_iterators();
 	check_capacity();
 	check_element_access();
 	check_modifiers();
+	check_modifiers_string();
 	check_operations();
+	check_operations_string();
 	check_comparison();
+	check_comparison_string();
 
 	return 0;
 }
