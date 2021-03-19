@@ -88,6 +88,7 @@ public:
 	typedef ListConstReverseIterator<const T,  Node<const T> *> const_reverse_iterator;
 	
 	typedef typename std::allocator<T> allocator_type;
+	typedef typename T value_type;
 
 	typedef	size_t size_type;
 
@@ -100,7 +101,7 @@ private:
 
 public:
 	explicit List(const allocator_type& alloc = allocator_type()): _begin(0), _end(0), _rend(0), _size(0), _alloc(alloc) {}
-	explicit List(size_t n, const T& val = T(), const allocator_type& alloc = allocator_type()): _begin(0), _end(0), _rend(0), _size(0), _alloc(alloc)
+	explicit List(size_t n, const value_type& val = value_type(), const allocator_type& alloc = allocator_type()): _begin(0), _end(0), _rend(0), _size(0), _alloc(alloc)
 	{
 		this->initiate_first_elem(val);
 		size_t i = 0;
@@ -116,9 +117,7 @@ public:
 
 	template <class InputIterator>
 	List (InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type()): _begin(0), _end(0), _rend(0), _size(0), _alloc(alloc)
-	{								// template a tester
-		constructor_prototype(first, last, typename ft::is_integral<InputIterator>::type());
-	}
+	{constructor_prototype(first, last, typename ft::is_integral<InputIterator>::type());}
 
 	List(const List& x): _begin(0), _end(0), _rend(0), _size(0) {*this = x;}
 
@@ -186,12 +185,7 @@ public:
 
 // ========  Capacity  ========
 
-	bool	empty(void) const
-	{
-		if (!_size)
-			return (true);
-		return (false);
-	}
+	bool	empty(void) const {return (_size == 0);}
 
 	size_type	size(void) const {return (_size);}
 
@@ -233,7 +227,7 @@ public:
 
 //		----  Assign  ----
 
-	void assign (size_type n, const T& val, int) { assign_prototype(n, val, int());}
+	void assign (size_type n, const value_type& val, int) { assign_prototype(n, val, int());}
 
 	template <class InputIterator, class InputIterator2>
 	void assign (InputIterator first, InputIterator2 last)
@@ -243,7 +237,7 @@ public:
 
 //		----  Push / Pop  ----
 
-	void	push_back (const T & val)
+	void	push_back (const value_type & val)
 	{
 		if (!_size)
 			this->initiate_first_elem(val);
@@ -265,7 +259,7 @@ public:
 			this->erase(--(this->end()));
 	}
 
-	void	push_front (const T & val)
+	void	push_front (const value_type & val)
 	{
 		if (!_size)
 			this->initiate_first_elem(val);
@@ -290,7 +284,7 @@ public:
 
 //		----  Insert  ----
 
-	iterator insert (iterator position, const T& val)
+	iterator insert (iterator position, const value_type& val)
 	{
 		Node<T>	*	temp = _begin;
 		Node<T>	*	new_node = 0;
@@ -308,7 +302,7 @@ public:
 		return (iterator(new_node));
 	}
 
-	void insert (iterator position, size_type n, const T& val) { insert_prototype(position, n, val, int()); }
+	void insert (iterator position, size_type n, const value_type& val) { insert_prototype(position, n, val, int()); }
 
 	template <class InputIterator, class InputIterator2>
 	void insert (iterator position, InputIterator first, InputIterator2 last)
@@ -395,7 +389,7 @@ public:
 
 //		----  Resize  ----
 
-	void resize (size_type n, T val = T())
+	void resize (size_type n, value_type val = T())
 	{
 		if (!n)
 		{
@@ -464,7 +458,7 @@ public:
 
 //		----  Remove  ----
 
-	void remove (const T& val)
+	void remove (const value_type& val)
 	{
 		List::iterator	begin(_begin);
 		List::iterator	end(_end);

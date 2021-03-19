@@ -2,6 +2,7 @@
 #include "../includes/Iterator.hpp"
 
 #include <list>
+#include <vector>
 #include <string>
 #include <iostream>
 #include <sstream>
