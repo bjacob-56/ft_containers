@@ -224,13 +224,13 @@ template <typename T, typename PointerType>
 // ***********************************   VECTOR   ***********************************
 // **********************************************************************************
 
-template <typename T, class Alloc= std::allocator<T> >
+template <typename T>
 	class VectorIterator
 	{
 		public:
 
 			VectorIterator(void): _index(0), _vector(0) {};
-			VectorIterator(Vector<T, Alloc> vector, size_t index = 0): _index(index), _vector(vector) {};
+			VectorIterator(Vector<T> vector, size_t index = 0): _index(index), _vector(vector) {};
 			VectorIterator(const VectorIterator & src): _index(src._index), _vector(src.vector) {};
 			~VectorIterator(void) {};
 
