@@ -1,5 +1,19 @@
 #include "utils_main.hpp"
 
+
+
+
+
+
+// Reste a ajouter les fonctions specifiques aux vectors
+
+
+
+
+
+
+
+
 int	print_value = 0;
 int	print_error = 0;
 
