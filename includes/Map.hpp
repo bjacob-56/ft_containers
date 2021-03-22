@@ -42,11 +42,6 @@ public:
 
 private:
 	key_compare	_comp;
-	Node<value_type>	*_begin;
-	Node<value_type>	*_end;
-	Node<value_type>	*_rend;
-	size_t	_size;
-	allocator_type	_alloc;
 
 public:
 	explicit Map(const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type()):
@@ -119,7 +114,10 @@ public:
 
 	std::pair<iterator,bool> insert (const value_type& val)
 	{
-		if (!_size)
+		
+	// std::cout << "_size = " << this->_size << "\n";
+		
+		if (!this->_size)
 			this->initiate_first_elem(val);
 		
 		iterator it = this->find(val.first);
@@ -308,32 +306,32 @@ private:
 
 	void sort (void)		// A tester
 	{
-		if (_size < 2)
+		if (this->_size < 2)
 			return ;
 		Node<value_type> * temp;
 		Node<value_type> * temp_bis;
-		Node<value_type> * begin = _begin;
+		Node<value_type> * begin = this->_begin;
 
-		while (begin != _end->previous)
+		while (begin != this->_end->previous)
 		{
 			temp = begin->next;
 			temp_bis = begin;
-			while (temp != _end)
+			while (temp != this->_end)
 			{
-				if (comp(temp->value.first, temp_bis->value.first) == true &&
-				(temp_bis == begin || comp(temp_bis->value.first, temp->value.first) == false))
+				if (_comp(temp->value.first, temp_bis->value.first) == true &&
+				(temp_bis == begin || _comp(temp_bis->value.first, temp->value.first) == false))
 					temp_bis = temp;
 				temp = temp->next;
 			}
 			if (temp_bis != begin)
 			{					
-				if (begin == _begin)
-					_begin = temp_bis;
-				if (temp_bis == _end->previous)
-					_end->previous = temp_bis->previous;
+				if (begin == this->_begin)
+					this->_begin = temp_bis;
+				if (temp_bis == this->_end->previous)
+					this->_end->previous = temp_bis->previous;
 				begin->move_to_previous(temp_bis);
-				if (comp(temp_bis->value.first, begin->value.first) == true &&
-					comp(begin->value.first, temp_bis->value.first) == true)
+				if (_comp(temp_bis->value.first, begin->value.first) == true &&
+					_comp(begin->value.first, temp_bis->value.first) == true)
 					begin = begin->next;
 			}
 			else
@@ -349,7 +347,7 @@ private:
 	iterator insert_prototype (InputIterator first, InputIterator2 last, int)
 	{
 		(void) first;
-		if (!_size)
+		if (!this->_size)
 			this->initiate_first_elem(last);
 		
 		iterator it = this->find(last.first);

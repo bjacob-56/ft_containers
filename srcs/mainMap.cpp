@@ -28,20 +28,20 @@ std::stringstream	stream_pair(std::pair<Key, T> p)
 // 	return (ss);
 // }
 
-// template <typename T>
-// void	display_map(ft::Map< Key, T> & mp)
-// {
-// 	typename ft::Map< Key, T>::iterator	it;
-// 	it = mp.begin();
-// 	std::cout << "[";
-// 	while (it != mp.end())
-// 	{
-// 		std::cout << "" << *(it++);
-// 		if (it != mp.end())
-// 			std::cout << ", ";
-// 	}
-// 	std::cout << "]\n";
-// }
+template <typename T, typename Key>
+void	display_map(ft::Map< Key, T> & mp)
+{
+	typename ft::Map< Key, T>::iterator	it;
+	it = mp.begin();
+	std::cout << "[";
+	while (it != mp.end())
+	{
+		std::cout << "(" << (*it).first << "," << (*it).second << ")";
+		if (++it != mp.end())
+			std::cout << ", ";
+	}
+	std::cout << "]\n";
+}
 
 // template <typename T>
 // void	reverse_display_map(ft::Map< Key, T> & mp)
@@ -66,20 +66,20 @@ std::stringstream	stream_pair(std::pair<Key, T> p)
 // 	return (ss);
 // }
 
-// template <typename T>
-// void	display_real_map(std::map< Key, T> & mp)
-// {
-// 	typename std::map< Key, T>::iterator	it;
-// 	it = mp.begin();
-// 	std::cout << "[";
-// 	while (it != mp.end())
-// 	{
-// 		std::cout << "" << *(it++);
-// 		if (it != mp.end())
-// 			std::cout << ", ";
-// 	}
-// 	std::cout << "]\n";
-// }
+template <typename T, typename Key>
+void	display_real_map(std::map< Key, T> & mp)
+{
+	typename std::map< Key, T>::iterator	it;
+	it = mp.begin();
+	std::cout << "[";
+	while (it != mp.end())
+	{
+		std::cout << "(" << (*it).first << "," << (*it).second << ")";
+		if (++it != mp.end())
+			std::cout << ", ";
+	}
+	std::cout << "]\n";
+}
 
 template < class Key, class T, class Compare, class Alloc >
 void	check_map(ft::Map< Key, T, Compare, Alloc> & myLst, std::map< Key, T, Compare, Alloc> & realLst, int clearFlag = 0)
@@ -337,25 +337,36 @@ void	check_constructors(void)
 {
 	std::cout << "\033[1;36m\n===== Constructors =====\033[0m\n";
 
-	ft::Map<int, std::string>	mpF;
-	std::map<int, std::string>	mpS;
+	ft::Map<const int, std::string>	mpF;
+	std::map<const int, std::string>	mpS;
 	check_map(mpF, mpS);
 
-	ft::Map<int, std::string>	mpF2(5, 42);
-	std::map<int, std::string>	mpS2(5, 42);
+	mpF.insert(std::pair<const int, std::string>(3, "3-"));
+	mpF.insert(std::pair<const int, std::string>(1, "1-"));
+	mpF.insert(std::pair<const int, std::string>(2, "2-"));
+	mpF.insert(std::pair<const int, std::string>(4, "4-"));
+	mpS.insert(std::pair<const int, std::string>(3, "3-"));
+	mpS.insert(std::pair<const int, std::string>(1, "1-"));
+	mpS.insert(std::pair<const int, std::string>(2, "2-"));
+	mpS.insert(std::pair<const int, std::string>(4, "4-"));
+
+	// display_map(mpF);
+	// display_real_map(mpS);
+
+	ft::Map<const int, std::string>::iterator		itbF = mpF.begin()++;
+	ft::Map<const int, std::string>::iterator		iteF = mpF.end();
+	std::map<const int, std::string>::iterator	itbS = mpS.begin()++;
+	std::map<const int, std::string>::iterator	iteS = mpS.end();
+
+	ft::Map<const int, std::string>		mpF2(itbF, iteF);
+	std::map<const int, std::string>	mpS2(itbS, iteS);
 	check_map(mpF2, mpS2);
 
-	ft::Map<int, std::string>::iterator		itbF = mpF2.begin()++;
-	ft::Map<int, std::string>::iterator		iteF = mpF2.end();
-	std::map<int, std::string>::iterator	itbS = mpS2.begin()++;
-	std::map<int, std::string>::iterator	iteS = mpS2.end();
+	// display_map(mpF2);
+	// display_real_map(mpS2);
 
-	ft::Map<int, std::string>	mpF3(itbF, iteF);
-	std::map<int, std::string>	mpS3(itbS, iteS);
-	check_map(mpF3, mpS3);
-
-	ft::Map<int, std::string>	mpF4(mpF3);
-	std::map<int, std::string>	mpS4(mpS3);
+	ft::Map<const int, std::string>		mpF4(mpF2);
+	std::map<const int, std::string>	mpS4(mpS2);
 	check_map(mpF4, mpS4);
 
 	mpF = mpF4;
@@ -405,12 +416,14 @@ void	check_constructors(void)
 // 	ft::Map<int, std::string>	mpF;
 // 	std::map<int, std::string>	mpS;
 
-// 	mpF.insert(pair(1, "3"));
-// 	mpF.insert(pair(2, "1"));
-// 	mpF.insert(pair(3, "2"));
-// 	mpS.insert(pair(1, "3"));
-// 	mpS.insert(pair(2, "1"));
-// 	mpS.insert(pair(3, "2"));
+// 	mpF.insert(std::pair<int, std::string>(3, "3"));
+// 	mpF.insert(std::pair<int, std::string>(1, "1"));
+// 	mpF.insert(std::pair<int, std::string>(2, "2"));
+// 	mpF.insert(std::pair<int, std::string>(4, "4"));
+// 	mpS.insert(std::pair<int, std::string>(3, "3"));
+// 	mpS.insert(std::pair<int, std::string>(1, "1"));
+// 	mpS.insert(std::pair<int, std::string>(2, "2"));
+// 	mpS.insert(std::pair<int, std::string>(4, "4"));
 
 // 	check_map	(mpF, mpS);
 // 	check_map_const(mpF, mpS);

@@ -42,7 +42,7 @@ $(MAP):	$(SRCS_MAP) $(INC)
 	clear
 	$(CC) $(CFLAGS) $(SRCS_MAP) -o $(MAP)
 	@echo "----- \033[32m $@ created\033[0m  -----"
-	@./$(MAP) 2
+	@./$(MAP) 1
 
 clean:
 	rm -f $(NAME)
