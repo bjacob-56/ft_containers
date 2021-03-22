@@ -1,10 +1,14 @@
+#include "../includes/Iterator.hpp"
 #include "../includes/List.hpp"
 #include "../includes/Vector.hpp"
-#include "../includes/Iterator.hpp"
+#include "../includes/Map.hpp"
 
 #include <list>
 #include <vector>
+#include <map>
+#include <stack>
 #include <string>
+#include <utility>
 #include <iostream>
 #include <sstream>
 

@@ -12,6 +12,18 @@
 namespace ft
 {
 
+	template <typename T, typename PointerType>
+	class ListIterator;
+
+	template <typename T, typename PointerType>
+	class ListConstIterator;
+
+	template <typename T, typename PointerType>
+	class ListReverseIterator;
+
+	template <typename T, typename PointerType>
+	class ListConstReverseIterator;
+
 template <typename T>
 class Node
 {
@@ -92,7 +104,7 @@ public:
 
 	typedef	size_t size_type;
 
-private:
+protected:
 	Node<T>	*_begin;
 	Node<T>	*_end;
 	Node<T>	*_rend;
@@ -121,7 +133,7 @@ public:
 
 	List(const List& x): _begin(0), _end(0), _rend(0), _size(0) {*this = x;}
 
-	~List(void) {this->clear();}
+	virtual ~List(void) {this->clear();}
 
 
 // ========  Iterators  ========
@@ -302,7 +314,7 @@ public:
 		return (iterator(new_node));
 	}
 
-	void insert (iterator position, size_type n, const value_type& val) { insert_prototype(position, n, val, int()); }
+	void insert (iterator position, size_type n, const value_type& val) {insert_prototype(position, n, val, int()); }
 
 	template <class InputIterator, class InputIterator2>
 	void insert (iterator position, InputIterator first, InputIterator2 last)
@@ -667,7 +679,7 @@ public:
 // ************************************************************** //
 // ************************************************************** //
 
-private:
+protected:
 
 	void	initiate_first_elem(const T & val)
 	{
