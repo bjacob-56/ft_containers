@@ -7,9 +7,9 @@ int	nb_OK = 0;
 int	nb_KO = 0;
 
 template <typename Key, typename T>
-std::stringstream	stream_pair(std::pair<Key, T> p)
+std::stringstream	stream_pair(std::stringstream &ss, std::pair<Key, T> p)
 {
-	std::stringstream ss;
+	// std::stringstream ss;
 
 	ss << "(" << p.first << "," << p.second << ")";
 	return (ss);
@@ -81,30 +81,34 @@ void	display_real_map(std::map< Key, T> & mp)
 	std::cout << "]\n";
 }
 
+
+
+
+
 template < class Key, class T, class Compare, class Alloc >
-void	check_map(ft::Map< Key, T, Compare, Alloc> & myLst, std::map< Key, T, Compare, Alloc> & realLst, int clearFlag = 0)
+void	check_map(ft::Map< Key, T, Compare, Alloc> & myMap, std::map< Key, T, Compare, Alloc> & realMap, int clearFlag = 0)
 {
 	std::stringstream ss_ft;
 	std::stringstream ss_std;
 
-	typename ft::Map< Key, T>::iterator	itF = myLst.begin();
+	typename ft::Map< Key, T>::iterator	itF = myMap.begin();
 	ss_ft << "[";
-	while (itF != myLst.end())
+	while (itF != myMap.end())
 	{
 		// ss_ft << stream_pair(*(itF++));
 		ss_ft << "(" << (*itF).first << "," << (*itF).second << ")";
-		if (++itF != myLst.end())
+		if (++itF != myMap.end())
 			ss_ft << ", ";
 	}
 	ss_ft << "]\n";
 
-	typename std::map< Key, T>::iterator	itS = realLst.begin();
+	typename std::map< Key, T>::iterator	itS = realMap.begin();
 	ss_std << "[";
-	while (itS != realLst.end())
+	while (itS != realMap.end())
 	{
 		// ss_std << stream_pair(*(itS++));
-		ss_std << "(" << (*itF).first << "," << (*itF).second << ")";
-		if (++itS != realLst.end())
+		ss_std << "(" << (*itS).first << "," << (*itS).second << ")";
+		if (++itS != realMap.end())
 			ss_std << ", ";
 	}
 	ss_std << "]\n";
@@ -135,33 +139,33 @@ void	check_map(ft::Map< Key, T, Compare, Alloc> & myLst, std::map< Key, T, Compa
 
 	if (clearFlag)
 	{
-		myLst.clear();
-		realLst.clear();
+		myMap.clear();
+		realMap.clear();
 	}
 }
 
 template < class Key, class T, class Compare, class Alloc >
-void	check_map_const(const ft::Map< Key, T, Compare, Alloc> & myLst, const std::map< Key, T, Compare, Alloc> & realLst)
+void	check_map_const(const ft::Map< Key, T, Compare, Alloc> & myMap, const std::map< Key, T, Compare, Alloc> & realMap)
 {
 	std::stringstream ss_ft;
 	std::stringstream ss_std;
 
-	typename ft::Map< Key, T>::const_iterator	itF = myLst.begin();
+	typename ft::Map< Key, T>::const_iterator	itF = myMap.begin();
 	ss_ft << "[";
-	while (itF != myLst.end())
+	while (itF != myMap.end())
 	{
 		ss_ft << stream_pair(*(itF++));
-		if (itF != myLst.end())
+		if (itF != myMap.end())
 			ss_ft << ", ";
 	}
 	ss_ft << "]\n";
 
-	typename std::map< Key, T>::const_iterator	itS = realLst.begin();
+	typename std::map< Key, T>::const_iterator	itS = realMap.begin();
 	ss_std << "[";
-	while (itS != realLst.end())
+	while (itS != realMap.end())
 	{
 		ss_std << stream_pair(*(itS++));
-		if (itS != realLst.end())
+		if (itS != realMap.end())
 			ss_std << ", ";
 	}
 	ss_std << "]\n";
@@ -192,27 +196,27 @@ void	check_map_const(const ft::Map< Key, T, Compare, Alloc> & myLst, const std::
 }
 
 template < class Key, class T, class Compare, class Alloc >
-void	check_map_reverse(ft::Map< Key, T, Compare, Alloc> & myLst, std::map< Key, T, Compare, Alloc> & realLst, int clearFlag = 0)
+void	check_map_reverse(ft::Map< Key, T, Compare, Alloc> & myMap, std::map< Key, T, Compare, Alloc> & realMap, int clearFlag = 0)
 {
 	std::stringstream ss_ft;
 	std::stringstream ss_std;
 
-	typename ft::Map< Key, T>::reverse_iterator	itF = myLst.rbegin();
+	typename ft::Map< Key, T>::reverse_iterator	itF = myMap.rbegin();
 	ss_ft << "[";
-	while (itF != myLst.rend())
+	while (itF != myMap.rend())
 	{
 		ss_ft << stream_pair(*(itF++));
-		if (itF != myLst.rend())
+		if (itF != myMap.rend())
 			ss_ft << ", ";
 	}
 	ss_ft << "]\n";
 
-	typename std::map< Key, T>::reverse_iterator	itS = realLst.rbegin();
+	typename std::map< Key, T>::reverse_iterator	itS = realMap.rbegin();
 	ss_std << "[";
-	while (itS != realLst.rend())
+	while (itS != realMap.rend())
 	{
 		ss_std << stream_pair(*(itS++));
-		if (itS != realLst.rend())
+		if (itS != realMap.rend())
 			ss_std << ", ";
 	}
 	ss_std << "]\n";
@@ -243,34 +247,34 @@ void	check_map_reverse(ft::Map< Key, T, Compare, Alloc> & myLst, std::map< Key, 
 
 	if (clearFlag)
 	{
-		myLst.clear();
-		realLst.clear();
+		myMap.clear();
+		realMap.clear();
 	}
 }
 
 
 template < class Key, class T, class Compare, class Alloc >
-void	check_map_const_reverse(const ft::Map< Key, T, Compare, Alloc> & myLst, const std::map< Key, T, Compare, Alloc> & realLst)
+void	check_map_const_reverse(const ft::Map< Key, T, Compare, Alloc> & myMap, const std::map< Key, T, Compare, Alloc> & realMap)
 {
 	std::stringstream ss_ft;
 	std::stringstream ss_std;
 
-	typename ft::Map< Key, T>::const_reverse_iterator	itF = myLst.rbegin();
+	typename ft::Map< Key, T>::const_reverse_iterator	itF = myMap.rbegin();
 	ss_ft << "[";
-	while (itF != myLst.rend())
+	while (itF != myMap.rend())
 	{
 		ss_ft << stream_pair(*(itF++));
-		if (itF != myLst.rend())
+		if (itF != myMap.rend())
 			ss_ft << ", ";
 	}
 	ss_ft << "]\n";
 
-	typename std::map< Key, T>::const_reverse_iterator	itS = realLst.rbegin();
+	typename std::map< Key, T>::const_reverse_iterator	itS = realMap.rbegin();
 	ss_std << "[";
-	while (itS != realLst.rend())
+	while (itS != realMap.rend())
 	{
 		ss_std << stream_pair(*(itS++));
-		if (itS != realLst.rend())
+		if (itS != realMap.rend())
 			ss_std << ", ";
 	}
 	ss_std << "]\n";
@@ -353,17 +357,14 @@ void	check_constructors(void)
 	// display_map(mpF);
 	// display_real_map(mpS);
 
-	ft::Map<const int, std::string>::iterator		itbF = mpF.begin()++;
-	ft::Map<const int, std::string>::iterator		iteF = mpF.end();
-	std::map<const int, std::string>::iterator	itbS = mpS.begin()++;
+	ft::Map<const int, std::string>::iterator	itbF = ++mpF.begin();
+	ft::Map<const int, std::string>::iterator	iteF = mpF.end();
+	std::map<const int, std::string>::iterator	itbS = ++mpS.begin();
 	std::map<const int, std::string>::iterator	iteS = mpS.end();
 
 	ft::Map<const int, std::string>		mpF2(itbF, iteF);
 	std::map<const int, std::string>	mpS2(itbS, iteS);
 	check_map(mpF2, mpS2);
-
-	// display_map(mpF2);
-	// display_real_map(mpS2);
 
 	ft::Map<const int, std::string>		mpF4(mpF2);
 	std::map<const int, std::string>	mpS4(mpS2);
@@ -376,37 +377,45 @@ void	check_constructors(void)
 	std::cout << "\n";
 }
 
-// void	check_constructors_string(void)
-// {
-// 	std::cout << "\033[1;36m\n===== Constructors string =====\033[0m\n";
+void	check_constructors_string(void)
+{
+	std::cout << "\033[1;36m\n===== Constructors string =====\033[0m\n";
 
-// 	ft::Map<std::string>	mpF;
-// 	std::map<std::string>	mpS;
-// 	check_map(mpF, mpS);
+	ft::Map<const std::string, std::string>	mpF;
+	std::map<const std::string, std::string>	mpS;
+	check_map(mpF, mpS);
 
-// 	ft::Map<std::string>	mpF2(5, "test");
-// 	std::map<std::string>	mpS2(5, "test");
-// 	check_map(mpF2, mpS2);
+	mpF.insert(std::pair<const std::string, std::string>("key3", "val3"));
+	mpF.insert(std::pair<const std::string, std::string>("key1", "val1"));
+	mpF.insert(std::pair<const std::string, std::string>("key2", "val2"));
+	mpF.insert(std::pair<const std::string, std::string>("key4", "val4"));
+	mpS.insert(std::pair<const std::string, std::string>("key3", "val3"));
+	mpS.insert(std::pair<const std::string, std::string>("key1", "val1"));
+	mpS.insert(std::pair<const std::string, std::string>("key2", "val2"));
+	mpS.insert(std::pair<const std::string, std::string>("key4", "val4"));
 
-// 	ft::Map<std::string>::iterator		itbF = mpF2.begin()++;
-// 	ft::Map<std::string>::iterator		iteF = mpF2.end();
-// 	std::map<std::string>::iterator	itbS = mpS2.begin()++;
-// 	std::map<std::string>::iterator	iteS = mpS2.end();
+	// display_map(mpF);
+	// display_real_map(mpS);
 
-// 	ft::Map<std::string>	mpF3(itbF, iteF);
-// 	std::map<std::string>	mpS3(itbS, iteS);
-// 	check_map(mpF3, mpS3);
+	ft::Map<const std::string, std::string>::iterator	itbF = ++mpF.begin();
+	ft::Map<const std::string, std::string>::iterator	iteF = mpF.end();
+	std::map<const std::string, std::string>::iterator	itbS = ++mpS.begin();
+	std::map<const std::string, std::string>::iterator	iteS = mpS.end();
 
-// 	ft::Map<std::string>	mpF4(mpF3);
-// 	std::map<std::string>	mpS4(mpS3);
-// 	check_map(mpF4, mpS4);
+	ft::Map<const std::string, std::string>		mpF2(itbF, iteF);
+	std::map<const std::string, std::string>	mpS2(itbS, iteS);
+	check_map(mpF2, mpS2);
 
-// 	mpF = mpF4;
-// 	mpS2 = mpS4;
-// 	check_map(mpF, mpS2);
+	ft::Map<const std::string, std::string>		mpF4(mpF2);
+	std::map<const std::string, std::string>	mpS4(mpS2);
+	check_map(mpF4, mpS4);
 
-// 	std::cout << "\n";
-// }
+	mpF = mpF4;
+	mpS2 = mpS4;
+	check_map(mpF, mpS2);
+
+	std::cout << "\n";
+}
 
 
 // void	check_iterators(void)
@@ -1575,7 +1584,7 @@ int main(int argc, char **argv)
 		print_error = 1;
 
 	check_constructors();
-	// check_constructors_string();
+	check_constructors_string();
 	// check_iterators();
 	// check_capacity();
 	// check_element_access();
