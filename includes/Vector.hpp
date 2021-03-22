@@ -12,6 +12,17 @@
 
 namespace ft
 {
+	template <typename T>
+	class VectorIterator;
+
+	template <typename T>
+	class VectorConstIterator;
+
+	template <typename T>
+	class VectorReverseIterator;
+
+	template <typename T>
+	class VectorConstReverseIterator;
 
 template <typename T, class Alloc= std::allocator<T> >
 class Vector
@@ -23,7 +34,7 @@ public:
 	typedef VectorReverseIterator<T> reverse_iterator;
 	typedef VectorConstReverseIterator<const T> const_reverse_iterator;
 	
-	typedef typename std::allocator<T> allocator_type;
+	typedef Alloc allocator_type;
 	typedef T value_type;
 
 	typedef	size_t size_type;
@@ -40,16 +51,17 @@ public:
 	
 	explicit Vector (size_type n, const value_type& val = value_type(), const allocator_type& alloc = allocator_type()): _size(0), _capacity(n), _alloc(alloc)
 	{
-		_array = alloc.allocate(_capacity);
+		_array = _alloc.allocate(_capacity);
 		while (_size < n)
 			_array[_size++] = val;
 	}
 
 	template <class InputIterator>
 	Vector (InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type()): _size(0), _capacity(0), _alloc(alloc)
-	{constructor_prototype(first, last, alloc, typename ft::is_integral<InputIterator>::type());}
+	{constructor_prototype(first, last, typename ft::is_integral<InputIterator>::type());}
 
-	Vector (const Vector& x) {*this = x;}
+	Vector (const Vector& x): _array(0), _size(0), _capacity(0), _alloc(allocator_type())
+	{*this = x;}
 
 
 	~Vector(void)	 // a confirmer
@@ -62,38 +74,38 @@ public:
 // ========  Iterators  ========
 
 	iterator	begin(void)
-	{return (iterator(_array));}
+	{return (iterator(_array, _size));}
 	const_iterator	begin(void) const
-	{return (const_iterator(reinterpret_cast<const T*>(_array)));}
+	{return (const_iterator(reinterpret_cast< const T* >(_array), _size));}
 
 	iterator	end(void)
-	{return (iterator(_array, _size));}
+	{return (iterator(_array, _size, _size));}
 	const_iterator	end(void) const
-	{return (const_iterator(reinterpret_cast<const T*>(_array), _size));}
+	{return (const_iterator(reinterpret_cast< const T* >(_array), _size, _size));}
 
 	reverse_iterator	rbegin(void)
 	{
 		if (_size > 0)
-			return reverse_iterator(_array, _size - 1);
-		return (reverse_iterator(0));
+			return reverse_iterator(_array, _size, _size - 1);
+		return (reverse_iterator());
 	}
 	const_reverse_iterator	rbegin(void) const
 	{
 		if (_size > 0)
-			return const_reverse_iterator(reinterpret_cast<T*>(_array), _size - 1);
-		return const_reverse_iterator(0);
+			return const_reverse_iterator(reinterpret_cast< const T* >(_array), _size, _size - 1);
+		return const_reverse_iterator();
 	}
 
 	reverse_iterator	rend(void)
-	{return (reverse_iterator(_array, -1));}
+	{return (reverse_iterator(_array, _size, -1));}
 	const_reverse_iterator	rend(void) const
-	{return (const_reverse_iterator(reinterpret_cast<T*>(_array), -1)); }
+	{return (const_reverse_iterator(reinterpret_cast< const T* >(_array), _size, -1));}
 
 
 // ========  Overload  ========
 
 	Vector &	operator=(const Vector & x)
-	{		
+	{
 		this->clear();
 		if (x._size > _capacity)
 		{
@@ -220,10 +232,23 @@ public:
 			_array[_size++] = val;
 		else
 		{
+	
+	// std::cout << "\npush_back val = " << val << "\n";
+
 			Vector	temp(_capacity * 2);
 			temp = *this;
 			temp[_size] = val;
+			temp._size++;
+
+// std::cout << "size = " << _size << ", capacity = " << _capacity << "\n";
+// std::cout << "temp.size = " << temp._size << ", temp.capacity = " << temp._capacity << "\n";
+
+
 			*this = temp;
+
+// std::cout << "temp val 2 = " << temp._array[1] << "\n";
+// std::cout << "val 2 = " << _array[1] << "\n\n";
+
 		}
 	}
 
@@ -231,8 +256,9 @@ public:
 	{
 		if (!_size)
 			return ;
-		else
-			this->erase(--(this->end()));
+		iterator ite = this->end();
+		ite--;
+		this->erase(ite);
 	}
 
 //		----  Insert  ----
@@ -248,10 +274,10 @@ public:
 			i++;
 		}
 		if (it != position)
-			return iterator(0);		// a confirmer
-		this->drift(position, 1);
+			return iterator();		// a confirmer
+		this->drift_right(position, 1);
 		_array[i] = val;		
-		return (iterator(*this, i));
+		return (iterator(_array, _size, i));
 	}
 
 	void insert (iterator position, size_type n, const value_type& val) {insert_prototype(position, n, val, int()); }
@@ -275,7 +301,7 @@ public:
 			i++;
 		}
 		this->drift_left(position, 1);
-		return (iterator(*this, i));
+		return (iterator(_array, _size, i));
 	}
 
 	iterator erase (iterator first, iterator last)			// a ajuster si position apres end
@@ -297,16 +323,16 @@ public:
 		}
 
 		this->drift_left(first, len);
-		return (iterator(*this, i));
+		return (iterator(_array, _size, i));
 	}
 
 //		----  Swap  ----
 
 	void swap (Vector& x)
 	{
-		T*				temp_array;
-		size_t			temp_size;
-		size_t			temp_capacity;
+		T*				temp_array = x._array;
+		size_t			temp_size = x._size;
+		size_t			temp_capacity = x._capacity;
 
 		x._array = _array;
 		x._size = _size;
@@ -350,7 +376,7 @@ private:
 		if (it != position)
 			return ;
 	
-		Vector	temp(_size + len);
+		Vector	temp(_size + len, value_type());
 		size_t	index = 0;
 		while (index < i)
 		{
@@ -369,6 +395,7 @@ private:
 	{
 		iterator	it = this->begin();
 		size_t	i = 0;
+		size_t	size_temp = _size;
 
 		while (it != position && i < _size)
 		{
@@ -377,14 +404,16 @@ private:
 		}
 		if (it != position)
 			return ;
-		
-		while (i + len < _size)
+		while (i + len < size_temp)
 		{
 			_array[i] = _array[i + len];
 			i++;
 		}
-		while (i < _size)
+		while (i < size_temp)
+		{
 			_array[i++] = T();
+			_size--;
+		}
 	}
 
 
@@ -392,24 +421,25 @@ private:
 // ========  Constructor - private  ========
 
 	template <class InputIterator>
-	void	constructor_prototype (InputIterator first, InputIterator last, const allocator_type& alloc, int)
+	void	constructor_prototype (InputIterator first, InputIterator last, int)
 	{
-		_array = alloc.allocate(_capacity);
-		while (_size < first)
+		_capacity = first;
+		_array = _alloc.allocate(_capacity);
+		while (_size < _capacity)
 			_array[_size++] = last;
 	}
 
 	template <class InputIterator>
-	void	constructor_prototype (InputIterator first, InputIterator last, const allocator_type& alloc, void *)
+	void	constructor_prototype (InputIterator first, InputIterator last, void *)
 	{
-		InputIterator	temp;
+		InputIterator	temp = first;
 
 		while (temp != last)
 		{
 			temp++;
 			_capacity++;
 		}
-		_array = alloc.allocate(_capacity);
+		_array = _alloc.allocate(_capacity);
 		while (first != last)
 			_array[_size++] = *first++;
 	}

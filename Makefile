@@ -40,6 +40,7 @@ clean:
 	rm -f $(NAME)
 	rm -f $(NAME_BIS)
 	rm -f $(LIST)
+	rm -f $(VECTOR)
 
 fclean: 	clean
 

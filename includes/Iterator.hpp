@@ -229,14 +229,14 @@ template <typename T>
 	{
 		public:
 
-			VectorIterator(void): _index(0), _vector(0) {};
-			VectorIterator(Vector<T> vector, size_t index = 0): _index(index), _vector(vector) {};
-			VectorIterator(const VectorIterator & src): _index(src._index), _vector(src.vector) {};
+			VectorIterator(void): _index(0), _size(0), _array(0) {};
+			VectorIterator(T* array, size_t size, size_t index = 0): _index(index), _size(size), _array(array) {};
+			VectorIterator(const VectorIterator & src): _index(src._index), _size(src._size), _array(src._array) {};
 			~VectorIterator(void) {};
 
 			VectorIterator &	operator++(void) // pre increment
 			{
-				if (_index < _vector.capacity() - 1)
+				if (_index < _size)
 					_index++;
 				return (*this);
 			}
@@ -259,21 +259,23 @@ template <typename T>
 				return (temp);
 			}
 
-			T &	operator*(void) {return _vector[_index];}
+			T &	operator*(void) {return _array[_index];}
 
 			VectorIterator & operator=(VectorIterator const & rhs)
 			{
 				_index = rhs._index;
-				_vector = rhs._vector;
+				_size = rhs._size;
+				_array = rhs._array;
 				return (*this);
 			}
 
-			bool operator==(VectorIterator const & rhs) const {return (_index == rhs._index && _vector == rhs._vector);}
-			bool operator!=(VectorIterator const & rhs) const {return (_index != rhs._index || _vector != rhs._vector);}
+			bool operator==(VectorIterator const & rhs) const {return (_index == rhs._index && _size == rhs._size && _array == rhs._array);}
+			bool operator!=(VectorIterator const & rhs) const {return (_index != rhs._index || _size != rhs._size || _array != rhs._array);}
 
 		private:
 			size_t		_index;
-			Vector<T>	_vector;
+			size_t		_size;
+			T*			_array;
 	};
 
 template <typename T>
@@ -281,14 +283,14 @@ template <typename T>
 	{
 		public:
 
-			VectorConstIterator(void): _index(0), _vector(0) {};
-			VectorConstIterator(Vector<T> vector, size_t index = 0): _index(index), _vector(vector) {};
-			VectorConstIterator(const VectorConstIterator & src): _index(src._index), _vector(src.vector) {};
+			VectorConstIterator(void): _index(0), _size(0), _array(0) {};
+			VectorConstIterator(T* array, size_t size, size_t index = 0): _index(index), _size(size), _array(array) {};
+			VectorConstIterator(const VectorConstIterator & src): _index(src._index), _size(src._size), _array(src._array) {};
 			~VectorConstIterator(void) {};
 
 			VectorConstIterator &	operator++(void) // pre increment
 			{
-				if (_index < _vector.capacity() - 1)
+				if (_index < _size)
 					_index++;
 				return (*this);
 			}
@@ -311,21 +313,23 @@ template <typename T>
 				return (temp);
 			}
 
-			T &	operator*(void) {return _vector[_index];}
+			T &	operator*(void) {return _array[_index];}
 
 			VectorConstIterator & operator=(VectorConstIterator const & rhs)
 			{
 				_index = rhs._index;
-				_vector = rhs._vector;
+				_size = rhs._size;
+				_array = rhs._array;
 				return (*this);
 			}
 
-			bool operator==(VectorConstIterator const & rhs) const {return (_index == rhs._index && _vector == rhs._vector);}
-			bool operator!=(VectorConstIterator const & rhs) const {return (_index != rhs._index || _vector != rhs._vector);}
+			bool operator==(VectorConstIterator const & rhs) const {return (_index == rhs._index && _size == rhs._size && _array == rhs._array);}
+			bool operator!=(VectorConstIterator const & rhs) const {return (_index != rhs._index || _size != rhs._size || _array != rhs._array);}
 
 		private:
 			size_t		_index;
-			Vector<T>	_vector;
+			size_t		_size;
+			T*			_array;
 	};
 
 template <typename T>
@@ -333,14 +337,14 @@ template <typename T>
 	{
 		public:
 
-			VectorReverseIterator(void): _index(0), _vector(0) {};
-			VectorReverseIterator(Vector<T> vector, size_t index = 0): _index(index), _vector(vector) {};
-			VectorReverseIterator(const VectorReverseIterator & src): _index(src._index), _vector(src.vector) {};
+			VectorReverseIterator(void): _index(0), _size(0), _array(0) {};
+			VectorReverseIterator(T* array, size_t size, size_t index = 0): _index(index), _size(size), _array(array) {};
+			VectorReverseIterator(const VectorReverseIterator & src): _index(src._index), _size(src._size), _array(src._array) {};
 			~VectorReverseIterator(void) {};
 
 			VectorReverseIterator &	operator++(void) // pre increment
 			{
-				if (_index > 0)
+				if (_index > -1)
 					_index--;
 				return (*this);
 			}
@@ -352,7 +356,7 @@ template <typename T>
 			}
 			VectorReverseIterator &	operator--(void)
 			{
-				if (_index < _vector.capacity() - 1)
+				if (_index < _size - 1)
 					_index++;
 				return (*this);
 			}
@@ -363,21 +367,28 @@ template <typename T>
 				return (temp);
 			}
 
-			T &	operator*(void) {return _vector[_index];}
+			T &	operator*(void)
+			{
+				if (_index > 0)
+					return _array[_index];
+				return _array[0];
+			}
 
 			VectorReverseIterator & operator=(VectorReverseIterator const & rhs)
 			{
 				_index = rhs._index;
-				_vector = rhs._vector;
+				_size = rhs._size;
+				_array = rhs._array;
 				return (*this);
 			}
 
-			bool operator==(VectorReverseIterator const & rhs) const {return (_index == rhs._index && _vector == rhs._vector);}
-			bool operator!=(VectorReverseIterator const & rhs) const {return (_index != rhs._index || _vector != rhs._vector);}
+			bool operator==(VectorReverseIterator const & rhs) const {return (_index == rhs._index && _size == rhs._size && _array == rhs._array);}
+			bool operator!=(VectorReverseIterator const & rhs) const {return (_index != rhs._index || _size != rhs._size || _array != rhs._array);}
 
 		private:
-			size_t		_index;
-			Vector<T>	_vector;
+			int		_index;
+			size_t		_size;
+			T*			_array;
 	};
 
 template <typename T>
@@ -385,14 +396,14 @@ template <typename T>
 	{
 		public:
 
-			VectorConstReverseIterator(void): _index(0), _vector(0) {};
-			VectorConstReverseIterator(Vector<T> vector, size_t index = 0): _index(index), _vector(vector) {};
-			VectorConstReverseIterator(const VectorConstReverseIterator & src): _index(src._index), _vector(src.vector) {};
+			VectorConstReverseIterator(void): _index(0), _size(0), _array(0) {};
+			VectorConstReverseIterator(T* array, size_t size, size_t index = 0): _index(index), _size(size), _array(array) {};
+			VectorConstReverseIterator(const VectorConstReverseIterator & src): _index(src._index), _size(src._size), _array(src._array) {};
 			~VectorConstReverseIterator(void) {};
 
 			VectorConstReverseIterator &	operator++(void) // pre increment
 			{
-				if (_index > 0)
+				if (_index > -1)
 					_index--;
 				return (*this);
 			}
@@ -404,7 +415,7 @@ template <typename T>
 			}
 			VectorConstReverseIterator &	operator--(void)
 			{
-				if (_index < _vector.capacity() - 1)
+				if (_index < _size - 1)
 					_index++;
 				return (*this);
 			}
@@ -415,21 +426,28 @@ template <typename T>
 				return (temp);
 			}
 
-			T &	operator*(void) {return _vector[_index];}
+			T &	operator*(void)
+			{
+				if (_index > 0)
+					return _array[_index];
+				return _array[0];
+			}
 
 			VectorConstReverseIterator & operator=(VectorConstReverseIterator const & rhs)
 			{
 				_index = rhs._index;
-				_vector = rhs._vector;
+				_size = rhs._size;
+				_array = rhs._array;
 				return (*this);
 			}
 
-			bool operator==(VectorConstReverseIterator const & rhs) const {return (_index == rhs._index && _vector == rhs._vector);}
-			bool operator!=(VectorConstReverseIterator const & rhs) const {return (_index != rhs._index || _vector != rhs._vector);}
+			bool operator==(VectorConstReverseIterator const & rhs) const {return (_index == rhs._index && _size == rhs._size && _array == rhs._array);}
+			bool operator!=(VectorConstReverseIterator const & rhs) const {return (_index != rhs._index || _size != rhs._size || _array != rhs._array);}
 
 		private:
-			size_t		_index;
-			Vector<T>	_vector;
+			int		_index;
+			size_t		_size;
+			T*			_array;
 	};
 
 }

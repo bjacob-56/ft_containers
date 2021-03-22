@@ -416,7 +416,7 @@ void	check_iterators(void)
 	vectS.push_back(2);
 	vectS.push_back(3);
 
-	check_vector	(vectF, vectS);
+	check_vector (vectF, vectS);
 	check_vector_const(vectF, vectS);
 	check_vector_reverse(vectF, vectS);
 	check_vector_const_reverse(vectF, vectS);
@@ -523,7 +523,7 @@ void	check_modifiers(void)
 	vectS.assign(itbS, iteS);
 	check_vector(vectF2, vectS2, 1);
 
-	std::cout << "\n  --- Push/Pop_Front/Back ---\n";
+	std::cout << "\n  --- Push/Pop_Back ---\n";
 
 
 	vectF2.push_back(3);
@@ -531,6 +531,7 @@ void	check_modifiers(void)
 	vectS2.push_back(3);
 	vectS2.push_back(5);
 	check_vector(vectF2, vectS2);
+
 
 	vectF2.pop_back();
 	vectS2.pop_back();
@@ -550,11 +551,18 @@ void	check_modifiers(void)
 	vectS2.insert(itbS2, 5, 93);
 	check_vector(vectF2, vectS2);
 
+	itbF2 = ++vectF2.begin();
+	itbS2 = ++vectS2.begin();
+
 	vectF2.insert(itbF2, itbF, iteF);
 	vectS2.insert(itbS2, itbS, iteS);
 	check_vector(vectF2, vectS2);
 
 	std::cout << "\n  --- Erase ---\n";
+
+	itbF2 = ++vectF2.begin();
+	itbS2 = ++vectS2.begin();
+
 	itbF2 = vectF2.erase(--itbF2);
 	itbS2 = vectS2.erase(--itbS2);
 	check_vector(vectF2, vectS2);
@@ -625,7 +633,7 @@ void	check_modifiers_string(void)
 	vectS.assign(itbS, iteS);
 	check_vector(vectF2, vectS2, 1);
 
-	std::cout << "\n  --- Push/Pop_Front/Back ---\n";
+	std::cout << "\n  --- Push/Pop_Back ---\n";
 
 	vectF2.push_back("What is this?");
 	vectF2.push_back("Yellow Sub");
@@ -651,11 +659,17 @@ void	check_modifiers_string(void)
 	vectS2.insert(itbS2, 5, "Ab64");
 	check_vector(vectF2, vectS2);
 
+	itbF2 = ++vectF2.begin();
+	itbS2 = ++vectS2.begin();
+
 	vectF2.insert(itbF2, itbF, iteF);
 	vectS2.insert(itbS2, itbS, iteS);
 	check_vector(vectF2, vectS2);
 
 	std::cout << "\n  --- Erase ---\n";
+	itbF2 = ++vectF2.begin();
+	itbS2 = ++vectS2.begin();
+	
 	itbF2 = vectF2.erase(--itbF2);
 	itbS2 = vectS2.erase(--itbS2);
 	check_vector(vectF2, vectS2);

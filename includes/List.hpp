@@ -87,8 +87,8 @@ public:
 	typedef ListReverseIterator<T, Node<T> *> reverse_iterator;
 	typedef ListConstReverseIterator<const T,  Node<const T> *> const_reverse_iterator;
 	
-	typedef typename std::allocator<T> allocator_type;
-	typedef typename T value_type;
+	typedef Alloc allocator_type;
+	typedef T value_type;
 
 	typedef	size_t size_type;
 
