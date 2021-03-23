@@ -154,8 +154,9 @@ void	check_map_const(const ft::Map< Key, T, Compare, Alloc> & myMap, const std::
 	ss_ft << "[";
 	while (itF != myMap.end())
 	{
-		ss_ft << stream_pair(*(itF++));
-		if (itF != myMap.end())
+		// ss_ft << stream_pair(*(itF++));
+		ss_ft << "(" << (*itF).first << "," << (*itF).second << ")";
+		if (++itF != myMap.end())
 			ss_ft << ", ";
 	}
 	ss_ft << "]\n";
@@ -164,8 +165,9 @@ void	check_map_const(const ft::Map< Key, T, Compare, Alloc> & myMap, const std::
 	ss_std << "[";
 	while (itS != realMap.end())
 	{
-		ss_std << stream_pair(*(itS++));
-		if (itS != realMap.end())
+		// ss_std << stream_pair(*(itS++));
+		ss_std << "(" << (*itS).first << "," << (*itS).second << ")";
+		if (++itS != realMap.end())
 			ss_std << ", ";
 	}
 	ss_std << "]\n";
@@ -205,8 +207,9 @@ void	check_map_reverse(ft::Map< Key, T, Compare, Alloc> & myMap, std::map< Key, 
 	ss_ft << "[";
 	while (itF != myMap.rend())
 	{
-		ss_ft << stream_pair(*(itF++));
-		if (itF != myMap.rend())
+		// ss_ft << stream_pair(*(itF++));
+		ss_ft << "(" << (*itF).first << "," << (*itF).second << ")";
+		if (++itF != myMap.rend())
 			ss_ft << ", ";
 	}
 	ss_ft << "]\n";
@@ -215,8 +218,9 @@ void	check_map_reverse(ft::Map< Key, T, Compare, Alloc> & myMap, std::map< Key, 
 	ss_std << "[";
 	while (itS != realMap.rend())
 	{
-		ss_std << stream_pair(*(itS++));
-		if (itS != realMap.rend())
+		// ss_std << stream_pair(*(itS++));
+		ss_std << "(" << (*itS).first << "," << (*itS).second << ")";
+		if (++itS != realMap.rend())
 			ss_std << ", ";
 	}
 	ss_std << "]\n";
@@ -263,8 +267,9 @@ void	check_map_const_reverse(const ft::Map< Key, T, Compare, Alloc> & myMap, con
 	ss_ft << "[";
 	while (itF != myMap.rend())
 	{
-		ss_ft << stream_pair(*(itF++));
-		if (itF != myMap.rend())
+		// ss_ft << stream_pair(*(itF++));
+		ss_ft << "(" << (*itF).first << "," << (*itF).second << ")";
+		if (++itF != myMap.rend())
 			ss_ft << ", ";
 	}
 	ss_ft << "]\n";
@@ -273,8 +278,9 @@ void	check_map_const_reverse(const ft::Map< Key, T, Compare, Alloc> & myMap, con
 	ss_std << "[";
 	while (itS != realMap.rend())
 	{
-		ss_std << stream_pair(*(itS++));
-		if (itS != realMap.rend())
+		// ss_std << stream_pair(*(itS++));
+		ss_std << "(" << (*itS).first << "," << (*itS).second << ")";
+		if (++itS != realMap.rend())
 			ss_std << ", ";
 	}
 	ss_std << "]\n";
@@ -418,1163 +424,694 @@ void	check_constructors_string(void)
 }
 
 
-// void	check_iterators(void)
-// {
-// 	std::cout << "\033[1;36m\n===== Iterators =====\033[0m\n";
+void	check_iterators(void)
+{
+	std::cout << "\033[1;36m\n===== Iterators =====\033[0m\n";
 
-// 	ft::Map<int, std::string>	mpF;
-// 	std::map<int, std::string>	mpS;
+	ft::Map<int, std::string>	mpF;
+	std::map<int, std::string>	mpS;
 
-// 	mpF.insert(std::pair<int, std::string>(3, "3"));
-// 	mpF.insert(std::pair<int, std::string>(1, "1"));
-// 	mpF.insert(std::pair<int, std::string>(2, "2"));
-// 	mpF.insert(std::pair<int, std::string>(4, "4"));
-// 	mpS.insert(std::pair<int, std::string>(3, "3"));
-// 	mpS.insert(std::pair<int, std::string>(1, "1"));
-// 	mpS.insert(std::pair<int, std::string>(2, "2"));
-// 	mpS.insert(std::pair<int, std::string>(4, "4"));
+	mpF.insert(std::pair<int, std::string>(3, "3"));
+	mpF.insert(std::pair<int, std::string>(1, "1"));
+	mpF.insert(std::pair<int, std::string>(2, "2"));
+	mpF.insert(std::pair<int, std::string>(4, "4"));
+	mpS.insert(std::pair<int, std::string>(3, "3"));
+	mpS.insert(std::pair<int, std::string>(1, "1"));
+	mpS.insert(std::pair<int, std::string>(2, "2"));
+	mpS.insert(std::pair<int, std::string>(4, "4"));
 
-// 	check_map	(mpF, mpS);
-// 	check_map_const(mpF, mpS);
-// 	check_map_reverse(mpF, mpS);
-// 	check_map_const_reverse(mpF, mpS);
+	check_map	(mpF, mpS);
+	check_map_const(mpF, mpS);
+	check_map_reverse(mpF, mpS);
+	check_map_const_reverse(mpF, mpS);
 
-// 	std::cout << "\n";
-// }
+	std::cout << "\n";
+}
 
-// void	check_capacity(void)
-// {
-// 	std::cout << "\033[1;36m\n===== Capacity =====\033[0m\n";
+void	check_capacity(void)
+{
+	std::cout << "\033[1;36m\n===== Capacity =====\033[0m\n";
 
-// 	ft::Map<int, std::string>	mpF;
-// 	std::map<int, std::string>	mpS;
+	ft::Map<const std::string, std::string>	mpF;
+	std::map<const std::string, std::string>	mpS;
 
-// 	size_t	valF;
-// 	size_t	valS;
+	size_t	valF;
+	size_t	valS;
 
-// 	valF = mpF.max_size();
-// 	valS = mpS.max_size();
-// 	check_value(valF, valS);
+	valF = mpF.max_size();
+	valS = mpS.max_size();
+	check_value(valF, valS);
 
-// 	valF = mpF.empty();
-// 	valS = mpS.empty();
-// 	check_value(valF, valS);
-// 	valF = mpF.size();
-// 	valS = mpS.size();
-// 	check_value(valF, valS);
+	valF = mpF.empty();
+	valS = mpS.empty();
+	check_value(valF, valS);
+	valF = mpF.size();
+	valS = mpS.size();
+	check_value(valF, valS);
 
-// 	mpF.push_back(1);
-// 	mpF.push_back(2);
-// 	mpF.push_back(3);
-// 	mpS.push_back(1);
-// 	mpS.push_back(2);
-// 	mpS.push_back(3);
 
-// 	valF = mpF.empty();
-// 	valS = mpS.empty();
-// 	check_value(valF, valS);
+	mpF.insert(std::pair<const std::string, std::string>("key3", "val3"));
+	mpF.insert(std::pair<const std::string, std::string>("key1", "val1"));
+	mpF.insert(std::pair<const std::string, std::string>("key2", "val2"));
+	mpF.insert(std::pair<const std::string, std::string>("key4", "val4"));
+	mpS.insert(std::pair<const std::string, std::string>("key3", "val3"));
+	mpS.insert(std::pair<const std::string, std::string>("key1", "val1"));
+	mpS.insert(std::pair<const std::string, std::string>("key2", "val2"));
+	mpS.insert(std::pair<const std::string, std::string>("key4", "val4"));
 
-// 	valF = mpF.size();
-// 	valS = mpS.size();
-// 	check_value(valF, valS);
+	valF = mpF.empty();
+	valS = mpS.empty();
+	check_value(valF, valS);
 
-// 	std::cout << "\n";
-// }
+	valF = mpF.size();
+	valS = mpS.size();
+	check_value(valF, valS);
 
-// void	check_element_access(void)
-// {
-// 	std::cout << "\033[1;36m\n===== Element access =====\033[0m\n";
+	std::cout << "\n";
+}
 
-// 	ft::Map<int, std::string>	mpF;
-// 	std::map<int, std::string>	mpS;
+void	check_element_access(void)
+{
+	std::cout << "\033[1;36m\n===== Element access =====\033[0m\n";
 
-// 	int		valF;
-// 	int		valS;
+	ft::Map<const int, std::string>	mpF;
+	std::map<const int, std::string>	mpS;
+	check_map(mpF, mpS);
 
-// 	mpF.push_back(1);
-// 	mpF.push_back(2);
-// 	mpF.push_back(3);
-// 	mpS.push_back(1);
-// 	mpS.push_back(2);
-// 	mpS.push_back(3);
+	mpF.insert(std::pair<const int, std::string>(3, "3-"));
+	mpF.insert(std::pair<const int, std::string>(1, "1-"));
+	mpF.insert(std::pair<const int, std::string>(2, "2-"));
+	mpF.insert(std::pair<const int, std::string>(4, "4-"));
+	mpS.insert(std::pair<const int, std::string>(3, "3-"));
+	mpS.insert(std::pair<const int, std::string>(1, "1-"));
+	mpS.insert(std::pair<const int, std::string>(2, "2-"));
+	mpS.insert(std::pair<const int, std::string>(4, "4-"));
 
-// 	valF = mpF.front();
-// 	valS = mpS.front();
-// 	check_value(valF, valS);
+	std::string	valF;
+	std::string	valS;
 
-// 	const int		cvalF = mpF.front();
-// 	const int		cvalS = mpS.front();
-// 	check_value(cvalF, cvalS);
+	valF = mpF[2];
+	valS = mpS[2];
+	check_value(valF, valS);
 
-// 	valF = mpF.back();
-// 	valS = mpS.back();
-// 	check_value(valF, valS);
+	const std::string		cvalF = mpF[4];
+	const std::string		cvalS = mpS[4];
+	check_value(cvalF, cvalS);
 
-// 	const int	cvalF2 = mpF.back();
-// 	const int	cvalS2 = mpS.back();
-// 	check_value(cvalF2, cvalS2);
+	const std::string	cvalF2 = mpF[1];
+	const std::string	cvalS2 = mpS[1];
+	check_value(cvalF2, cvalS2);
 
-// 	std::cout << "\n";
-// }
+	valF = mpF[5];
+	valS = mpS[5];
+	check_value(valF, valS);
 
-// void	check_modifiers(void)
-// {
-// 	std::cout << "\033[1;36m\n===== Modifiers =====\033[0m\n";
+	std::cout << "\n";
+}
 
-// 	std::cout << "  --- Assign ---\n";
-// 	ft::Map<int, std::string>	mpF;
-// 	std::map<int, std::string>	mpS;
+void	check_modifiers(void)
+{
+	std::cout << "\033[1;36m\n===== Modifiers =====\033[0m\n";
 
-// 	mpF.assign(5, 42);
-// 	mpS.assign(5, 42);
-// 	check_map(mpF, mpS);
+	ft::Map<const int, std::string>		mpF;
+	std::map<const int, std::string>	mpS;
 
-// 	ft::Map<int, std::string>	mpF2;
-// 	std::map<int, std::string>	mpS2;
+	std::cout << "\n  --- Insert ---\n";
 
-// 	ft::Map<int, std::string>::iterator		itbF = mpF.begin()++;
-// 	ft::Map<int, std::string>::iterator		iteF = mpF.end()--;
-// 	std::map<int, std::string>::iterator	itbS = mpS.begin()++;
-// 	std::map<int, std::string>::iterator	iteS = mpS.end()--;
 	
-// 	mpF.assign(itbF, iteF);
-// 	mpS.assign(itbS, iteS);
-// 	check_map(mpF2, mpS2, 1);
+	mpF.insert(std::pair<const int, std::string>(3, "3-"));
+	mpF.insert(std::pair<const int, std::string>(1, "1-"));
+	mpF.insert(std::pair<const int, std::string>(9, "9-"));
+	mpF.insert(std::pair<const int, std::string>(6, "6-"));
+	mpS.insert(std::pair<const int, std::string>(3, "3-"));
+	mpS.insert(std::pair<const int, std::string>(1, "1-"));
+	mpS.insert(std::pair<const int, std::string>(9, "9-"));
+	mpS.insert(std::pair<const int, std::string>(6, "6-"));
 
-// 	std::cout << "\n  --- Push/Pop_Front/Back ---\n";
+	ft::Map<const int, std::string>::iterator		itbF = ++mpF.begin();
+	std::map<const int, std::string>::iterator	itbS = ++mpS.begin();
 
-// 	mpF2.push_front(2);
-// 	mpF2.push_front(1);
-// 	mpS2.push_front(2);
-// 	mpS2.push_front(1);
-// 	check_map(mpF2, mpS2);
+	mpF.insert(itbF, std::pair<const int, std::string>(5, "5-"));
+	mpS.insert(itbS, std::pair<const int, std::string>(5, "5-"));
+	check_map(mpF, mpS);
 
-// 	mpF2.push_back(3);
-// 	mpF2.push_back(5);
-// 	mpS2.push_back(3);
-// 	mpS2.push_back(5);
-// 	check_map(mpF2, mpS2);
+	ft::Map<const int, std::string>		mpF2;
+	std::map<const int, std::string>	mpS2;
 
-// 	mpF2.pop_front();
-// 	mpS2.pop_front();
-// 	check_map(mpF2, mpS2);
+	mpF2.insert(std::pair<const int, std::string>(8, "8-"));
+	mpF2.insert(std::pair<const int, std::string>(4, "4-"));
+	mpF2.insert(std::pair<const int, std::string>(2, "2-"));
+	mpS2.insert(std::pair<const int, std::string>(8, "8-"));
+	mpS2.insert(std::pair<const int, std::string>(4, "4-"));
+	mpS2.insert(std::pair<const int, std::string>(2, "2-"));
 
-// 	mpF2.pop_back();
-// 	mpS2.pop_back();
-// 	check_map(mpF2, mpS2);
+	ft::Map<const int, std::string>::iterator		itbF2 = mpF2.begin();
+	std::map<const int, std::string>::iterator	itbS2 = mpS2.begin();
+	ft::Map<const int, std::string>::iterator		iteF2 = mpF2.end();
+	std::map<const int, std::string>::iterator	iteS2 = mpS2.end();
 
+	mpF.insert(itbF2, iteF2);
+	mpS.insert(itbS2, iteS2);
+	check_map(mpF, mpS);
 
-// 	std::cout << "\n  --- Insert ---\n";
+	std::cout << "\n  --- Erase ---\n";
 
-// 	ft::Map<int, std::string>::iterator		itbF2 = ++mpF2.begin();
-// 	std::map<int, std::string>::iterator	itbS2 = ++mpS2.begin();
+	itbF = ++mpF.begin();
+	itbS = ++mpS.begin();
+	ft::Map<const int, std::string>::iterator		iteF = --mpF.end();
+	std::map<const int, std::string>::iterator	iteS = --mpS.end();
 
-// 	itbF2 = mpF2.insert(itbF2, 56);
-// 	itbS2 = mpS2.insert(itbS2, 56);
-// 	check_map(mpF2, mpS2);
+	mpF.erase(itbF);
+	mpS.erase(itbS);
+	check_map(mpF, mpS);
 
-// 	mpF2.insert(itbF2, 5, 93);
-// 	mpS2.insert(itbS2, 5, 93);
-// 	check_map(mpF2, mpS2);
+	itbF = ++mpF.begin();
+	itbS = ++mpS.begin();
 
-// 	mpF2.insert(itbF2, itbF, iteF);
-// 	mpS2.insert(itbS2, itbS, iteS);
-// 	check_map(mpF2, mpS2);
+	for(int i = 0; i < 3; i++)
+	{
+		iteF--;
+		iteS--;
+	}
 
-// 	std::cout << "\n  --- Erase ---\n";
-// 	itbF2 = mpF2.erase(--itbF2);
-// 	itbS2 = mpS2.erase(--itbS2);
-// 	check_map(mpF2, mpS2);
+	mpF.erase(itbF, iteF);
+	mpS.erase(itbS, iteS);
+	check_map(mpF, mpS);
 
-// 	ft::Map<int, std::string>::iterator		iteF2 = --mpF2.end();
-// 	std::map<int, std::string>::iterator	iteS2 = --mpS2.end();
+	size_t	valF;
+	size_t	valS;
 
-// 	itbF2 = ++mpF2.begin();
-// 	itbS2 = ++mpS2.begin();
+	valF = mpF.erase(15);
+	valS = mpS.erase(15);
+	check_map(mpF, mpS);
+	check_value(valF, valS);
 
-// 	mpF2.erase(itbF2, iteF2);
-// 	mpS2.erase(itbS2, iteS2);
-// 	check_map(mpF2, mpS2);
+	valF = mpF.erase(6);
+	valS = mpS.erase(6);
+	check_map(mpF, mpS);
+	check_value(valF, valS);
 
+	std::cout << "\n  --- Swap ---\n";
+	mpF.swap(mpF2);
+	mpS.swap(mpS2);
+	check_map(mpF, mpS);
+	check_map(mpF2, mpS2);
 
-// 	std::cout << "\n  --- Swap ---\n";
-// 	mpF.swap(mpF2);
-// 	mpS.swap(mpS2);
-// 	check_map(mpF, mpS);
-// 	check_map(mpF2, mpS2);
+	std::cout << "\n  --- Clear ---\n";
+	mpF.clear();
+	mpF2.clear();
+	mpS.clear();
+	mpS2.clear();
+	check_map(mpF, mpS);
+	check_map(mpF2, mpS2);
 
-// 	swap(mpF, mpF2);
-// 	swap(mpS, mpS2);
-// 	check_map(mpF, mpS);
-// 	check_map(mpF2, mpS2);
+	std::cout << "\n";
+}
 
-// 	std::cout << "\n  --- Resize ---\n";
-// 	mpF2.resize(0);
-// 	mpS2.resize(0);
-// 	check_map(mpF2, mpS2);
+void	check_modifiers_string(void)
+{
+	std::cout << "\033[1;36m\n===== Modifiers string =====\033[0m\n";
+
+	ft::Map<const std::string, std::string>		mpF;
+	std::map<const std::string, std::string>	mpS;
+
+	std::cout << "\n  --- Insert ---\n";
+
 	
-// 	mpF2.resize(12, -42);
-// 	mpS2.resize(12, -42);
-// 	check_map(mpF2, mpS2);
+	mpF.insert(std::pair<const std::string, std::string>("3", "3-"));
+	mpF.insert(std::pair<const std::string, std::string>("1", "1-"));
+	mpF.insert(std::pair<const std::string, std::string>("9", "9-"));
+	mpF.insert(std::pair<const std::string, std::string>("6", "6-"));
+	mpS.insert(std::pair<const std::string, std::string>("3", "3-"));
+	mpS.insert(std::pair<const std::string, std::string>("1", "1-"));
+	mpS.insert(std::pair<const std::string, std::string>("9", "9-"));
+	mpS.insert(std::pair<const std::string, std::string>("6", "6-"));
 
-// 	std::cout << "\n  --- Clear ---\n";
-// 	mpF.clear();
-// 	mpF2.clear();
-// 	mpS.clear();
-// 	mpS2.clear();
-// 	check_map(mpF, mpS);
-// 	check_map(mpF2, mpS2);
+	ft::Map<const std::string, std::string>::iterator		itbF = ++mpF.begin();
+	std::map<const std::string, std::string>::iterator	itbS = ++mpS.begin();
 
-// 	std::cout << "\n";
-// }
+	mpF.insert(itbF, std::pair<const std::string, std::string>("5", "5-"));
+	mpS.insert(itbS, std::pair<const std::string, std::string>("5", "5-"));
+	check_map(mpF, mpS);
 
-// void	check_modifiers_string(void)
-// {
-// 	std::cout << "\033[1;36m\n===== Modifiers string =====\033[0m\n";
+	ft::Map<const std::string, std::string>		mpF2;
+	std::map<const std::string, std::string>	mpS2;
 
-// 	std::cout << "  --- Assign ---\n";
-// 	ft::Map<std::string>	mpF;
-// 	std::map<std::string>	mpS;
+	mpF2.insert(std::pair<const std::string, std::string>("8", "8-"));
+	mpF2.insert(std::pair<const std::string, std::string>("4", "4-"));
+	mpF2.insert(std::pair<const std::string, std::string>("2", "2-"));
+	mpS2.insert(std::pair<const std::string, std::string>("8", "8-"));
+	mpS2.insert(std::pair<const std::string, std::string>("4", "4-"));
+	mpS2.insert(std::pair<const std::string, std::string>("2", "2-"));
 
-// 	mpF.assign(5, "test");
-// 	mpS.assign(5, "test");
-// 	check_map(mpF, mpS);
+	ft::Map<const std::string, std::string>::iterator		itbF2 = mpF2.begin();
+	std::map<const std::string, std::string>::iterator	itbS2 = mpS2.begin();
+	ft::Map<const std::string, std::string>::iterator		iteF2 = mpF2.end();
+	std::map<const std::string, std::string>::iterator	iteS2 = mpS2.end();
 
-// 	ft::Map<std::string>	mpF2;
-// 	std::map<std::string>	mpS2;
+	mpF.insert(itbF2, iteF2);
+	mpS.insert(itbS2, iteS2);
+	check_map(mpF, mpS);
 
-// 	ft::Map<std::string>::iterator		itbF = mpF.begin()++;
-// 	ft::Map<std::string>::iterator		iteF = mpF.end()--;
-// 	std::map<std::string>::iterator	itbS = mpS.begin()++;
-// 	std::map<std::string>::iterator	iteS = mpS.end()--;
+	std::cout << "\n  --- Erase ---\n";
+
+	itbF = ++mpF.begin();
+	itbS = ++mpS.begin();
+	ft::Map<const std::string, std::string>::iterator		iteF = --mpF.end();
+	std::map<const std::string, std::string>::iterator	iteS = --mpS.end();
+
+	mpF.erase(itbF);
+	mpS.erase(itbS);
+	check_map(mpF, mpS);
+
+	itbF = ++mpF.begin();
+	itbS = ++mpS.begin();
+
+	for(int i = 0; i < 3; i++)
+	{
+		iteF--;
+		iteS--;
+	}
+
+	mpF.erase(itbF, iteF);
+	mpS.erase(itbS, iteS);
+	check_map(mpF, mpS);
+
+	size_t	valF;
+	size_t	valS;
+
+	valF = mpF.erase("15");
+	valS = mpS.erase("15");
+	check_map(mpF, mpS);
+	check_value(valF, valS);
+
+	valF = mpF.erase("6");
+	valS = mpS.erase("6");
+	check_map(mpF, mpS);
+	check_value(valF, valS);
+
+	std::cout << "\n  --- Swap ---\n";
+	mpF.swap(mpF2);
+	mpS.swap(mpS2);
+	check_map(mpF, mpS);
+	check_map(mpF2, mpS2);
+
+	std::cout << "\n  --- Clear ---\n";
+	mpF.clear();
+	mpF2.clear();
+	mpS.clear();
+	mpS2.clear();
+	check_map(mpF, mpS);
+	check_map(mpF2, mpS2);
+
+	std::cout << "\n";
+}
+
+void	check_operations(void)
+{
+	std::cout << "\033[1;36m\n===== Operations =====\033[0m\n";
+
+	std::cout << "  --- Find ---\n";
 	
-// 	mpF.assign(itbF, iteF);
-// 	mpS.assign(itbS, iteS);
-// 	check_map(mpF2, mpS2, 1);
-
-// 	std::cout << "\n  --- Push/Pop_Front/Back ---\n";
-
-// 	mpF2.push_front("bla");
-// 	mpF2.push_front("tree");
-// 	mpS2.push_front("bla");
-// 	mpS2.push_front("tree");
-// 	check_map(mpF2, mpS2);
-
-// 	mpF2.push_back("What is this?");
-// 	mpF2.push_back("Yellow Sub");
-// 	mpS2.push_back("What is this?");
-// 	mpS2.push_back("Yellow Sub");
-// 	check_map(mpF2, mpS2);
-
-// 	mpF2.pop_front();
-// 	mpS2.pop_front();
-// 	check_map(mpF2, mpS2);
-
-// 	mpF2.pop_back();
-// 	mpS2.pop_back();
-// 	check_map(mpF2, mpS2);
-
-
-// 	std::cout << "\n  --- Insert ---\n";
-
-// 	ft::Map<std::string>::iterator		itbF2 = ++mpF2.begin();
-// 	std::map<std::string>::iterator	itbS2 = ++mpS2.begin();
-
-// 	itbF2 = mpF2.insert(itbF2, "42");
-// 	itbS2 = mpS2.insert(itbS2, "42");
-// 	check_map(mpF2, mpS2);
-
-// 	mpF2.insert(itbF2, 5, "Ab64");
-// 	mpS2.insert(itbS2, 5, "Ab64");
-// 	check_map(mpF2, mpS2);
-
-// 	mpF2.insert(itbF2, itbF, iteF);
-// 	mpS2.insert(itbS2, itbS, iteS);
-// 	check_map(mpF2, mpS2);
-
-// 	std::cout << "\n  --- Erase ---\n";
-// 	itbF2 = mpF2.erase(--itbF2);
-// 	itbS2 = mpS2.erase(--itbS2);
-// 	check_map(mpF2, mpS2);
-
-// 	ft::Map<std::string>::iterator		iteF2 = --mpF2.end();
-// 	std::map<std::string>::iterator	iteS2 = --mpS2.end();
-
-// 	itbF2 = ++mpF2.begin();
-// 	itbS2 = ++mpS2.begin();
-
-// 	mpF2.erase(itbF2, iteF2);
-// 	mpS2.erase(itbS2, iteS2);
-// 	check_map(mpF2, mpS2);
-
-
-// 	std::cout << "\n  --- Swap ---\n";
-// 	mpF.swap(mpF2);
-// 	mpS.swap(mpS2);
-// 	check_map(mpF, mpS);
-// 	check_map(mpF2, mpS2);
-
-// 	swap(mpF, mpF2);
-// 	swap(mpS, mpS2);
-// 	check_map(mpF, mpS);
-// 	check_map(mpF2, mpS2);
-
-// 	std::cout << "\n  --- Resize ---\n";
-// 	mpF2.resize(0);
-// 	mpS2.resize(0);
-// 	check_map(mpF2, mpS2);
+	ft::Map<const int, std::string>		mpF;
+	std::map<const int, std::string>	mpS;
 	
-// 	mpF2.resize(12, "new str");
-// 	mpS2.resize(12, "new str");
-// 	check_map(mpF2, mpS2);
-
-// 	std::cout << "\n  --- Clear ---\n";
-// 	mpF.clear();
-// 	mpF2.clear();
-// 	mpS.clear();
-// 	mpS2.clear();
-// 	check_map(mpF, mpS);
-// 	check_map(mpF2, mpS2);
-
-// 	std::cout << "\n";
-// }
-
-// void	check_operations(void)
-// {
-// 	std::cout << "\033[1;36m\n===== Operations =====\033[0m\n";
-
-// 	std::cout << "  --- Splice ---\n";
-// 	ft::Map<int, std::string>	mpF;
-// 	std::map<int, std::string>	mpS;
-
-// 	ft::Map<int, std::string>	mpF2;
-// 	std::map<int, std::string>	mpS2;
-
-// 	mpF.push_back(1);
-// 	mpF.push_back(4);
-// 	mpF.push_back(5);
-
-// 	mpF2.push_back(2);
-// 	mpF2.push_back(3);
-
-// 	mpS.push_back(1);
-// 	mpS.push_back(4);
-// 	mpS.push_back(5);
-
-// 	mpS2.push_back(2);
-// 	mpS2.push_back(3);
-
-// 	ft::Map<int, std::string>::iterator		itbF = ++mpF.begin();
-// 	std::map<int, std::string>::iterator	itbS = ++mpS.begin();
-
-// 	mpF.splice(itbF, mpF2);
-// 	mpS.splice(itbS, mpS2);
-// 	check_map(mpF, mpS);
-// 	check_map(mpF2, mpS2);
-
-// 	mpF2.push_back(6);
-// 	mpF2.push_back(7);
-// 	mpF2.push_back(8);
-// 	mpF2.push_back(9);
-// 	mpF2.push_back(10);
-
-// 	mpS2.push_back(6);
-// 	mpS2.push_back(7);
-// 	mpS2.push_back(8);
-// 	mpS2.push_back(9);
-// 	mpS2.push_back(10);
-
-// 	mpF.splice(mpF.end(), mpF2, ++mpF2.begin());
-// 	mpS.splice(mpS.end(), mpS2, ++mpS2.begin());
-// 	check_map(mpF, mpS);
-// 	check_map(mpF2, mpS2);
-
-// 	mpF.splice(mpF.end(), mpF2, ++mpF2.begin(), --mpF2.end());
-// 	mpS.splice(mpS.end(), mpS2, ++mpS2.begin(), --mpS2.end());
-// 	check_map(mpF, mpS);
-// 	check_map(mpF2, mpS2);
-
-// 	std::cout << "\n  --- Remove/Remove_if ---\n";
-
-// 	ft::Map<int, std::string>	mpF3;
-// 	std::map<int, std::string>	mpS3;
-
-// 	mpF3.remove(2);
-// 	mpS3.remove(2);
-// 	check_map(mpF3, mpS3);
-
-// 	mpF.push_back(2);
-// 	mpS.push_back(2);
-// 	mpF.remove(2);
-// 	mpS.remove(2);
-// 	check_map(mpF, mpS);
-
-// 	mpF.remove(2);
-// 	mpS.remove(2);
-// 	check_map(mpF, mpS);
-
-// 	mpF.remove_if(is_even);
-// 	mpS.remove_if(is_even);
-// 	check_map(mpF, mpS);
-
-// 	std::cout << "\n  --- Unique ---\n";
-
-// 	mpF.push_front(10);
-// 	mpF.push_front(10);
-// 	mpS.push_front(10);
-// 	mpS.push_front(10);
-// 	mpF.push_front(-5);
-// 	mpF.push_front(-5);
-// 	mpS.push_front(-5);
-// 	mpS.push_front(-5);
-// 	mpF.push_front(-10);
-// 	mpF.push_front(-10);
-// 	mpS.push_front(-10);
-// 	mpS.push_front(-10);
-// 	mpF.unique();
-// 	mpS.unique();
-// 	check_map(mpF, mpS);
-
-// 	mpF.unique(are_factor_five);
-// 	mpS.unique(are_factor_five);
-// 	check_map(mpF, mpS);
-
-// 	std::cout << "\n  --- Merge ---\n";
-// 	mpF.merge(mpF2);
-// 	mpS.merge(mpS2);
-// 	check_map(mpF, mpS);
-// 	check_map(mpF2, mpS2);
-
-// 	mpF2.push_back(8);
-// 	mpF2.push_back(4);
-// 	mpF2.push_back(2);
-
-// 	mpS2.push_back(8);
-// 	mpS2.push_back(4);
-// 	mpS2.push_back(2);
-
-// 	mpF.reverse();
-// 	mpS.reverse();
-// 	mpF.merge(mpF2, is_greater);
-// 	mpS.merge(mpS2, is_greater);
-// 	check_map(mpF, mpS);
-// 	check_map(mpF2, mpS2);
-
-// 	std::cout << "\n  --- Sort ---\n";
-
-// 	mpF2.push_back(100);
-// 	mpF2.push_back(-22);
-// 	mpF2.push_back(9);
-// 	mpF2.push_back(-42);
-// 	mpF2.push_back(56);
-// 	mpF2.push_back(9);
-// 	mpF2.push_back(93);
-
-// 	mpS2.push_back(100);
-// 	mpS2.push_back(-22);
-// 	mpS2.push_back(9);
-// 	mpS2.push_back(-42);
-// 	mpS2.push_back(56);
-// 	mpS2.push_back(9);
-// 	mpS2.push_back(93);
-
-// 	mpF2.sort();
-// 	mpS2.sort();
-// 	check_map(mpF2, mpS2);
-
-// 	mpF2.clear();
-// 	mpS2.clear();
-
-// 	mpF2.push_back(100);
-// 	mpF2.push_back(-22);
-// 	mpF2.push_back(9);
-// 	mpF2.push_back(-42);
-// 	mpF2.push_back(56);
-// 	mpF2.push_back(9);
-// 	mpF2.push_back(93);
-
-// 	mpS2.push_back(100);
-// 	mpS2.push_back(-22);
-// 	mpS2.push_back(9);
-// 	mpS2.push_back(-42);
-// 	mpS2.push_back(56);
-// 	mpS2.push_back(9);
-// 	mpS2.push_back(93);
-
-// 	mpF2.sort(is_greater);
-// 	mpS2.sort(is_greater);
-// 	check_map(mpF2, mpS2);
-
-// 	std::cout << "\n  --- Reverse ---\n";
-
-// 	mpF2.reverse();
-// 	mpS2.reverse();
-// 	check_map(mpF2, mpS2);
-
-// 	mpF2.reverse();
-// 	mpS2.reverse();
-// 	check_map(mpF2, mpS2);
-
-// }
-
-// void	check_operations_string(void)
-// {
-// 	std::cout << "\033[1;36m\n===== Operations String =====\033[0m\n";
-
-// 	std::cout << "  --- Splice ---\n";
-// 	ft::Map<std::string>	mpF;
-// 	std::map<std::string>	mpS;
-
-// 	ft::Map<std::string>	mpF2;
-// 	std::map<std::string>	mpS2;
-
-// 	mpF.push_back("test");
-// 	mpF.push_back("bla");
-// 	mpF.push_back("tree");
-
-// 	mpF2.push_back("abc");
-// 	mpF2.push_back("abcd");
-
-// 	mpS.push_back("test");
-// 	mpS.push_back("bla");
-// 	mpS.push_back("tree");
-
-// 	mpS2.push_back("abc");
-// 	mpS2.push_back("abcd");
-
-// 	ft::Map<std::string>::iterator		itbF = ++mpF.begin();
-// 	std::map<std::string>::iterator	itbS = ++mpS.begin();
-
-// 	mpF.splice(itbF, mpF2);
-// 	mpS.splice(itbS, mpS2);
-// 	check_map(mpF, mpS);
-// 	check_map(mpF2, mpS2);
-
-// 	mpF2.push_back("abce");
-// 	mpF2.push_back("abcf");
-// 	mpF2.push_back("abcg");
-// 	mpF2.push_back("abch");
-// 	mpF2.push_back("abci");
-
-// 	mpS2.push_back("abce");
-// 	mpS2.push_back("abcf");
-// 	mpS2.push_back("abcg");
-// 	mpS2.push_back("abch");
-// 	mpS2.push_back("abci");
-
-// 	mpF.splice(mpF.end(), mpF2, ++mpF2.begin());
-// 	mpS.splice(mpS.end(), mpS2, ++mpS2.begin());
-// 	check_map(mpF, mpS);
-// 	check_map(mpF2, mpS2);
-
-// 	mpF.splice(mpF.end(), mpF2, ++mpF2.begin(), --mpF2.end());
-// 	mpS.splice(mpS.end(), mpS2, ++mpS2.begin(), --mpS2.end());
-// 	check_map(mpF, mpS);
-// 	check_map(mpF2, mpS2);
-
-// 	std::cout << "\n  --- Remove/Remove_if ---\n";
-
-// 	ft::Map<std::string>	mpF3;
-// 	std::map<std::string>	mpS3;
-
-// 	mpF3.remove("abc");
-// 	mpS3.remove("abc");
-// 	check_map(mpF3, mpS3);
-
-// 	mpF.push_back("abc");
-// 	mpS.push_back("abc");
-// 	mpF.remove("abc");
-// 	mpS.remove("abc");
-// 	check_map(mpF, mpS);
-
-// 	mpF.remove("abc");
-// 	mpS.remove("abc");
-// 	check_map(mpF, mpS);
-
-// 	mpF.remove_if(has_length_3);
-// 	mpS.remove_if(has_length_3);
-// 	check_map(mpF, mpS);
-
-// 	std::cout << "\n  --- Unique ---\n";
-
-// 	mpF.push_front("bcd");
-// 	mpF.push_front("bcd");
-// 	mpS.push_front("bcd");
-// 	mpS.push_front("bcd");
-// 	mpF.push_front("bbb");
-// 	mpF.push_front("bbb");
-// 	mpS.push_front("bbb");
-// 	mpS.push_front("bbb");
-// 	mpF.push_front("bcc");
-// 	mpF.push_front("bcc");
-// 	mpS.push_front("bcc");
-// 	mpS.push_front("bcc");
-// 	mpF.unique();
-// 	mpS.unique();
-// 	check_map(mpF, mpS);
-
-// 	mpF.unique(same_length);
-// 	mpS.unique(same_length);
-// 	check_map(mpF, mpS);
-
-// 	std::cout << "\n  --- Merge ---\n";
-// 	mpF.merge(mpF2);
-// 	mpS.merge(mpS2);
-// 	check_map(mpF, mpS);
-// 	check_map(mpF2, mpS2);
-
-// 	mpF2.push_back("abcg");
-// 	mpF2.push_back("abch");
-// 	mpF2.push_back("abce");
-
-// 	mpS2.push_back("abcg");
-// 	mpS2.push_back("abch");
-// 	mpS2.push_back("abce");
-
-// 	mpF.reverse();
-// 	mpS.reverse();
-// 	check_map(mpF, mpS);
-
-
-// 	mpF.merge(mpF2, same_length);
-// 	mpS.merge(mpS2, same_length);
-// 	check_map(mpF, mpS);
-// 	check_map(mpF2, mpS2);
-
-// 	std::cout << "\n  --- Sort ---\n";
-
-// 	mpF2.push_back("hello");
-// 	mpF2.push_back("Hello");
-// 	mpF2.push_back("Hola");
-// 	mpF2.push_back("hola");
-
-// 	mpS2.push_back("hello");
-// 	mpS2.push_back("Hello");
-// 	mpS2.push_back("Hola");
-// 	mpS2.push_back("hola");
-
-// 	mpF2.sort();
-// 	mpS2.sort();
-// 	check_map(mpF2, mpS2);
-
-// 	mpF2.clear();
-// 	mpS2.clear();
-
-// 	mpF2.push_back("Hello");
-// 	mpF2.push_back("Hello1");
-// 	mpF2.push_back("Hello2");
-// 	mpF2.push_back("hello");
-// 	mpF2.push_back("Hola");
-// 	mpF2.push_back("hola");
-// 	mpF2.push_back("hellO");
-
-// 	mpS2.push_back("Hello");
-// 	mpS2.push_back("Hello1");
-// 	mpS2.push_back("Hello2");
-// 	mpS2.push_back("hello");
-// 	mpS2.push_back("Hola");
-// 	mpS2.push_back("hola");
-// 	mpS2.push_back("hellO");
-
-// 	mpF2.sort(same_length);
-// 	mpS2.sort(same_length);
-// 	check_map(mpF2, mpS2);
-
-// 	mpF2.sort(is_greaters);
-// 	mpS2.sort(is_greaters);
-// 	check_map(mpF2, mpS2);
-
-// 	std::cout << "\n  --- Reverse ---\n";
-
-// 	mpF2.reverse();
-// 	mpS2.reverse();
-// 	check_map(mpF2, mpS2);
-
-// 	mpF2.reverse();
-// 	mpS2.reverse();
-// 	check_map(mpF2, mpS2);
-
-// }
-
-// void	check_comparison(void)
-// {
-// 	std::cout << "\033[1;36m\n===== Comparison =====\033[0m\n";
-
-// 	std::cout << "  ---  ==  ---\n";
-// 	ft::Map<int, std::string>	mpF;
-// 	std::map<int, std::string>	mpS;
-
-// 	ft::Map<int, std::string>	mpF2;
-// 	std::map<int, std::string>	mpS2;
-
-// 	mpF.push_back(1);
-// 	mpF.push_back(5);
-// 	mpF.push_back(4);
-
-// 	mpF2.push_back(1);
-// 	mpF2.push_back(5);
-
-// 	mpS.push_back(1);
-// 	mpS.push_back(5);
-// 	mpS.push_back(4);
-
-// 	mpS2.push_back(1);
-// 	mpS2.push_back(5);
-
-// 	bool	valF;
-// 	bool	valS;
-
-// 	valF = (mpF == mpF2);
-// 	valS = (mpS == mpS2);
-// 	check_value(valF, valS);
-
-// 	mpF2.push_back(6);
-// 	mpS2.push_back(6);
-// 	valF = (mpF == mpF2);
-// 	valS = (mpS == mpS2);
-// 	check_value(valF, valS);
-
-// 	mpF2.pop_back();
-// 	mpS2.pop_back();
-// 	mpF2.push_back(4);
-// 	mpS2.push_back(4);
-// 	valF = (mpF == mpF2);
-// 	valS = (mpS == mpS2);
-// 	check_value(valF, valS);
-
-// 	std::cout << "\n  ---  !=  ---\n";
-// 	mpF.clear();
-// 	mpF2.clear();
-// 	mpS.clear();
-// 	mpS2.clear();
-
-// 	mpF.push_back(1);
-// 	mpF.push_back(5);
-// 	mpF.push_back(4);
-
-// 	mpF2.push_back(1);
-// 	mpF2.push_back(5);
-
-// 	mpS.push_back(1);
-// 	mpS.push_back(5);
-// 	mpS.push_back(4);
-
-// 	mpS2.push_back(1);
-// 	mpS2.push_back(5);
-
-// 	valF = (mpF != mpF2);
-// 	valS = (mpS != mpS2);
-// 	check_value(valF, valS);
-
-// 	mpF2.push_back(6);
-// 	mpS2.push_back(6);
-// 	valF = (mpF != mpF2);
-// 	valS = (mpS != mpS2);
-// 	check_value(valF, valS);
-
-// 	mpF2.pop_back();
-// 	mpS2.pop_back();
-// 	mpF2.push_back(4);
-// 	mpS2.push_back(4);
-// 	valF = (mpF != mpF2);
-// 	valS = (mpS != mpS2);
-// 	check_value(valF, valS);
-
-// 	std::cout << "\n  ---  >  ---\n";
-// 	mpF.clear();
-// 	mpF2.clear();
-// 	mpS.clear();
-// 	mpS2.clear();
-
-// 	mpF.push_back(1);
-// 	mpF.push_back(5);
-// 	mpF.push_back(4);
-
-// 	mpF2.push_back(1);
-// 	mpF2.push_back(5);
-
-// 	mpS.push_back(1);
-// 	mpS.push_back(5);
-// 	mpS.push_back(4);
-
-// 	mpS2.push_back(1);
-// 	mpS2.push_back(5);
-
-// 	valF = (mpF > mpF2);
-// 	valS = (mpS > mpS2);
-// 	check_value(valF, valS);
-
-// 	mpF2.push_back(6);
-// 	mpS2.push_back(6);
-// 	valF = (mpF > mpF2);
-// 	valS = (mpS > mpS2);
-// 	check_value(valF, valS);
-
-// 	mpF2.pop_back();
-// 	mpS2.pop_back();
-// 	mpF2.push_back(4);
-// 	mpS2.push_back(4);
-// 	valF = (mpF > mpF2);
-// 	valS = (mpS > mpS2);
-// 	check_value(valF, valS);
-
-// 	std::cout << "\n  ---  <  ---\n";
-// 	mpF.clear();
-// 	mpF2.clear();
-// 	mpS.clear();
-// 	mpS2.clear();
-
-// 	mpF.push_back(1);
-// 	mpF.push_back(5);
-// 	mpF.push_back(4);
-
-// 	mpF2.push_back(1);
-// 	mpF2.push_back(5);
-
-// 	mpS.push_back(1);
-// 	mpS.push_back(5);
-// 	mpS.push_back(4);
-
-// 	mpS2.push_back(1);
-// 	mpS2.push_back(5);
-
-// 	valF = (mpF < mpF2);
-// 	valS = (mpS < mpS2);
-// 	check_value(valF, valS);
-
-// 	mpF2.push_back(6);
-// 	mpS2.push_back(6);
-// 	valF = (mpF < mpF2);
-// 	valS = (mpS < mpS2);
-// 	check_value(valF, valS);
-
-// 	mpF2.pop_back();
-// 	mpS2.pop_back();
-// 	mpF2.push_back(4);
-// 	mpS2.push_back(4);
-// 	valF = (mpF < mpF2);
-// 	valS = (mpS < mpS2);
-// 	check_value(valF, valS);
-
-// 	std::cout << "\n  ---  >=  ---\n";
-// 	mpF.clear();
-// 	mpF2.clear();
-// 	mpS.clear();
-// 	mpS2.clear();
-
-// 	mpF.push_back(1);
-// 	mpF.push_back(5);
-// 	mpF.push_back(4);
-
-// 	mpF2.push_back(1);
-// 	mpF2.push_back(5);
-
-// 	mpS.push_back(1);
-// 	mpS.push_back(5);
-// 	mpS.push_back(4);
-
-// 	mpS2.push_back(1);
-// 	mpS2.push_back(5);
-
-// 	valF = (mpF >= mpF2);
-// 	valS = (mpS >= mpS2);
-// 	check_value(valF, valS);
-
-// 	mpF2.push_back(6);
-// 	mpS2.push_back(6);
-// 	valF = (mpF >= mpF2);
-// 	valS = (mpS >= mpS2);
-// 	check_value(valF, valS);
-
-// 	mpF2.pop_back();
-// 	mpS2.pop_back();
-// 	mpF2.push_back(4);
-// 	mpS2.push_back(4);
-// 	valF = (mpF >= mpF2);
-// 	valS = (mpS >= mpS2);
-// 	check_value(valF, valS);
-
-// 	std::cout << "\n  ---  <=  ---\n";
-// 	mpF.clear();
-// 	mpF2.clear();
-// 	mpS.clear();
-// 	mpS2.clear();
-
-// 	mpF.push_back(1);
-// 	mpF.push_back(5);
-// 	mpF.push_back(4);
-
-// 	mpF2.push_back(1);
-// 	mpF2.push_back(5);
-
-// 	mpS.push_back(1);
-// 	mpS.push_back(5);
-// 	mpS.push_back(4);
-
-// 	mpS2.push_back(1);
-// 	mpS2.push_back(5);
-
-// 	valF = (mpF <= mpF2);
-// 	valS = (mpS <= mpS2);
-// 	check_value(valF, valS);
-
-// 	mpF2.push_back(6);
-// 	mpS2.push_back(6);
-// 	valF = (mpF <= mpF2);
-// 	valS = (mpS <= mpS2);
-// 	check_value(valF, valS);
-
-// 	mpF2.pop_back();
-// 	mpS2.pop_back();
-// 	mpF2.push_back(4);
-// 	mpS2.push_back(4);
-// 	valF = (mpF <= mpF2);
-// 	valS = (mpS <= mpS2);
-// 	check_value(valF, valS);
-
-// 	std::cout << "\n";
-
-// }
-
-// void	check_comparison_string(void)
-// {
-// 	std::cout << "\033[1;36m\n===== Comparison string =====\033[0m\n";
-
-// 	std::cout << "  ---  ==  ---\n";
-// 	ft::Map<std::string>	mpF;
-// 	std::map<std::string>	mpS;
-
-// 	ft::Map<std::string>	mpF2;
-// 	std::map<std::string>	mpS2;
-
-// 	mpF.push_back("abc");
-// 	mpF.push_back("abcd");
-// 	mpF.push_back("abce");
-
-// 	mpF2.push_back("abc");
-// 	mpF2.push_back("abcd");
-
-// 	mpS.push_back("abc");
-// 	mpS.push_back("abcd");
-// 	mpS.push_back("abce");
-
-// 	mpS2.push_back("abc");
-// 	mpS2.push_back("abcd");
-
-// 	bool	valF;
-// 	bool	valS;
-
-// 	valF = (mpF == mpF2);
-// 	valS = (mpS == mpS2);
-// 	check_value(valF, valS);
-
-// 	mpF2.push_back("ab");
-// 	mpS2.push_back("ab");
-// 	valF = (mpF == mpF2);
-// 	valS = (mpS == mpS2);
-// 	check_value(valF, valS);
-
-// 	mpF2.pop_back();
-// 	mpS2.pop_back();
-// 	mpF2.push_back("abce");
-// 	mpS2.push_back("abce");
-// 	valF = (mpF == mpF2);
-// 	valS = (mpS == mpS2);
-// 	check_value(valF, valS);
-
-// 	std::cout << "\n  ---  !=  ---\n";
-// 	mpF.clear();
-// 	mpF2.clear();
-// 	mpS.clear();
-// 	mpS2.clear();
-
-// 	mpF.push_back("abc");
-// 	mpF.push_back("abcd");
-// 	mpF.push_back("abce");
-
-// 	mpF2.push_back("abc");
-// 	mpF2.push_back("abcd");
-
-// 	mpS.push_back("abc");
-// 	mpS.push_back("abcd");
-// 	mpS.push_back("abce");
-
-// 	mpS2.push_back("abc");
-// 	mpS2.push_back("abcd");
-
-// 	valF = (mpF != mpF2);
-// 	valS = (mpS != mpS2);
-// 	check_value(valF, valS);
-
-// 	mpF2.push_back("ab");
-// 	mpS2.push_back("ab");
-// 	valF = (mpF != mpF2);
-// 	valS = (mpS != mpS2);
-// 	check_value(valF, valS);
-
-// 	mpF2.pop_back();
-// 	mpS2.pop_back();
-// 	mpF2.push_back("abce");
-// 	mpS2.push_back("abce");
-// 	valF = (mpF != mpF2);
-// 	valS = (mpS != mpS2);
-// 	check_value(valF, valS);
-
-// 	std::cout << "\n  ---  >  ---\n";
-// 	mpF.clear();
-// 	mpF2.clear();
-// 	mpS.clear();
-// 	mpS2.clear();
-
-// 	mpF.push_back("abc");
-// 	mpF.push_back("abcd");
-// 	mpF.push_back("abce");
-
-// 	mpF2.push_back("abc");
-// 	mpF2.push_back("abcd");
-
-// 	mpS.push_back("abc");
-// 	mpS.push_back("abcd");
-// 	mpS.push_back("abce");
-
-// 	mpS2.push_back("abc");
-// 	mpS2.push_back("abcd");
-
-// 	valF = (mpF > mpF2);
-// 	valS = (mpS > mpS2);
-// 	check_value(valF, valS);
-
-// 	mpF2.push_back("ab");
-// 	mpS2.push_back("ab");
-// 	valF = (mpF > mpF2);
-// 	valS = (mpS > mpS2);
-// 	check_value(valF, valS);
-
-// 	mpF2.pop_back();
-// 	mpS2.pop_back();
-// 	mpF2.push_back("abce");
-// 	mpS2.push_back("abce");
-// 	valF = (mpF > mpF2);
-// 	valS = (mpS > mpS2);
-// 	check_value(valF, valS);
-
-// 	std::cout << "\n  ---  <  ---\n";
-// 	mpF.clear();
-// 	mpF2.clear();
-// 	mpS.clear();
-// 	mpS2.clear();
-
-// 	mpF.push_back("abc");
-// 	mpF.push_back("abcd");
-// 	mpF.push_back("abce");
-
-// 	mpF2.push_back("abc");
-// 	mpF2.push_back("abcd");
-
-// 	mpS.push_back("abc");
-// 	mpS.push_back("abcd");
-// 	mpS.push_back("abce");
-
-// 	mpS2.push_back("abc");
-// 	mpS2.push_back("abcd");
-
-// 	valF = (mpF < mpF2);
-// 	valS = (mpS < mpS2);
-// 	check_value(valF, valS);
-
-// 	mpF2.push_back("ab");
-// 	mpS2.push_back("ab");
-// 	valF = (mpF < mpF2);
-// 	valS = (mpS < mpS2);
-// 	check_value(valF, valS);
-
-// 	mpF2.pop_back();
-// 	mpS2.pop_back();
-// 	mpF2.push_back("abce");
-// 	mpS2.push_back("abce");
-// 	valF = (mpF < mpF2);
-// 	valS = (mpS < mpS2);
-// 	check_value(valF, valS);
-
-// 	std::cout << "\n  ---  >=  ---\n";
-// 	mpF.clear();
-// 	mpF2.clear();
-// 	mpS.clear();
-// 	mpS2.clear();
-
-// 	mpF.push_back("abc");
-// 	mpF.push_back("abcd");
-// 	mpF.push_back("abce");
-
-// 	mpF2.push_back("abc");
-// 	mpF2.push_back("abcd");
-
-// 	mpS.push_back("abc");
-// 	mpS.push_back("abcd");
-// 	mpS.push_back("abce");
-
-// 	mpS2.push_back("abc");
-// 	mpS2.push_back("abcd");
-
-// 	valF = (mpF >= mpF2);
-// 	valS = (mpS >= mpS2);
-// 	check_value(valF, valS);
-
-// 	mpF2.push_back("ab");
-// 	mpS2.push_back("ab");
-// 	valF = (mpF >= mpF2);
-// 	valS = (mpS >= mpS2);
-// 	check_value(valF, valS);
-
-// 	mpF2.pop_back();
-// 	mpS2.pop_back();
-// 	mpF2.push_back("abce");
-// 	mpS2.push_back("abce");
-// 	valF = (mpF >= mpF2);
-// 	valS = (mpS >= mpS2);
-// 	check_value(valF, valS);
-
-// 	std::cout << "\n  ---  <=  ---\n";
-// 	mpF.clear();
-// 	mpF2.clear();
-// 	mpS.clear();
-// 	mpS2.clear();
-
-// 	mpF.push_back("abc");
-// 	mpF.push_back("abcd");
-// 	mpF.push_back("abce");
-
-// 	mpF2.push_back("abc");
-// 	mpF2.push_back("abcd");
-
-// 	mpS.push_back("abc");
-// 	mpS.push_back("abcd");
-// 	mpS.push_back("abce");
-
-// 	mpS2.push_back("abc");
-// 	mpS2.push_back("abcd");
-
-// 	valF = (mpF <= mpF2);
-// 	valS = (mpS <= mpS2);
-// 	check_value(valF, valS);
-
-// 	mpF2.push_back("ab");
-// 	mpS2.push_back("ab");
-// 	valF = (mpF <= mpF2);
-// 	valS = (mpS <= mpS2);
-// 	check_value(valF, valS);
-
-// 	mpF2.pop_back();
-// 	mpS2.pop_back();
-// 	mpF2.push_back("abce");
-// 	mpS2.push_back("abce");
-// 	valF = (mpF <= mpF2);
-// 	valS = (mpS <= mpS2);
-// 	check_value(valF, valS);
-
-// 	std::cout << "\n";
-
-// }
+	mpF.insert(std::pair<const int, std::string>(3, "3-"));
+	mpF.insert(std::pair<const int, std::string>(1, "1-"));
+	mpF.insert(std::pair<const int, std::string>(9, "9-"));
+	mpF.insert(std::pair<const int, std::string>(6, "6-"));
+	mpS.insert(std::pair<const int, std::string>(3, "3-"));
+	mpS.insert(std::pair<const int, std::string>(1, "1-"));
+	mpS.insert(std::pair<const int, std::string>(9, "9-"));
+	mpS.insert(std::pair<const int, std::string>(6, "6-"));
+
+	check_map(mpF, mpS);
+
+	ft::Map<const int, std::string>::iterator	itF;
+	std::map<const int, std::string>::iterator	itS;
+
+	ft::Map<const int, std::string>::const_iterator		citF;
+	std::map<const int, std::string>::const_iterator	citS;
+
+	size_t	valF;
+	size_t	valS;
+
+	itF = mpF.find(3);
+	itS = mpS.find(3);
+	check_value((*itF).second, (*itS).second);
+
+	itF = mpF.find(5);
+	itS = mpS.find(5);
+	valF = (itF == mpF.end());
+	valS = (itS == mpS.end());
+	check_value(valF, valS);
+
+	std::cout << "\n  --- Count ---\n";
+
+	valF = mpF.count(9);
+	valS = mpS.count(9);
+	check_value(valF, valS);
+
+	valF = mpF.count(42);
+	valS = mpS.count(42);
+	check_value(valF, valS);
+
+	std::cout << "\n  --- Lower_bound ---\n";
+
+	itF = mpF.lower_bound(5);
+	itS = mpS.lower_bound(5);
+	check_value((*itF).second, (*itS).second);
+
+	itF = mpF.lower_bound(-42);
+	itS = mpS.lower_bound(-42);
+	check_value((*itF).second, (*itS).second);
+
+	itF = mpF.lower_bound(42);
+	itS = mpS.lower_bound(42);
+	valF = (itF == mpF.end());
+	valS = (itS == mpS.end());
+	check_value(valF, valS);
+
+	std::cout << "\n  --- Upper_bound ---\n";
+	
+	itF = mpF.upper_bound(5);
+	itS = mpS.upper_bound(5);
+	check_value((*itF).second, (*itS).second);
+
+	itF = mpF.upper_bound(-42);
+	itS = mpS.upper_bound(-42);
+	check_value((*itF).second, (*itS).second);
+
+
+	itF = mpF.upper_bound(42);
+	itS = mpS.upper_bound(42);
+	valF = (itF == mpF.end());
+	valS = (itS == mpS.end());
+	check_value(valF, valS);
+
+	std::cout << "\n  --- Equal_range ---\n";
+
+	std::pair<ft::Map<const int, std::string>::iterator,ft::Map<const int, std::string>::iterator> paF;
+	std::pair<std::map<const int, std::string>::iterator,std::map<const int, std::string>::iterator> paS;
+
+	paF = mpF.equal_range(6);
+	paS = mpS.equal_range(6);
+	check_value((*(paF.first)).second, (*(paS.first)).second);
+
+	paF = mpF.equal_range(-42);
+	paS = mpS.equal_range(-42);
+	valF = (paF.first == mpF.end());
+	valS = (paS.first == mpS.end());
+	check_value(valF, valS);
+}
+
+void	check_operations_const (void)
+{
+	std::cout << "\033[1;36m\n===== Operations const =====\033[0m\n";
+
+	std::cout << "  --- Find ---\n";
+	
+	ft::Map<const int, std::string>		mpF;
+	std::map<const int, std::string>	mpS;
+	
+	mpF.insert(std::pair<const int, std::string>(3, "3-"));
+	mpF.insert(std::pair<const int, std::string>(1, "1-"));
+	mpF.insert(std::pair<const int, std::string>(9, "9-"));
+	mpF.insert(std::pair<const int, std::string>(6, "6-"));
+	mpS.insert(std::pair<const int, std::string>(3, "3-"));
+	mpS.insert(std::pair<const int, std::string>(1, "1-"));
+	mpS.insert(std::pair<const int, std::string>(9, "9-"));
+	mpS.insert(std::pair<const int, std::string>(6, "6-"));
+
+	const ft::Map<const int, std::string>	cmpF = mpF;
+	const std::map<const int, std::string>	cmpS = mpS;
+
+	check_map_const(cmpF, mpS);
+
+	ft::Map<const int, std::string>::const_iterator		itF = cmpF.find(3);
+	std::map<const int, std::string>::const_iterator	itS = cmpS.find(3);
+
+	size_t	valF;
+	size_t	valS;
+
+	check_value((*itF).second, (*itS).second);
+
+	ft::Map<const int, std::string>::const_iterator		itF2 = cmpF.find(5);
+	std::map<const int, std::string>::const_iterator	itS2 = cmpS.find(5);
+	valF = (itF2 == cmpF.end());
+	valS = (itS2 == cmpS.end());
+	check_value(valF, valS);
+
+	std::cout << "\n  --- Count ---\n";
+
+	valF = cmpF.count(9);
+	valS = cmpS.count(9);
+	check_value(valF, valS);
+
+	valF = cmpF.count(42);
+	valS = cmpS.count(42);
+	check_value(valF, valS);
+
+	std::cout << "\n  --- Lower_bound ---\n";
+
+	ft::Map<const int, std::string>::const_iterator		itF3 = cmpF.lower_bound(5);
+	std::map<const int, std::string>::const_iterator	itS3 = cmpS.lower_bound(5);
+	check_value((*itF3).second, (*itS3).second);
+
+	ft::Map<const int, std::string>::const_iterator		itF4 = cmpF.lower_bound(-42);
+	std::map<const int, std::string>::const_iterator	itS4 = cmpS.lower_bound(-42);
+	check_value((*itF4).second, (*itS4).second);
+
+	ft::Map<const int, std::string>::const_iterator		itF5 = cmpF.lower_bound(42);
+	std::map<const int, std::string>::const_iterator	itS5 = cmpS.lower_bound(42);
+	valF = (itF5 == cmpF.end());
+	valS = (itS5 == cmpS.end());
+	check_value(valF, valS);
+
+	std::cout << "\n  --- Upper_bound ---\n";
+	
+	ft::Map<const int, std::string>::const_iterator		itF6 = cmpF.upper_bound(5);
+	std::map<const int, std::string>::const_iterator	itS6 = cmpS.upper_bound(5);
+	check_value((*itF6).second, (*itS6).second);
+
+	ft::Map<const int, std::string>::const_iterator		itF7 = cmpF.upper_bound(-42);
+	std::map<const int, std::string>::const_iterator	itS7 = cmpS.upper_bound(-42);
+	check_value((*itF7).second, (*itS7).second);
+
+	ft::Map<const int, std::string>::const_iterator		itF8 = cmpF.upper_bound(42);
+	std::map<const int, std::string>::const_iterator	itS8 = cmpS.upper_bound(42);
+	valF = (itF8 == cmpF.end());
+	valS = (itS8 == cmpS.end());
+	check_value(valF, valS);
+
+	std::cout << "\n  --- Equal_range ---\n";
+
+	std::pair<ft::Map<const int, std::string>::const_iterator,ft::Map<const int, std::string>::const_iterator> paF = cmpF.equal_range(6);
+	std::pair<std::map<const int, std::string>::const_iterator,std::map<const int, std::string>::const_iterator> paS = cmpS.equal_range(6);
+	check_value((*(paF.first)).second, (*(paS.first)).second);
+
+	std::pair<ft::Map<const int, std::string>::const_iterator,ft::Map<const int, std::string>::const_iterator> paF2 = cmpF.equal_range(-42);
+	std::pair<std::map<const int, std::string>::const_iterator,std::map<const int, std::string>::const_iterator> paS2 = cmpS.equal_range(-42);
+	valF = (paF2.first == cmpF.end());
+	valS = (paS2.first == cmpS.end());
+	check_value(valF, valS);
+
+}
+
+void	check_operations_string(void)
+{
+
+	std::cout << "\033[1;36m\n===== Operations string =====\033[0m\n";
+
+	std::cout << "  --- Find ---\n";
+	
+	ft::Map<const std::string, std::string>		mpF;
+	std::map<const std::string, std::string>	mpS;
+	
+	mpF.insert(std::pair<const std::string, std::string>("3", "3-"));
+	mpF.insert(std::pair<const std::string, std::string>("1", "1-"));
+	mpF.insert(std::pair<const std::string, std::string>("9", "9-"));
+	mpF.insert(std::pair<const std::string, std::string>("6", "6-"));
+	mpS.insert(std::pair<const std::string, std::string>("3", "3-"));
+	mpS.insert(std::pair<const std::string, std::string>("1", "1-"));
+	mpS.insert(std::pair<const std::string, std::string>("9", "9-"));
+	mpS.insert(std::pair<const std::string, std::string>("6", "6-"));
+
+	check_map(mpF, mpS);
+
+	ft::Map<const std::string, std::string>::iterator	itF;
+	std::map<const std::string, std::string>::iterator	itS;
+
+	ft::Map<const std::string, std::string>::const_iterator		citF;
+	std::map<const std::string, std::string>::const_iterator	citS;
+
+	size_t	valF;
+	size_t	valS;
+
+	itF = mpF.find("3");
+	itS = mpS.find("3");
+	check_value((*itF).second, (*itS).second);
+
+	itF = mpF.find("5");
+	itS = mpS.find("5");
+	valF = (itF == mpF.end());
+	valS = (itS == mpS.end());
+	check_value(valF, valS);
+
+	std::cout << "\n  --- Count ---\n";
+
+	valF = mpF.count("9");
+	valS = mpS.count("9");
+	check_value(valF, valS);
+
+	valF = mpF.count("42");
+	valS = mpS.count("42");
+	check_value(valF, valS);
+
+	std::cout << "\n  --- Lower_bound ---\n";
+
+	itF = mpF.lower_bound("5");
+	itS = mpS.lower_bound("5");
+	check_value((*itF).second, (*itS).second);
+
+	itF = mpF.lower_bound("-42");
+	itS = mpS.lower_bound("-42");
+	check_value((*itF).second, (*itS).second);
+
+	itF = mpF.lower_bound("42");
+	itS = mpS.lower_bound("42");
+	valF = (itF == mpF.end());
+	valS = (itS == mpS.end());
+	check_value(valF, valS);
+
+	std::cout << "\n  --- Upper_bound ---\n";
+	
+	itF = mpF.upper_bound("5");
+	itS = mpS.upper_bound("5");
+	check_value((*itF).second, (*itS).second);
+
+	itF = mpF.upper_bound("-42");
+	itS = mpS.upper_bound("-42");
+	check_value((*itF).second, (*itS).second);
+
+
+	itF = mpF.upper_bound("42");
+	itS = mpS.upper_bound("42");
+	valF = (itF == mpF.end());
+	valS = (itS == mpS.end());
+	check_value(valF, valS);
+
+	std::cout << "\n  --- Equal_range ---\n";
+
+	std::pair<ft::Map<const std::string, std::string>::iterator,ft::Map<const std::string, std::string>::iterator> paF;
+	std::pair<std::map<const std::string, std::string>::iterator,std::map<const std::string, std::string>::iterator> paS;
+
+	paF = mpF.equal_range("6");
+	paS = mpS.equal_range("6");
+	check_value((*(paF.first)).second, (*(paS.first)).second);
+
+	paF = mpF.equal_range("-42");
+	paS = mpS.equal_range("-42");
+	valF = (paF.first == mpF.end());
+	valS = (paS.first == mpS.end());
+	check_value(valF, valS);
+
+}
+
+void	check_observers(void)
+{
+	std::cout << "\033[1;36m\n===== Observers =====\033[0m\n";
+
+	
+	ft::Map<const int, std::string>		mpF;
+	std::map<const int, std::string>	mpS;
+
+	std::cout << "  --- Key_comp ---\n";
+
+	size_t	valF;
+	size_t	valS;
+
+	valF = mpF.key_comp()(9, 42);
+	valS = mpS.key_comp()(9, 42);
+	check_value(valF, valS);
+
+	valF = mpF.key_comp()(9, 9);
+	valS = mpS.key_comp()(9, 9);
+	check_value(valF, valS);
+
+	valF = mpF.key_comp()(42, 9);
+	valS = mpS.key_comp()(42, 9);
+	check_value(valF, valS);
+
+
+	std::cout << "  --- Value_comp ---\n";
+
+	std::pair<const int, std::string> paF1(3, "3-");
+	std::pair<const int, std::string> paF2(9, "9-");
+
+	valF = mpF.value_comp()(paF1, paF2);
+	valS = mpS.value_comp()(paF1, paF2);
+	check_value(valF, valS);
+
+	valF = mpF.value_comp()(paF1, paF1);
+	valS = mpS.value_comp()(paF1, paF1);
+	check_value(valF, valS);
+
+	valF = mpF.value_comp()(paF2, paF1);
+	valS = mpS.value_comp()(paF2, paF1);
+	check_value(valF, valS);
+
+	std::cout << "\n";
+
+}
+
+void	check_observers_string(void)
+{
+	std::cout << "\033[1;36m\n===== Observers string =====\033[0m\n";
+
+	
+	ft::Map<const std::string, std::string>		mpF;
+	std::map<const std::string, std::string>	mpS;
+
+	std::cout << "  --- Key_comp ---\n";
+
+	size_t	valF;
+	size_t	valS;
+
+	valF = mpF.key_comp()("9", "42");
+	valS = mpS.key_comp()("9", "42");
+	check_value(valF, valS);
+
+	valF = mpF.key_comp()("9", "9");
+	valS = mpS.key_comp()("9", "9");
+	check_value(valF, valS);
+
+	valF = mpF.key_comp()("42", "9");
+	valS = mpS.key_comp()("42", "9");
+	check_value(valF, valS);
+
+
+	std::cout << "  --- Value_comp ---\n";
+
+	std::pair<const std::string, std::string> paF1("3", "3-");
+	std::pair<const std::string, std::string> paF2("9", "9-");
+
+	valF = mpF.value_comp()(paF1, paF2);
+	valS = mpS.value_comp()(paF1, paF2);
+	check_value(valF, valS);
+
+	valF = mpF.value_comp()(paF1, paF1);
+	valS = mpS.value_comp()(paF1, paF1);
+	check_value(valF, valS);
+
+	valF = mpF.value_comp()(paF2, paF1);
+	valS = mpS.value_comp()(paF2, paF1);
+	check_value(valF, valS);
+
+	std::cout << "\n";
+
+}
+
 
 int main(int argc, char **argv)
 {
@@ -1585,15 +1122,16 @@ int main(int argc, char **argv)
 
 	check_constructors();
 	check_constructors_string();
-	// check_iterators();
-	// check_capacity();
-	// check_element_access();
-	// check_modifiers();
-	// check_modifiers_string();
-	// check_operations();
-	// check_operations_string();
-	// check_comparison();
-	// check_comparison_string();
+	check_iterators();
+	check_capacity();
+	check_element_access();
+	check_modifiers();
+	check_modifiers_string();
+	check_operations();
+	check_operations_const();
+	check_operations_string();
+	check_observers();
+	check_observers_string();
 
 	std::cout << "\033[1;36m\n=====================================\033[0m\n";
 	std::cout << "\033[1;36m=============== Total ===============\033[0m\n";

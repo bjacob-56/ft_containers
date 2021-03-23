@@ -38,7 +38,22 @@ public:
 
 	typedef List< std::pair<const Key,T>, Alloc> Lst;
 
-	typedef bool value_compare( const value_type& lhs, const value_type& rhs ) const;
+
+	class value_compare : public std::binary_function<value_type, value_type, bool>
+		{
+			public:
+				value_compare(key_compare comp) : _comp(comp) {}
+				bool operator()(const value_type &lhs, const value_type &rhs) const { return _comp(lhs.first, rhs.first); }	
+
+			private:
+				key_compare _comp;
+		};
+
+
+
+
+
+
 
 private:
 	key_compare	_comp;
@@ -89,7 +104,7 @@ public:
 
 	size_type	size(void) const {return this->Lst::size();}
 
-	size_type	max_size() const {return this->Lst::max_size();}
+	size_type	max_size() const {return std::numeric_limits<size_type>::max() / (sizeof(Node<std::pair<const Key,T> >) + 2 * sizeof(void*));}
 
 
 // ========  Element Access  ========
@@ -104,6 +119,7 @@ public:
 				return (*it).second;
 			it++;
 		}								// return smthg if not found ?
+		return (*it).second;
 	}
 
 
@@ -143,7 +159,7 @@ public:
 	size_type erase (const key_type& k)
 	{
 		iterator it = this->find(k);
-		if (it == this->end)
+		if (it == this->end())
 			return 0;
 		this->erase(it);
 		return 1;
@@ -168,7 +184,7 @@ key_compare key_comp() const {return _comp;}
 
 //		----  Value_comp  ----
 
-// value_compare value_comp() const {return ft_value_compare;} // a confirmer
+value_compare value_comp() const {return value_compare(_comp);}
 
 
 // ========  Operations  ========
@@ -273,8 +289,8 @@ key_compare key_comp() const {return _comp;}
 		{
 			if (!_comp((*it).first, k) && !_comp(k, (*it).first))
 			{
-				ite = it++;
-				return std::pair<const_iterator,const_iterator>(ite, it);
+				const_iterator	itr = it++;
+				return std::pair<const_iterator,const_iterator>(itr, it);
 			}
 			it++;
 		}
@@ -362,15 +378,9 @@ private:
 	template <class InputIterator, class InputIterator2>
 	void insert_prototype (InputIterator first, InputIterator2 last, void *)
 	{
-		while (first < last)
+		while (first != last)
 			this->insert(*first++);
 	}
-
-	// bool ft_value_compare()( const value_type& lhs, const value_type& rhs ) const
-	// {
-	// 	return (_comp(lhs.first, rhs.first));
-	// }
-
 
 };
 

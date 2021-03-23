@@ -23,7 +23,7 @@ template <typename T, typename PointerType>
 
 			ListIterator &	operator++(void)// pre increment
 			{
-				if (_ptr->next)
+				if (_ptr && _ptr->next)
 					_ptr = _ptr->next;
 				return (*this);
 			}
@@ -35,7 +35,7 @@ template <typename T, typename PointerType>
 			}
 			ListIterator &	operator--(void)
 			{
-				if (_ptr->previous)
+				if (_ptr && _ptr->previous)
 					_ptr = _ptr->previous;
 				return (*this);
 			}
@@ -75,7 +75,7 @@ template <typename T, typename PointerType>
 
 			ListConstIterator &	operator++(void)// pre increment
 			{
-				if (_ptr->next)
+				if (_ptr && _ptr->next)
 					_ptr = _ptr->next;
 				return (*this);
 			}
@@ -87,7 +87,7 @@ template <typename T, typename PointerType>
 			}
 			ListConstIterator &	operator--(void)
 			{
-				if (_ptr->previous)
+				if (_ptr && _ptr->previous)
 					_ptr = _ptr->previous;
 				return (*this);
 			}
@@ -127,7 +127,7 @@ template <typename T, typename PointerType>
 
 			ListReverseIterator &	operator++(void)	// pre increment
 			{
-				if (_ptr->previous)
+				if (_ptr && _ptr->previous)
 					_ptr = _ptr->previous;
 				return (*this);
 			}
@@ -139,7 +139,7 @@ template <typename T, typename PointerType>
 			}
 			ListReverseIterator &	operator--(void) // quel comportement avant begin ?
 			{
-				if (_ptr->next)
+				if (_ptr && _ptr->next)
 					_ptr = _ptr->next;
 				return (*this);
 			}
@@ -178,7 +178,7 @@ template <typename T, typename PointerType>
 
 			ListConstReverseIterator &	operator++(void)	// pre increment
 			{
-				if (_ptr->previous)
+				if (_ptr && _ptr->previous)
 					_ptr = _ptr->previous;
 				return (*this);
 			}
@@ -190,7 +190,7 @@ template <typename T, typename PointerType>
 			}
 			ListConstReverseIterator &	operator--(void) // quel comportement avant begin ?
 			{
-				if (_ptr->next)
+				if (_ptr && _ptr->next)
 					_ptr = _ptr->next;
 				return (*this);
 			}
