@@ -15,7 +15,7 @@ $(NAME):	$(SRCS) $(INC)
 	clear
 	$(CC) $(CFLAGS) $(SRCS) -o $(NAME)
 	@echo "----- \033[32m $@ created\033[0m  -----"
-	@./$(NAME) stack 1
+	@./$(NAME)
 
 clean:
 	rm -f $(NAME)
