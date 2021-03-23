@@ -72,7 +72,18 @@ void	test_queue()
 	queue_check_capacity();
 	queue_check_element_access();
 	queue_check_comparison();
+}
 
+void	test_stack()
+{
+	std::cout << "\033[1;36m\n\n=====================================\033[0m\n";
+	std::cout << "\033[1;36m=============== STACK ===============\033[0m\n";
+	std::cout << "\033[1;36m=====================================\033[0m\n";
+
+	stack_check_constructor();
+	stack_check_capacity();
+	stack_check_element_access();
+	stack_check_comparison();
 }
 
 void	print_total()
@@ -107,6 +118,8 @@ int main(int argc, char **argv)
 		test_map();
 	if (argc == 1 || str_test == "queue" || str_test == "all")
 		test_queue();
+	if (argc == 1 || str_test == "stack" || str_test == "all")
+		test_stack();
 
 	print_total();	
 

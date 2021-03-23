@@ -12,6 +12,7 @@ extern int	nb_KO;
 # include "../includes/Vector.hpp"
 # include "../includes/Map.hpp"
 # include "../includes/Queue.hpp"
+# include "../includes/Stack.hpp"
 
 # include <list>
 # include <vector>
@@ -73,6 +74,11 @@ void	queue_check_constructor();
 void	queue_check_capacity();
 void	queue_check_element_access();
 void	queue_check_comparison();
+
+void	stack_check_constructor();
+void	stack_check_capacity();
+void	stack_check_element_access();
+void	stack_check_comparison();
 
 
 #endif

@@ -1,5 +1,5 @@
-#ifndef QUEUE_HPP
-# define QUEUE_HPP
+#ifndef STACK_HPP
+# define STACK_HPP
 
 # include <string>
 # include <iostream>
@@ -15,7 +15,7 @@ namespace ft
 {
 
 template < class T, class Container = std::deque<T> >
-class Queue: protected Container
+class Stack: protected Container
 {
 public:
 	typedef T value_type;
@@ -27,9 +27,9 @@ private:
 	container_type	_cont;
 
 public:
-	explicit Queue(const container_type& ctnr = container_type()): _cont (ctnr) {}
+	explicit Stack(const container_type& ctnr = container_type()): _cont (ctnr) {}
 
-	~Queue(void) 
+	~Stack(void) 
 	{
 		while (this->size())
 			this->pop();
@@ -44,13 +44,9 @@ public:
 
 // ========  Element Access  ========
 
-	value_type &	front(void)	{return _cont.front();}
+	value_type &	top(void) {return _cont.back();}
 
-	const value_type &	front(void) const {return _cont.front();}
-
-	value_type &	back(void) {return _cont.back();}
-
-	const value_type &	back(void) const {return _cont.back();}
+	const value_type &	top(void) const {return _cont.back();}
 
 
 
@@ -62,26 +58,26 @@ public:
 
 //		----  Pop  ----
 
-	void pop() {_cont.pop_front();}
+	void pop() {_cont.pop_back();}
 
 // ========  Comparison  ========
 
-bool operator== (const Queue<T,Container>& rhs)
+bool operator== (const Stack<T,Container>& rhs)
 {return (_cont == rhs._cont);}
 
-bool operator!= (const Queue<T,Container>& rhs)
+bool operator!= (const Stack<T,Container>& rhs)
 {return (_cont != rhs._cont);}
 
-bool operator<  (const Queue<T,Container>& rhs)
+bool operator<  (const Stack<T,Container>& rhs)
 {return (_cont < rhs._cont);}
 
-bool operator<= (const Queue<T,Container>& rhs)
+bool operator<= (const Stack<T,Container>& rhs)
 {return (_cont <= rhs._cont);}
 
-bool operator>  (const Queue<T,Container>& rhs)
+bool operator>  (const Stack<T,Container>& rhs)
 {return (_cont > rhs._cont);}
 
-bool operator>= (const Queue<T,Container>& rhs)
+bool operator>= (const Stack<T,Container>& rhs)
 {return (_cont >= rhs._cont);}
 
 };

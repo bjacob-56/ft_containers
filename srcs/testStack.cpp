@@ -1,21 +1,21 @@
 #include "utils_main.hpp"
 
 template <typename T, typename Container>
-void	clear(ft::Queue<T, Container> myLst)
+void	clear(ft::Stack<T, Container> myLst)
 {
 	while (myLst.size())
 		myLst.pop();
 }
 
 template <typename T, typename Container>
-void	clear(std::queue<T, Container> myLst)
+void	clear(std::stack<T, Container> myLst)
 {
 	while (myLst.size())
 		myLst.pop();
 }
 
 template <typename T, typename Container1, typename Container2 >
-void	check_queue(ft::Queue<T, Container1> myLst, std::queue<T, Container2> realLst)
+void	check_stack(ft::Stack<T, Container1> myLst, std::stack<T, Container2> realLst)
 {
 	std::stringstream ss_ft;
 	std::stringstream ss_std;
@@ -23,7 +23,7 @@ void	check_queue(ft::Queue<T, Container1> myLst, std::queue<T, Container2> realL
 	ss_ft << "[";
 	while (myLst.size())
 	{
-		ss_ft << myLst.front();
+		ss_ft << myLst.top();
 		myLst.pop();
 		if (myLst.size())
 			ss_ft << ", ";
@@ -33,7 +33,7 @@ void	check_queue(ft::Queue<T, Container1> myLst, std::queue<T, Container2> realL
 	ss_std << "[";
 	while (realLst.size())
 	{
-		ss_std << realLst.front();
+		ss_std << realLst.top();
 		realLst.pop();
 		if (realLst.size())
 			ss_std << ", ";
@@ -98,12 +98,12 @@ static void	check_value(T & valF, T & valS)
 // ************************************************************* //
 
 
-void	queue_check_constructor(void)
+void	stack_check_constructor(void)
 {
 	std::cout << "\033[1;36m\n===== Constructors =====\033[0m\n";
 
-	ft::List<int>	lstF;
-	std::list<int>	lstS;
+	ft::Vector<int>		lstF;
+	std::vector<int>	lstS;
 
 	lstF.push_back(1);
 	lstF.push_back(2);
@@ -112,23 +112,23 @@ void	queue_check_constructor(void)
 	lstS.push_back(2);
 	lstS.push_back(3);
 
-	ft::Queue<int, ft::List<int> >		queF;
-	std::queue<int, std::list<int> >	queS;
-	check_queue(queF, queS);
+	ft::Stack<int, ft::Vector<int> >	queF;
+	std::stack<int, std::vector<int> >	queS;
+	check_stack(queF, queS);
 
-	ft::Queue<int, ft::List<int> >			queF2(lstF);
-	std::queue<int, std::list<int> >	queS2(lstS);
-	check_queue(queF2, queS2);
+	ft::Stack<int, ft::Vector<int> >	queF2(lstF);
+	std::stack<int, std::vector<int> >	queS2(lstS);
+	check_stack(queF2, queS2);
 
 	std::cout << "\n";
 }
 
-void	queue_check_capacity(void)
+void	stack_check_capacity(void)
 {
 	std::cout << "\033[1;36m\n===== Capacity =====\033[0m\n";
 
-	ft::List<int>	lstF;
-	std::list<int>	lstS;
+	ft::Vector<int>		lstF;
+	std::vector<int>	lstS;
 
 	size_t	valF;
 	size_t	valS;
@@ -140,9 +140,9 @@ void	queue_check_capacity(void)
 	lstS.push_back(2);
 	lstS.push_back(3);
 
-	ft::Queue<int, ft::List<int> >		queF;
-	std::queue<int, std::list<int> >	queS;
-	check_queue(queF, queS);
+	ft::Stack<int, ft::Vector<int> >	queF;
+	std::stack<int, std::vector<int> >	queS;
+	check_stack(queF, queS);
 
 	valF = queF.empty();
 	valS = queS.empty();
@@ -152,9 +152,9 @@ void	queue_check_capacity(void)
 	valS = queS.size();
 	check_value(valF, valS);
 
-	ft::Queue<int, ft::List<int> >			queF2(lstF);
-	std::queue<int, std::list<int> >	queS2(lstS);
-	check_queue(queF2, queS2);
+	ft::Stack<int, ft::Vector<int> >	queF2(lstF);
+	std::stack<int, std::vector<int> >	queS2(lstS);
+	check_stack(queF2, queS2);
 
 	valF = queF2.empty();
 	valS = queS2.empty();
@@ -168,12 +168,12 @@ void	queue_check_capacity(void)
 }
 
 
-void	queue_check_element_access(void)
+void	stack_check_element_access(void)
 {
 	std::cout << "\033[1;36m\n===== Element access =====\033[0m\n";
 
-	ft::List<int>	lstF;
-	std::list<int>	lstS;
+	ft::Vector<int>	lstF;
+	std::vector<int>	lstS;
 
 	size_t	valF;
 	size_t	valS;
@@ -185,23 +185,15 @@ void	queue_check_element_access(void)
 	lstS.push_back(2);
 	lstS.push_back(3);
 
-	ft::Queue<int, ft::List<int> >			queF2(lstF);
-	std::queue<int, std::list<int> >	queS2(lstS);
+	ft::Stack<int, ft::Vector<int> >			queF2(lstF);
+	std::stack<int, std::vector<int> >	queS2(lstS);
 
-	valF = queF2.front();
-	valS = queS2.front();
+	valF = queF2.top();
+	valS = queS2.top();
 	check_value(valF, valS);
 
-	const int		cvalF = queF2.front();
-	const int		cvalS = queS2.front();
-	check_value(cvalF, cvalS);
-
-	valF = queF2.back();
-	valS = queS2.back();
-	check_value(valF, valS);
-
-	const int	cvalF2 = queF2.back();
-	const int	cvalS2 = queS2.back();
+	const int	cvalF2 = queF2.top();
+	const int	cvalS2 = queS2.top();
 	check_value(cvalF2, cvalS2);
 
 	queF2.push(4);
@@ -210,30 +202,26 @@ void	queue_check_element_access(void)
 	queF2.pop();
 	queS2.pop();
 
-	valF = queF2.front();
-	valS = queS2.front();
-	check_value(valF, valS);
-
-	valF = queF2.back();
-	valS = queS2.back();
+	valF = queF2.top();
+	valS = queS2.top();
 	check_value(valF, valS);
 
 	std::cout << "\n";
 }
 
-void	queue_check_comparison(void)
+void	stack_check_comparison(void)
 {
 	std::cout << "\033[1;36m\n===== Comparison =====\033[0m\n";
 
 	std::cout << "  ---  ==  ---\n";
-	ft::List<int>	lstF;
-	std::list<int>	lstS;
+	ft::Vector<int>	lstF;
+	std::vector<int>	lstS;
 
-	ft::Queue<int, ft::List<int> >		queF(lstF);
-	std::queue<int, std::list<int> >	queS(lstS);
+	ft::Stack<int, ft::Vector<int> >		queF(lstF);
+	std::stack<int, std::vector<int> >	queS(lstS);
 
-	ft::Queue<int, ft::List<int> >		queF2(lstF);
-	std::queue<int, std::list<int> >	queS2(lstS);
+	ft::Stack<int, ft::Vector<int> >		queF2(lstF);
+	std::stack<int, std::vector<int> >	queS2(lstS);
 
 	queF.push(1);
 	queF.push(5);
@@ -257,8 +245,8 @@ void	queue_check_comparison(void)
 	check_value(valF, valS);
 
 
-	check_queue(queF, queS);
-	check_queue(queF2, queS2);
+	check_stack(queF, queS);
+	check_stack(queF2, queS2);
 
 	queF2.push(6);
 	queS2.push(6);
