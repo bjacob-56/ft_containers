@@ -206,28 +206,28 @@ public:
 
 // ========  Element Access  ========
 
-	T &	front(void)
+	value_type &	front(void)
 	{
 		if (_begin)
 			return (_begin->value);
 		throw std::exception();
 	}
 
-	const T &	front(void) const
+	const value_type &	front(void) const
 	{
 		if (_begin)
 			return (_begin->value);
 		throw std::exception();
 	}
 
-	T &	back(void)
+	value_type &	back(void)
 	{
 		if (_end)
 			return (_end->previous->value);
 		throw std::exception();
 	}
 
-	const T &	back(void) const
+	const value_type &	back(void) const
 	{
 		if (_end)
 			return (_end->previous->value);
@@ -647,7 +647,7 @@ public:
 			}
 			else
 				begin = begin->next;
-		}	
+		}
 	}
 
 

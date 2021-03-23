@@ -11,10 +11,12 @@ extern int	nb_KO;
 # include "../includes/List.hpp"
 # include "../includes/Vector.hpp"
 # include "../includes/Map.hpp"
+# include "../includes/Queue.hpp"
 
 # include <list>
 # include <vector>
 # include <map>
+# include <queue>
 # include <stack>
 # include <string>
 # include <utility>
@@ -66,5 +68,11 @@ void	map_check_operations_const();
 void	map_check_operations_string();
 void	map_check_observers();
 void	map_check_observers_string();
+
+void	queue_check_constructor();
+void	queue_check_capacity();
+void	queue_check_element_access();
+void	queue_check_comparison();
+
 
 #endif

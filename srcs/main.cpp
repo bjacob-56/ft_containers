@@ -62,6 +62,19 @@ void	test_map()
 	map_check_observers_string();
 }
 
+void	test_queue()
+{
+	std::cout << "\033[1;36m\n\n=====================================\033[0m\n";
+	std::cout << "\033[1;36m=============== QUEUE ===============\033[0m\n";
+	std::cout << "\033[1;36m=====================================\033[0m\n";
+
+	queue_check_constructor();
+	queue_check_capacity();
+	queue_check_element_access();
+	queue_check_comparison();
+
+}
+
 void	print_total()
 {
 	std::cout << "\033[1;36m\n\n=====================================\033[0m\n";
@@ -92,6 +105,8 @@ int main(int argc, char **argv)
 		test_vector();
 	if (argc == 1 || str_test == "map" || str_test == "all")
 		test_map();
+	if (argc == 1 || str_test == "queue" || str_test == "all")
+		test_queue();
 
 	print_total();	
 
