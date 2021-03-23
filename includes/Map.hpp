@@ -67,7 +67,7 @@ public:
 		Lst(first, last, alloc)
 		{
 			_comp = comp;
-			this->sort();		// private method a implementer
+			this->sort();
 		}
 
 	Map(const Map& x): Lst(x)
@@ -118,7 +118,7 @@ public:
 			if ((*it).first == k)
 				return (*it).second;
 			it++;
-		}								// return smthg if not found ?
+		}
 		return (*it).second;
 	}
 
@@ -130,8 +130,6 @@ public:
 
 	std::pair<iterator,bool> insert (const value_type& val)
 	{
-		
-	// std::cout << "_size = " << this->_size << "\n";
 		
 		if (!this->_size)
 			this->initiate_first_elem(val);
@@ -320,7 +318,7 @@ value_compare value_comp() const {return value_compare(_comp);}
 
 private:
 
-	void sort (void)		// A tester
+	void sort (void)
 	{
 		if (this->_size < 2)
 			return ;

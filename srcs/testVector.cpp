@@ -284,7 +284,7 @@ void	check_vector_const_reverse(const ft::Vector<T> & myLst, const std::vector<T
 }
 
 template <typename T>
-void	check_value(T & valF, T & valS)
+static void	check_value(T & valF, T & valS)
 {
 	if (valF == valS)
 	{
@@ -1174,34 +1174,4 @@ void	vector_check_comparison_string(void)
 
 	std::cout << "\n";
 
-}
-
-int main(int argc, char **argv)
-{
-	if (argc == 2 && *(argv[1]) == '1')
-		print_value = 1;
-	if (argc == 2 && *(argv[1]) == '2')
-		print_error = 1;
-
-	vector_check_constructors();
-	vector_check_constructors_string();
-	vector_check_iterators();
-	vector_check_capacity();
-	vector_check_element_access();
-	vector_check_modifiers();
-	vector_check_modifiers_string();
-	vector_check_comparison();
-	vector_check_comparison_string();
-
-	std::cout << "\033[1;36m\n=====================================\033[0m\n";
-	std::cout << "\033[1;36m=============== Total ===============\033[0m\n";
-	std::cout << "\033[1;36m=====================================\033[0m\n";
-
-	std::cout << "\033[1;32mNb test OK : " << nb_OK << "/" << nb_OK + nb_KO << "\n\033[0m";
-	if (nb_KO)
-		std::cout << "\033[1;31mNb test KO : " << nb_KO << "/" << nb_OK + nb_KO << "\n\033[0m";
-	std::cout << "\n";
-
-
-	return 0;
 }

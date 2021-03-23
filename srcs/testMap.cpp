@@ -1,27 +1,5 @@
 #include "utils_main.hpp"
 
-template <typename Key, typename T>
-std::stringstream	stream_pair(std::stringstream &ss, std::pair<Key, T> p)
-{
-	// std::stringstream ss;
-
-	ss << "(" << p.first << "," << p.second << ")";
-	return (ss);
-}
-
-// template <typename T>
-// std::stringstream stream_map(ft::Map< Key, T> & mp)
-// {
-// 	std::stringstream ss;
-
-// 	typename ft::Map< Key, T>::iterator	it;
-// 	it = mp.begin();
-// 	while (it != mp.end())
-// 		ss << "> " << *(it++) << "\n";
-// 	ss << "\n";
-// 	return (ss);
-// }
-
 template <typename T, typename Key>
 void	display_map(ft::Map< Key, T> & mp)
 {
@@ -37,29 +15,6 @@ void	display_map(ft::Map< Key, T> & mp)
 	std::cout << "]\n";
 }
 
-// template <typename T>
-// void	reverse_display_map(ft::Map< Key, T> & mp)
-// {
-// 	typename ft::Map< Key, T>::reverse_iterator	rit = mp.rbegin();
-
-// 	while (rit != mp.rend())
-// 		std::cout << "> " << *(rit++) << "\n";
-// 	std::cout << "\n";
-// }
-
-// template <typename T>
-// std::stringstream	stream_real_map(std::map< Key, T> & mp)
-// {
-// 	std::stringstream ss;
-
-// 	typename std::map< Key, T>::iterator	it;
-// 	it = mp.begin();
-// 	while (it != mp.end())
-// 		ss << "> " << *(it++) << "\n";
-// 	ss << "\n";
-// 	return (ss);
-// }
-
 template <typename T, typename Key>
 void	display_real_map(std::map< Key, T> & mp)
 {
@@ -74,9 +29,6 @@ void	display_real_map(std::map< Key, T> & mp)
 	}
 	std::cout << "]\n";
 }
-
-
-
 
 
 template < class Key, class T, class Compare, class Alloc >
@@ -305,7 +257,7 @@ void	check_map_const_reverse(const ft::Map< Key, T, Compare, Alloc> & myMap, con
 }
 
 template <typename T>
-void	check_value(T & valF, T & valS)
+static void	check_value(T & valF, T & valS)
 {
 	if (valF == valS)
 	{
@@ -1104,38 +1056,4 @@ void	map_check_observers_string(void)
 
 	std::cout << "\n";
 
-}
-
-
-int main(int argc, char **argv)
-{
-	if (argc == 2 && *(argv[1]) == '1')
-		print_value = 1;
-	if (argc == 2 && *(argv[1]) == '2')
-		print_error = 1;
-
-	map_check_constructors();
-	map_check_constructors_string();
-	map_check_iterators();
-	map_check_capacity();
-	map_check_element_access();
-	map_check_modifiers();
-	map_check_modifiers_string();
-	map_check_operations();
-	map_check_operations_const();
-	map_check_operations_string();
-	map_check_observers();
-	map_check_observers_string();
-
-	std::cout << "\033[1;36m\n=====================================\033[0m\n";
-	std::cout << "\033[1;36m=============== Total ===============\033[0m\n";
-	std::cout << "\033[1;36m=====================================\033[0m\n";
-
-	std::cout << "\033[1;32mNb test OK : " << nb_OK << "/" << nb_OK + nb_KO << "\n\033[0m";
-	if (nb_KO)
-		std::cout << "\033[1;31mNb test KO : " << nb_KO << "/" << nb_OK + nb_KO << "\n\033[0m";
-	std::cout << "\n";
-
-
-	return 0;
 }

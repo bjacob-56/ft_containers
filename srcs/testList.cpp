@@ -284,7 +284,7 @@ void	check_list_const_reverse(const ft::List<T> & myLst, const std::list<T> & re
 }
 
 template <typename T>
-void	check_value(T & valF, T & valS)
+static void	check_value(T & valF, T & valS)
 {
 	if (valF == valS)
 	{
@@ -1536,36 +1536,4 @@ void	list_check_comparison_string(void)
 
 	std::cout << "\n";
 
-}
-
-int main(int argc, char **argv)
-{
-	if (argc == 2 && *(argv[1]) == '1')
-		print_value = 1;
-	if (argc == 2 && *(argv[1]) == '2')
-		print_error = 1;
-
-	list_check_constructors();
-	list_check_constructors_string();
-	list_check_iterators();
-	list_check_capacity();
-	list_check_element_access();
-	list_check_modifiers();
-	list_check_modifiers_string();
-	list_check_operations();
-	list_check_operations_string();
-	list_check_comparison();
-	list_check_comparison_string();
-
-	std::cout << "\033[1;36m\n=====================================\033[0m\n";
-	std::cout << "\033[1;36m=============== Total ===============\033[0m\n";
-	std::cout << "\033[1;36m=====================================\033[0m\n";
-
-	std::cout << "\033[1;32mNb test OK : " << nb_OK << "/" << nb_OK + nb_KO << "\n\033[0m";
-	if (nb_KO)
-		std::cout << "\033[1;31mNb test KO : " << nb_KO << "/" << nb_OK + nb_KO << "\n\033[0m";
-	std::cout << "\n";
-
-
-	return 0;
 }
