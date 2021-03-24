@@ -47,6 +47,7 @@ template <typename T, typename PointerType>
 			}
 
 			T &	operator*(void) {return _ptr->value;}
+			T *	operator->(void) {return &(_ptr->value);}
 
 			ListIterator & operator=(ListIterator const & rhs)
 			{
@@ -99,6 +100,7 @@ template <typename T, typename PointerType>
 			}
 
 			T &	operator*(void) {return _ptr->value;}
+			T *	operator->(void) {return &(_ptr->value);}
 
 			ListConstIterator & operator=(ListConstIterator & rhs)
 			{
@@ -151,6 +153,7 @@ template <typename T, typename PointerType>
 			}
 
 			T &	operator*(void) {return _ptr->value;}
+			T *	operator->(void) {return &(_ptr->value);}
 
 			ListReverseIterator & operator=(ListReverseIterator const & rhs)
 			{
@@ -202,6 +205,7 @@ template <typename T, typename PointerType>
 			}
 
 			T &	operator*(void) {return _ptr->value;}
+			T *	operator->(void) {return &(_ptr->value);}
 
 			ListConstReverseIterator & operator=(ListConstReverseIterator const & rhs)
 			{
@@ -260,6 +264,7 @@ template <typename T>
 			}
 
 			T &	operator*(void) {return _array[_index];}
+			T *	operator->(void) {return &(_array[_index]);}
 
 			VectorIterator & operator=(VectorIterator const & rhs)
 			{
@@ -314,6 +319,7 @@ template <typename T>
 			}
 
 			T &	operator*(void) {return _array[_index];}
+			T *	operator->(void) {return &(_array[_index]);}
 
 			VectorConstIterator & operator=(VectorConstIterator const & rhs)
 			{
@@ -373,6 +379,13 @@ template <typename T>
 					return _array[_index];
 				return _array[0];
 			}
+			T *	operator->(void)
+			{
+				if (_index > 0)
+					return &(_array[_index]);
+				return &(_array[0]);
+			}
+
 
 			VectorReverseIterator & operator=(VectorReverseIterator const & rhs)
 			{
@@ -431,6 +444,12 @@ template <typename T>
 				if (_index > 0)
 					return _array[_index];
 				return _array[0];
+			}
+			T *	operator->(void)
+			{
+				if (_index > 0)
+					return &(_array[_index]);
+				return &(_array[0]);
 			}
 
 			VectorConstReverseIterator & operator=(VectorConstReverseIterator const & rhs)

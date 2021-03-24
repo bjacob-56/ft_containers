@@ -385,20 +385,36 @@ void	vector_check_iterators(void)
 {
 	std::cout << "\033[1;36m\n===== Iterators =====\033[0m\n";
 
-	ft::Vector<int>	vectF;
-	std::vector<int>	vectS;
+	ft::Vector<std::string>	vectF;
+	std::vector<std::string>	vectS;
 
-	vectF.push_back(1);
-	vectF.push_back(2);
-	vectF.push_back(3);
-	vectS.push_back(1);
-	vectS.push_back(2);
-	vectS.push_back(3);
+	vectF.push_back("a");
+	vectF.push_back("ab");
+	vectF.push_back("abcde");
+	vectS.push_back("a");
+	vectS.push_back("ab");
+	vectS.push_back("abcde");
 
 	check_vector (vectF, vectS);
 	check_vector_const(vectF, vectS);
 	check_vector_reverse(vectF, vectS);
 	check_vector_const_reverse(vectF, vectS);
+
+	ft::Vector<std::string>::iterator		itbF = ++vectF.begin();
+	ft::Vector<std::string>::iterator		iteF = --vectF.end();
+	std::vector<std::string>::iterator	itbS = ++vectS.begin();
+	std::vector<std::string>::iterator	iteS = --vectS.end();
+
+	size_t	valF;
+	size_t	valS;
+
+	valF = itbF->length();
+	valS = itbS->length();
+	check_value(valF, valS);
+
+	valF = iteF->length();
+	valS = iteS->length();
+	check_value(valF, valS);
 
 	std::cout << "\n";
 }

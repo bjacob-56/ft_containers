@@ -377,19 +377,35 @@ void	map_check_iterators(void)
 	ft::Map<int, std::string>	mpF;
 	std::map<int, std::string>	mpS;
 
-	mpF.insert(std::pair<int, std::string>(3, "3"));
-	mpF.insert(std::pair<int, std::string>(1, "1"));
-	mpF.insert(std::pair<int, std::string>(2, "2"));
-	mpF.insert(std::pair<int, std::string>(4, "4"));
-	mpS.insert(std::pair<int, std::string>(3, "3"));
-	mpS.insert(std::pair<int, std::string>(1, "1"));
-	mpS.insert(std::pair<int, std::string>(2, "2"));
-	mpS.insert(std::pair<int, std::string>(4, "4"));
+	mpF.insert(std::pair<int, std::string>(3, "abc"));
+	mpF.insert(std::pair<int, std::string>(1, "a"));
+	mpF.insert(std::pair<int, std::string>(2, "ab"));
+	mpF.insert(std::pair<int, std::string>(4, "abcd"));
+	mpS.insert(std::pair<int, std::string>(3, "abc"));
+	mpS.insert(std::pair<int, std::string>(1, "a"));
+	mpS.insert(std::pair<int, std::string>(2, "ab"));
+	mpS.insert(std::pair<int, std::string>(4, "abcd"));
 
 	check_map	(mpF, mpS);
 	check_map_const(mpF, mpS);
 	check_map_reverse(mpF, mpS);
 	check_map_const_reverse(mpF, mpS);
+
+	ft::Map<int, std::string>::reverse_iterator		itbF = ++mpF.rbegin();
+	ft::Map<int, std::string>::reverse_iterator		iteF = --mpF.rend();
+	std::map<int, std::string>::reverse_iterator	itbS = ++mpS.rbegin();
+	std::map<int, std::string>::reverse_iterator	iteS = --mpS.rend();
+
+	size_t	valF;
+	size_t	valS;
+
+	valF = itbF->second.length();
+	valS = itbS->second.length();
+	check_value(valF, valS);
+
+	valF = iteF->second.length();
+	valS = iteS->second.length();
+	check_value(valF, valS);
 
 	std::cout << "\n";
 }

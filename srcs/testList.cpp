@@ -385,21 +385,36 @@ void	list_check_iterators(void)
 {
 	std::cout << "\033[1;36m\n===== Iterators =====\033[0m\n";
 
-	ft::List<int>	lstF;
-	// ft::List<int>	lstF2;
-	std::list<int>	lstS;
+	ft::List<std::string>	lstF;
+	std::list<std::string>	lstS;
 
-	lstF.push_back(1);
-	lstF.push_back(2);
-	lstF.push_back(3);
-	lstS.push_back(1);
-	lstS.push_back(2);
-	lstS.push_back(3);
+	lstF.push_back("a");
+	lstF.push_back("ab");
+	lstF.push_back("abcde");
+	lstS.push_back("a");
+	lstS.push_back("ab");
+	lstS.push_back("abcde");
 
 	check_list	(lstF, lstS);
 	check_list_const(lstF, lstS);
 	check_list_reverse(lstF, lstS);
 	check_list_const_reverse(lstF, lstS);
+
+	ft::List<std::string>::iterator		itbF = ++lstF.begin();
+	ft::List<std::string>::iterator		iteF = --lstF.end();
+	std::list<std::string>::iterator	itbS = ++lstS.begin();
+	std::list<std::string>::iterator	iteS = --lstS.end();
+
+	size_t	valF;
+	size_t	valS;
+
+	valF = itbF->length();
+	valS = itbS->length();
+	check_value(valF, valS);
+
+	valF = iteF->length();
+	valS = iteS->length();
+	check_value(valF, valS);
 
 	std::cout << "\n";
 }
