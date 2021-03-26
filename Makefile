@@ -6,8 +6,9 @@ INC =	includes/Iterator.hpp includes/List.hpp includes/Vector.hpp includes/Map.h
 NAME = main
 
 CC = clang++
-CFLAGS = -Wall -Wextra -Werror -std=c++98 -g3 -fsanitize=address
+# CFLAGS = -Wall -Wextra -Werror -std=c++98 -g3 -fsanitize=address
 # CFLAGS = -Wall -Wextra -Werror -std=c++98 -g3
+CFLAGS = -Wall -Wextra -Werror -std=c++98 
 
 all:	$(NAME)
 
@@ -15,7 +16,7 @@ $(NAME):	$(SRCS) $(INC)
 	clear
 	$(CC) $(CFLAGS) $(SRCS) -o $(NAME)
 	@echo "----- \033[32m $@ created\033[0m  -----"
-	@./$(NAME)
+	@./$(NAME) vector 1
 
 clean:
 	rm -f $(NAME)

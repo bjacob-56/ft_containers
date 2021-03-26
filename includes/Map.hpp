@@ -22,18 +22,23 @@ template < class Key,                                     // map::key_type
 class Map: protected List< std::pair<const Key,T>, Alloc>
 {
 public:
+	typedef Key key_type;
+	typedef T mapped_type;
 	typedef std::pair<const Key, T> value_type;
+	typedef Compare key_compare;
+	typedef Alloc allocator_type;
+
+	typedef typename allocator_type::reference reference;
+	typedef typename allocator_type::const_reference const_reference;
+	typedef typename allocator_type::pointer pointer;
+	typedef typename allocator_type::const_pointer const_pointer;
 
 	typedef ListIterator<value_type, Node<value_type> *> iterator;
 	typedef ListConstIterator<const value_type, Node<const value_type> *> const_iterator;
 	typedef ListReverseIterator<value_type, Node<value_type> *> reverse_iterator;
 	typedef ListConstReverseIterator<const value_type,  Node<const value_type> *> const_reverse_iterator;
 
-	typedef Key key_type;
-	typedef T mapped_type;
-	typedef Compare key_compare;
-	typedef Alloc allocator_type;
-
+	typedef std::ptrdiff_t difference_type;
 	typedef	size_t size_type;
 
 	typedef List< std::pair<const Key,T>, Alloc> Lst;
@@ -48,12 +53,6 @@ public:
 			private:
 				key_compare _comp;
 		};
-
-
-
-
-
-
 
 private:
 	key_compare	_comp;
@@ -143,7 +142,7 @@ public:
 		return (std::pair<iterator,bool>(it, true));
 	}
 
-	iterator insert (iterator position, const value_type& val)	// optimisation a ajouter ?
+	iterator insert (iterator position, const value_type& val)
 	{return insert_prototype(position, val, int());}
 
 	template <class InputIterator>

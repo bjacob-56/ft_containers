@@ -28,15 +28,20 @@ template <typename T, class Alloc= std::allocator<T> >
 class Vector
 {
 public:
+	typedef T value_type;
+	typedef Alloc allocator_type;
 
+	typedef typename allocator_type::reference reference;
+	typedef typename allocator_type::const_reference const_reference;
+	typedef typename allocator_type::pointer pointer;
+	typedef typename allocator_type::const_pointer const_pointer;
+	
 	typedef VectorIterator<T> iterator;
 	typedef VectorConstIterator<const T> const_iterator;
 	typedef VectorReverseIterator<T> reverse_iterator;
 	typedef VectorConstReverseIterator<const T> const_reverse_iterator;
 	
-	typedef Alloc allocator_type;
-	typedef T value_type;
-
+	typedef std::ptrdiff_t difference_type;
 	typedef	size_t size_type;
 
 private:
@@ -49,11 +54,14 @@ public:
 	
 	explicit Vector (const allocator_type& alloc = allocator_type()): _array(0), _size(0), _capacity(0), _alloc(alloc) {}
 	
-	explicit Vector (size_type n, const value_type& val = value_type(), const allocator_type& alloc = allocator_type()): _size(0), _capacity(n), _alloc(alloc)
+	// Vector (size_type n, const value_type& val = value_type(), const allocator_type& alloc = allocator_type()): _size(0), _capacity(2 * n), _alloc(alloc)
+	explicit Vector (size_type n, const value_type& val = value_type(), const allocator_type& alloc = allocator_type()): _size(0), _capacity(2 * n), _alloc(alloc)
 	{
-		_array = _alloc.allocate(_capacity);
+		T temp(val);
+		_array = _alloc.allocate(2 * n);
 		while (_size < n)
-			_array[_size++] = val;
+			_array[_size++] = temp;
+			// this->push_back(temp);
 	}
 
 	template <class InputIterator>
@@ -64,7 +72,7 @@ public:
 	{*this = x;}
 
 
-	~Vector(void)	 // a confirmer
+	~Vector(void)
 	{
 		this->clear();
 		_alloc.deallocate(_array, _capacity);
@@ -107,12 +115,14 @@ public:
 	Vector &	operator=(const Vector & x)
 	{
 		this->clear();
-		if (x._size > _capacity)
+		while (x._size > _capacity)
 		{
 			if (_array)
 				_alloc.deallocate(_array, _capacity);
-			_array = _alloc.allocate(x._capacity);
-			_capacity = x._capacity;
+			else
+				_capacity = 1;
+			_array = _alloc.allocate(2 * _capacity);
+			_capacity = 2 * _capacity;
 		}
 		_size = 0;
 		while (_size < x._size)
@@ -127,7 +137,7 @@ public:
 
 	size_type	size(void) const {return _size;}
 
-	size_type	max_size() const {return (std::numeric_limits<size_type>::max() / sizeof(T));}	// a confirmer
+	size_type	max_size() const {return (std::numeric_limits<size_type>::max() / sizeof(T));}
 
 	void resize (size_type n, value_type val = value_type())
 	{
@@ -144,7 +154,7 @@ public:
 
 	size_type capacity() const {return _capacity;}
 
-	bool	empty(void) const {return (_size == 0);} // size ou capacity ?
+	bool	empty(void) const {return (_size == 0);}
 
 	void reserve (size_type n)
 	{
@@ -172,39 +182,39 @@ public:
 	{
 		if (n < _size)
 			return _array[n];
-		throw std::out_of_range("");				// a confirmer
+		throw std::out_of_range("");
 	}
 
 	const T & at (size_type n) const
 	{
 		if (n < _size)
 			return reinterpret_cast<const T>(_array[n]);
-		throw std::out_of_range("");				// a confirmer
+		throw std::out_of_range("");
 	}
 
 
-	T &	front(void)
+	reference	front(void)
 	{
 		if (_size)
 			return _array[0];
 		throw std::exception();
 	}
 
-	const T &	front(void) const
+	const_reference	front(void) const
 	{
 		if (_size)
 			return reinterpret_cast<const T>(_array[0]);
 		throw std::exception();
 	}
 
-	T &	back(void)
+	reference	back(void)
 	{
 		if (_size)
 			return _array[_size - 1];
 		throw std::exception();
 	}
 
-	const T &	back(void) const
+	const_reference	back(void) const
 	{
 		if (_size)
 			return reinterpret_cast<const T>(_array[_size - 1]);
@@ -232,23 +242,11 @@ public:
 			_array[_size++] = val;
 		else
 		{
-	
-	// std::cout << "\npush_back val = " << val << "\n";
-
-			Vector	temp(_capacity * 2);
-			temp = *this;
-			temp[_size] = val;
-			temp._size++;
-
-// std::cout << "size = " << _size << ", capacity = " << _capacity << "\n";
-// std::cout << "temp.size = " << temp._size << ", temp.capacity = " << temp._capacity << "\n";
-
-
-			*this = temp;
-
-// std::cout << "temp val 2 = " << temp._array[1] << "\n";
-// std::cout << "val 2 = " << _array[1] << "\n\n";
-
+			value_type *	array_temp = new value_type[2 * _capacity];
+			copy_array(&array_temp, 2 * _capacity, _array, _size, _alloc);
+			array_temp[_size] = val;
+			_capacity = copy_array(&_array, _size, array_temp, _size + 1, _alloc);
+			_size++;
 		}
 	}
 
@@ -263,7 +261,7 @@ public:
 
 //		----  Insert  ----
 
-	iterator insert (iterator position, const value_type& val)	// a ajuster si position apres end
+	iterator insert (iterator position, const value_type& val)
 	{
 		iterator	it = this->begin();
 		size_t	i = 0;
@@ -274,7 +272,7 @@ public:
 			i++;
 		}
 		if (it != position)
-			return iterator();		// a confirmer
+			return iterator();
 		this->drift_right(position, 1);
 		_array[i] = val;		
 		return (iterator(_array, _size, i));
@@ -290,7 +288,7 @@ public:
 
 //		----  Erase  ----
 
-	iterator erase (iterator position)		// a ajuster si position apres end
+	iterator erase (iterator position)
 	{
 		iterator	it = this->begin();
 		size_t	i = 0;
@@ -304,7 +302,7 @@ public:
 		return (iterator(_array, _size, i));
 	}
 
-	iterator erase (iterator first, iterator last)			// a ajuster si position apres end
+	iterator erase (iterator first, iterator last)
 	{
 		iterator	it = this->begin();
 		size_t	i = 0;
@@ -346,7 +344,7 @@ public:
 
 //		----  Clear  ----
 
-	void clear() {this->erase(this->begin(), this->end());}	// a tester
+	void clear() {this->erase(this->begin(), this->end());}
 
 
 
@@ -376,7 +374,7 @@ private:
 		if (it != position)
 			return ;
 	
-		Vector	temp(_size + len, value_type());
+		Vector	temp(_size + len);
 		size_t	index = 0;
 		while (index < i)
 		{
@@ -416,6 +414,20 @@ private:
 		}
 	}
 
+	size_t	copy_array(T** array_dest, size_t dest_len, T* array_src, size_t src_len, allocator_type alloc)
+	{
+		size_t capacity = dest_len;
+
+		while (capacity < src_len)
+		{
+			alloc.deallocate(*array_dest, capacity);
+			*array_dest = alloc.allocate(capacity * 2);
+			capacity *= 2;
+		}
+		for (size_t i = 0 ; i < src_len ; i++)
+			(*array_dest)[i] = array_src[i];
+		return (capacity);
+	}
 
 
 // ========  Constructor - private  ========
@@ -452,7 +464,15 @@ private:
 	template <class InputIterator, class InputIterator2>
 	void assign_prototype (InputIterator & first, InputIterator2 & last, int)
 	{
+
+		std::cout << "p3\n";
 		Vector	temp(first, last);
+		std::cout << "p4\n";
+
+std::cout << "assign - _size = " << temp._size << ", _capacity = " << temp._capacity << "\n";
+std::cout << "assign - temp[3] = " << temp[3] << "\n";
+
+
 		*this = temp;
 	}
 

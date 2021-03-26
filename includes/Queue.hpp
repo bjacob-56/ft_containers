@@ -23,6 +23,8 @@ public:
 
 	typedef	size_t size_type;
 
+	
+
 private:
 	container_type	_cont;
 

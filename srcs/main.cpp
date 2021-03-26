@@ -31,12 +31,12 @@ void	test_vector()
 	std::cout << "\033[1;36m============== VECTOR ===============\033[0m\n";
 	std::cout << "\033[1;36m=====================================\033[0m\n";
 
-	vector_check_constructors();
-	vector_check_constructors_string();
-	vector_check_iterators();
-	vector_check_capacity();
-	vector_check_element_access();
-	vector_check_modifiers();
+	// vector_check_constructors();
+	// vector_check_constructors_string();
+	// vector_check_iterators();
+	// vector_check_capacity();
+	// vector_check_element_access();
+	// vector_check_modifiers();
 	vector_check_modifiers_string();
 	vector_check_comparison();
 	vector_check_comparison_string();
