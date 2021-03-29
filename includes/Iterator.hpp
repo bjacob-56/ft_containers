@@ -604,6 +604,8 @@ template <typename T>
 				return (0);
 			}
 
+			int	index_base(void) {return (_index - 1);}
+
 			template <typename Iterator>
 			bool operator<(Iterator const & rhs) const {return (_index > static_cast<int>(rhs.getIndex()) && _size == rhs.getSize() && _array == rhs.getArray());}
 			template <typename Iterator>
