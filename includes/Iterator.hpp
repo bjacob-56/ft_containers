@@ -314,8 +314,10 @@ template <typename T>
 				return (*this);
 			}
 
-			bool operator==(VectorIterator const & rhs) const {return (_index == rhs._index && _size == rhs._size && _array == rhs._array);}
-			bool operator!=(VectorIterator const & rhs) const {return (_index != rhs._index || _size != rhs._size || _array != rhs._array);}
+			template <typename Iterator>
+			bool operator==(Iterator const & rhs) const {return (_index == static_cast<size_t>(rhs.getIndex()) && _size == rhs.getSize() && _array == rhs.getArray());}
+			template <typename Iterator>
+			bool operator!=(Iterator const & rhs) const {return (_index != static_cast<size_t>(rhs.getIndex()) || _size != rhs.getSize() || _array != rhs.getArray());}
 
 
 
@@ -356,10 +358,14 @@ template <typename T>
 				return (0);
 			}
 
-			bool operator<(VectorIterator const & rhs) const {return (_index < rhs._index && _size == rhs._size && _array == rhs._array);}
-			bool operator>(VectorIterator const & rhs) const {return (_index > rhs._index && _size == rhs._size && _array == rhs._array);}
-			bool operator<=(VectorIterator const & rhs) const {return (_index <= rhs._index && _size == rhs._size && _array == rhs._array);}
-			bool operator>=(VectorIterator const & rhs) const {return (_index >= rhs._index && _size == rhs._size && _array == rhs._array);}
+			template <typename Iterator>
+			bool operator<(Iterator const & rhs) const {return (_index < static_cast<size_t>(rhs.getIndex()) && _size == rhs.getSize() && _array == rhs.getArray());}
+			template <typename Iterator>
+			bool operator>(Iterator const & rhs) const {return (_index > static_cast<size_t>(rhs.getIndex()) && _size == rhs.getSize() && _array == rhs.getArray());}
+			template <typename Iterator>
+			bool operator<=(Iterator const & rhs) const {return (_index <= static_cast<size_t>(rhs.getIndex()) && _size == rhs.getSize() && _array == rhs.getArray());}
+			template <typename Iterator>
+			bool operator>=(Iterator const & rhs) const {return (_index >= static_cast<size_t>(rhs.getIndex()) && _size == rhs.getSize() && _array == rhs.getArray());}
 
 			T &	operator[](difference_type n) {return *(*this + n);}
 
@@ -428,9 +434,61 @@ template <typename T>
 				return (*this);
 			}
 
-			bool operator==(VectorConstIterator const & rhs) const {return (_index == rhs._index && _size == rhs._size && _array == rhs._array);}
-			bool operator!=(VectorConstIterator const & rhs) const {return (_index != rhs._index || _size != rhs._size || _array != rhs._array);}
+			template <typename Iterator>
+			bool operator==(Iterator const & rhs) const {return (_index == static_cast<size_t>(rhs.getIndex()) && _size == rhs.getSize() && _array == rhs.getArray());}
+			template <typename Iterator>
+			bool operator!=(Iterator const & rhs) const {return (_index != static_cast<size_t>(rhs.getIndex()) || _size != rhs.getSize() || _array != rhs.getArray());}
 		
+
+			VectorConstIterator	operator+(difference_type n)
+			{
+				VectorConstIterator	res(*this);
+				if (_index + n <= _size)
+					res._index += n;
+				return (res);
+			}
+
+			VectorConstIterator	operator-(difference_type n)
+			{
+				VectorConstIterator	res(*this);
+				if (_index - n >= 0)
+					res._index -= n;
+				return (res);
+			}
+
+			VectorConstIterator &	operator+=(difference_type n)
+			{
+				while (n-- > 0)
+					((*this)++);
+				return (*this);
+			}
+
+			VectorConstIterator &	operator-=(difference_type n)
+			{
+				while (n-- > 0)
+					((*this)--);
+				return (*this);
+			}
+
+			difference_type	operator-(VectorConstIterator & rhs)
+			{
+				if (_size == rhs._size && _array == rhs._array)
+					return (_index - rhs._index);
+				return (0);
+			}
+
+			template <typename Iterator>
+			bool operator<(Iterator const & rhs) const {return (_index < static_cast<size_t>(rhs.getIndex()) && _size == rhs.getSize() && _array == rhs.getArray());}
+			template <typename Iterator>
+			bool operator>(Iterator const & rhs) const {return (_index > static_cast<size_t>(rhs.getIndex()) && _size == rhs.getSize() && _array == rhs.getArray());}
+			template <typename Iterator>
+			bool operator<=(Iterator const & rhs) const {return (_index <= static_cast<size_t>(rhs.getIndex()) && _size == rhs.getSize() && _array == rhs.getArray());}
+			template <typename Iterator>
+			bool operator>=(Iterator const & rhs) const {return (_index >= static_cast<size_t>(rhs.getIndex()) && _size == rhs.getSize() && _array == rhs.getArray());}
+
+			T &	operator[](difference_type n) {return *(*this + n);}
+
+
 			size_t getIndex(void) const {return _index;}
 			size_t getSize(void) const {return _size;}
 			value_type*	getArray(void) const {return _array;}
@@ -470,7 +528,7 @@ template <typename T>
 			}
 			VectorReverseIterator &	operator--(void)
 			{
-				if (_index < _size - 1)
+				if (_index < static_cast<int>(_size) - 1)
 					_index++;
 				return (*this);
 			}
@@ -503,10 +561,62 @@ template <typename T>
 				return (*this);
 			}
 
-			bool operator==(VectorReverseIterator const & rhs) const {return (_index == rhs._index && _size == rhs._size && _array == rhs._array);}
-			bool operator!=(VectorReverseIterator const & rhs) const {return (_index != rhs._index || _size != rhs._size || _array != rhs._array);}
+			template <typename Iterator>
+			bool operator==(Iterator const & rhs) const {return (_index == static_cast<int>(rhs.getIndex()) && _size == rhs.getSize() && _array == rhs.getArray());}
+			template <typename Iterator>
+			bool operator!=(Iterator const & rhs) const {return (_index != static_cast<int>(rhs.getIndex()) || _size != rhs.getSize() || _array != rhs.getArray());}
 
-			size_t getIndex(void) const {return _index;}
+
+			VectorReverseIterator	operator+(difference_type n)
+			{
+				VectorReverseIterator	res(*this);
+				if (_index - n >= 0)
+					res._index -= n;
+				return (res);
+			}
+
+			VectorReverseIterator	operator-(difference_type n)
+			{
+				VectorReverseIterator	res(*this);
+				if (_index + n <= static_cast<int>(_size))
+					res._index += n;
+				return (res);
+			}
+
+			VectorReverseIterator &	operator+=(difference_type n)
+			{
+				while (n-- > 0)
+					((*this)++);
+				return (*this);
+			}
+
+			VectorReverseIterator &	operator-=(difference_type n)
+			{
+				while (n-- > 0)
+					((*this)--);
+				return (*this);
+			}
+
+			difference_type	operator-(VectorReverseIterator & rhs)
+			{
+				if (_size == rhs._size && _array == rhs._array)
+					return (rhs._index - _index);
+				return (0);
+			}
+
+			template <typename Iterator>
+			bool operator<(Iterator const & rhs) const {return (_index > static_cast<int>(rhs.getIndex()) && _size == rhs.getSize() && _array == rhs.getArray());}
+			template <typename Iterator>
+			bool operator>(Iterator const & rhs) const {return (_index < static_cast<int>(rhs.getIndex()) && _size == rhs.getSize() && _array == rhs.getArray());}
+			template <typename Iterator>
+			bool operator<=(Iterator const & rhs) const {return (_index >= static_cast<int>(rhs.getIndex()) && _size == rhs.getSize() && _array == rhs.getArray());}
+			template <typename Iterator>
+			bool operator>=(Iterator const & rhs) const {return (_index <= static_cast<int>(rhs.getIndex()) && _size == rhs.getSize() && _array == rhs.getArray());}
+
+			T &	operator[](difference_type n) {return *(*this + n);}
+
+
+			int getIndex(void) const {return _index;}
 			size_t getSize(void) const {return _size;}
 			value_type*	getArray(void) const {return _array;}
 
@@ -546,7 +656,7 @@ template <typename T>
 			}
 			VectorConstReverseIterator &	operator--(void)
 			{
-				if (_index < _size - 1)
+				if (_index < static_cast<int>(_size) - 1)
 					_index++;
 				return (*this);
 			}
@@ -578,10 +688,61 @@ template <typename T>
 				return (*this);
 			}
 
-			bool operator==(VectorConstReverseIterator const & rhs) const {return (_index == rhs._index && _size == rhs._size && _array == rhs._array);}
-			bool operator!=(VectorConstReverseIterator const & rhs) const {return (_index != rhs._index || _size != rhs._size || _array != rhs._array);}
+			template <typename Iterator>
+			bool operator==(Iterator const & rhs) const {return (_index == static_cast<int>(rhs.getIndex()) && _size == rhs.getSize() && _array == rhs.getArray());}
+			template <typename Iterator>
+			bool operator!=(Iterator const & rhs) const {return (_index != static_cast<int>(rhs.getIndex()) || _size != rhs.getSize() || _array != rhs.getArray());}
 
-			size_t getIndex(void) const {return _index;}
+
+			VectorConstReverseIterator	operator+(difference_type n)
+			{
+				VectorConstReverseIterator	res(*this);
+				if (_index - n >= 0)
+					res._index -= n;
+				return (res);
+			}
+
+			VectorConstReverseIterator	operator-(difference_type n)
+			{
+				VectorConstReverseIterator	res(*this);
+				if (_index + n <= static_cast<int>(_size))
+					res._index += n;
+				return (res);
+			}
+
+			VectorConstReverseIterator &	operator+=(difference_type n)
+			{
+				while (n-- > 0)
+					((*this)++);
+				return (*this);
+			}
+
+			VectorConstReverseIterator &	operator-=(difference_type n)
+			{
+				while (n-- > 0)
+					((*this)--);
+				return (*this);
+			}
+
+			difference_type	operator-(VectorConstReverseIterator & rhs)
+			{
+				if (_size == rhs._size && _array == rhs._array)
+					return (rhs._index - _index);
+				return (0);
+			}
+
+			template <typename Iterator>
+			bool operator<(Iterator const & rhs) const {return (_index > static_cast<int>(rhs.getIndex()) && _size == rhs.getSize() && _array == rhs.getArray());}
+			template <typename Iterator>
+			bool operator>(Iterator const & rhs) const {return (_index < static_cast<int>(rhs.getIndex()) && _size == rhs.getSize() && _array == rhs.getArray());}
+			template <typename Iterator>
+			bool operator<=(Iterator const & rhs) const {return (_index >= static_cast<int>(rhs.getIndex()) && _size == rhs.getSize() && _array == rhs.getArray());}
+			template <typename Iterator>
+			bool operator>=(Iterator const & rhs) const {return (_index <= static_cast<int>(rhs.getIndex()) && _size == rhs.getSize() && _array == rhs.getArray());}
+
+			T &	operator[](difference_type n) {return *(*this + n);}
+
+			int getIndex(void) const {return _index;}
 			size_t getSize(void) const {return _size;}
 			value_type*	getArray(void) const {return _array;}
 
