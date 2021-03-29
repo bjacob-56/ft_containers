@@ -34,9 +34,9 @@ public:
 	typedef typename allocator_type::const_pointer const_pointer;
 
 	typedef ListIterator<value_type, Node<value_type> *> iterator;
-	typedef ListConstIterator<const value_type, Node<const value_type> *> const_iterator;
+	typedef ListConstIterator<value_type, Node<const value_type> *> const_iterator;
 	typedef ListReverseIterator<value_type, Node<value_type> *> reverse_iterator;
-	typedef ListConstReverseIterator<const value_type,  Node<const value_type> *> const_reverse_iterator;
+	typedef ListConstReverseIterator<value_type,  Node<const value_type> *> const_reverse_iterator;
 
 	typedef std::ptrdiff_t difference_type;
 	typedef	size_t size_type;
@@ -379,7 +379,58 @@ private:
 			this->insert(*first++);
 	}
 
+
+	// ========  Comparison  ========
+public:	
+	bool operator==(const Map& rhs)
+	{return this->List< std::pair<const Key,T>, Alloc>::operator==(rhs);}
+
+	bool operator!=(const Map& rhs)
+	{return this->List< std::pair<const Key,T>, Alloc>::operator!=(rhs);}
+
+	bool operator>(const Map& rhs)
+	{return this->List< std::pair<const Key,T>, Alloc>::operator>(rhs);}
+
+	bool operator<(const Map& rhs)
+	{return this->List< std::pair<const Key,T>, Alloc>::operator<(rhs);}
+
+	bool operator>=(const Map& rhs)
+	{return this->List< std::pair<const Key,T>, Alloc>::operator>=(rhs);}
+
+	bool operator<=(const Map& rhs)
+	{return this->List< std::pair<const Key,T>, Alloc>::operator<=(rhs);}
+
 };
+
+
+// // ========  Comparison  ========
+
+template < class Key, class T, class Compare, class Alloc>
+bool operator==(const Map<Key, T, Compare, Alloc>& lhs, const Map<Key, T, Compare, Alloc>& rhs)
+{return (lhs == rhs);}
+
+template < class Key, class T, class Compare, class Alloc>
+bool operator!=(const Map<Key, T, Compare, Alloc>& lhs, const Map<Key, T, Compare, Alloc>& rhs)
+{return (lhs != rhs);}
+
+template < class Key, class T, class Compare, class Alloc>
+bool operator>(const Map<Key, T, Compare, Alloc>& lhs, const Map<Key, T, Compare, Alloc>& rhs)
+{return (lhs > rhs);}
+
+template < class Key, class T, class Compare, class Alloc>
+bool operator<(const Map<Key, T, Compare, Alloc>& lhs, const Map<Key, T, Compare, Alloc>& rhs)
+{return (lhs < rhs);}
+
+template < class Key, class T, class Compare, class Alloc>
+bool operator>=(const Map<Key, T, Compare, Alloc>& lhs, const Map<Key, T, Compare, Alloc>& rhs)
+{return (lhs >= rhs);}
+
+template < class Key, class T, class Compare, class Alloc>
+bool operator<=(const Map<Key, T, Compare, Alloc>& lhs, const Map<Key, T, Compare, Alloc>& rhs)
+{return (lhs <= rhs);}
+
+template < class Key, class T, class Compare, class Alloc>
+void swap (Map<Key, T, Compare, Alloc>& x, Map<Key, T, Compare, Alloc>& y) {x.swap(y);}
 
 
 }

@@ -103,9 +103,9 @@ public:
 	typedef typename allocator_type::const_pointer const_pointer;
 
 	typedef ListIterator<T, Node<T> *> iterator;
-	typedef ListConstIterator<const T, Node<const T> *> const_iterator;
+	typedef ListConstIterator<T, Node<const T> *> const_iterator;
 	typedef ListReverseIterator<T, Node<T> *> reverse_iterator;
-	typedef ListConstReverseIterator<const T,  Node<const T> *> const_reverse_iterator;
+	typedef ListConstReverseIterator<T,  Node<const T> *> const_reverse_iterator;
 	
 	typedef std::ptrdiff_t difference_type;
 	typedef	size_t size_type;
@@ -541,13 +541,8 @@ public:
 			begin++;
 			while (begin != this->end())
 			{
-				// if (binary_pred(*begin, *begin_previous) == true) 
 				if (binary_pred(*begin_previous, *begin) == true) 
-				{
-					// begin++;
 					begin = this->erase(begin);
-					// begin_previous++;
-				}
 				else
 				{
 					begin++;
@@ -871,6 +866,77 @@ protected:
 				_begin = temp;
 		}
 	}
+
+public:
+	// ========  Comparison  ========
+	
+	bool operator== (const List& rhs)
+	{
+		if (this->size() != rhs.size())
+			return false;
+		if (!this->size())
+			return true;
+		const_iterator		it1 = this->begin();
+		const_iterator		it2 = rhs.begin();
+		while (it1 != this->end() && it2 != rhs.end())
+		{
+			if (*it1++ != *it2++)
+				return false;
+		}
+		if (it1 == this->end() && it2 == rhs.end())
+			return true;
+		return false;
+	}
+	
+	bool operator!= (const List& rhs) {return !((*this) == rhs);}
+	
+	bool operator< (const List& rhs)
+	{
+		if (!this->size() && rhs.size())
+			return true;
+		if (this->size() && !rhs.size())
+			return false;
+		const_iterator		it1 = this->begin();
+		const_iterator		it2 = rhs.begin();
+		while (it1 != this->end() && it2 != rhs.end() && *it1 == *it2)
+		{
+			it1++;
+			it2++;
+		}
+		if (it2 == rhs.end())
+			return false;
+		if (it1 == this->end())
+			return true;
+		if (*it1 < *it2)
+			return true;
+		return false;
+	}
+	
+	bool operator> (const List& rhs)
+	{
+		if (this->size() && !rhs.size())
+			return true;
+		if (!this->size() && rhs.size())
+			return false;
+		const_iterator		it1 = this->begin();
+		const_iterator		it2 = rhs.begin();
+		while (it1 != this->end() && it2 != rhs.end() && *it1 == *it2)
+		{
+			it1++;
+			it2++;
+		}
+		if (it1 == this->end())
+			return false;
+		if (it2 == rhs.end())
+			return true;
+		if (*it1 > *it2)
+			return true;
+		return false;
+}
+
+bool operator<= (const List& rhs) {return !((*this) > rhs);}
+
+bool operator>= (const List& rhs) {return !((*this) < rhs);}
 
 };
 

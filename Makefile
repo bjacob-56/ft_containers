@@ -8,7 +8,7 @@ NAME = main
 CC = clang++
 # CFLAGS = -Wall -Wextra -Werror -std=c++98 -g3 -fsanitize=address
 # CFLAGS = -Wall -Wextra -Werror -std=c++98 -g3
-CFLAGS = -Wall -Wextra -Werror -std=c++98 -g
+CFLAGS = -Wall -Wextra -Werror -std=c++98 
 
 all:	$(NAME)
 
@@ -16,7 +16,7 @@ $(NAME):	$(SRCS) $(INC)
 	clear
 	$(CC) $(CFLAGS) $(SRCS) -o $(NAME)
 	@echo "----- \033[32m $@ created\033[0m  -----"
-	# @./$(NAME) vector 1
+	@./$(NAME)
 
 clean:
 	rm -f $(NAME)

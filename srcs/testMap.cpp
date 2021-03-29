@@ -41,7 +41,6 @@ void	check_map(ft::Map< Key, T, Compare, Alloc> & myMap, std::map< Key, T, Compa
 	ss_ft << "[";
 	while (itF != myMap.end())
 	{
-		// ss_ft << stream_pair(*(itF++));
 		ss_ft << "(" << (*itF).first << "," << (*itF).second << ")";
 		if (++itF != myMap.end())
 			ss_ft << ", ";
@@ -52,7 +51,6 @@ void	check_map(ft::Map< Key, T, Compare, Alloc> & myMap, std::map< Key, T, Compa
 	ss_std << "[";
 	while (itS != realMap.end())
 	{
-		// ss_std << stream_pair(*(itS++));
 		ss_std << "(" << (*itS).first << "," << (*itS).second << ")";
 		if (++itS != realMap.end())
 			ss_std << ", ";
@@ -100,7 +98,6 @@ void	check_map_const(const ft::Map< Key, T, Compare, Alloc> & myMap, const std::
 	ss_ft << "[";
 	while (itF != myMap.end())
 	{
-		// ss_ft << stream_pair(*(itF++));
 		ss_ft << "(" << (*itF).first << "," << (*itF).second << ")";
 		if (++itF != myMap.end())
 			ss_ft << ", ";
@@ -111,7 +108,6 @@ void	check_map_const(const ft::Map< Key, T, Compare, Alloc> & myMap, const std::
 	ss_std << "[";
 	while (itS != realMap.end())
 	{
-		// ss_std << stream_pair(*(itS++));
 		ss_std << "(" << (*itS).first << "," << (*itS).second << ")";
 		if (++itS != realMap.end())
 			ss_std << ", ";
@@ -153,7 +149,6 @@ void	check_map_reverse(ft::Map< Key, T, Compare, Alloc> & myMap, std::map< Key, 
 	ss_ft << "[";
 	while (itF != myMap.rend())
 	{
-		// ss_ft << stream_pair(*(itF++));
 		ss_ft << "(" << (*itF).first << "," << (*itF).second << ")";
 		if (++itF != myMap.rend())
 			ss_ft << ", ";
@@ -164,7 +159,6 @@ void	check_map_reverse(ft::Map< Key, T, Compare, Alloc> & myMap, std::map< Key, 
 	ss_std << "[";
 	while (itS != realMap.rend())
 	{
-		// ss_std << stream_pair(*(itS++));
 		ss_std << "(" << (*itS).first << "," << (*itS).second << ")";
 		if (++itS != realMap.rend())
 			ss_std << ", ";
@@ -213,7 +207,6 @@ void	check_map_const_reverse(const ft::Map< Key, T, Compare, Alloc> & myMap, con
 	ss_ft << "[";
 	while (itF != myMap.rend())
 	{
-		// ss_ft << stream_pair(*(itF++));
 		ss_ft << "(" << (*itF).first << "," << (*itF).second << ")";
 		if (++itF != myMap.rend())
 			ss_ft << ", ";
@@ -224,7 +217,6 @@ void	check_map_const_reverse(const ft::Map< Key, T, Compare, Alloc> & myMap, con
 	ss_std << "[";
 	while (itS != realMap.rend())
 	{
-		// ss_std << stream_pair(*(itS++));
 		ss_std << "(" << (*itS).first << "," << (*itS).second << ")";
 		if (++itS != realMap.rend())
 			ss_std << ", ";
@@ -306,9 +298,6 @@ void	map_check_constructors(void)
 	mpS.insert(std::pair<const int, std::string>(2, "2-"));
 	mpS.insert(std::pair<const int, std::string>(4, "4-"));
 
-	// display_map(mpF);
-	// display_real_map(mpS);
-
 	ft::Map<const int, std::string>::iterator	itbF = ++mpF.begin();
 	ft::Map<const int, std::string>::iterator	iteF = mpF.end();
 	std::map<const int, std::string>::iterator	itbS = ++mpS.begin();
@@ -345,9 +334,6 @@ void	map_check_constructors_string(void)
 	mpS.insert(std::pair<const std::string, std::string>("key1", "val1"));
 	mpS.insert(std::pair<const std::string, std::string>("key2", "val2"));
 	mpS.insert(std::pair<const std::string, std::string>("key4", "val4"));
-
-	// display_map(mpF);
-	// display_real_map(mpS);
 
 	ft::Map<const std::string, std::string>::iterator	itbF = ++mpF.begin();
 	ft::Map<const std::string, std::string>::iterator	iteF = mpF.end();
@@ -579,6 +565,11 @@ void	map_check_modifiers(void)
 	check_map(mpF, mpS);
 	check_map(mpF2, mpS2);
 
+	swap(mpF, mpF2);
+	swap(mpS, mpS2);
+	check_map(mpF, mpS);
+	check_map(mpF2, mpS2);
+
 	std::cout << "\n  --- Clear ---\n";
 	mpF.clear();
 	mpF2.clear();
@@ -675,6 +666,11 @@ void	map_check_modifiers_string(void)
 	std::cout << "\n  --- Swap ---\n";
 	mpF.swap(mpF2);
 	mpS.swap(mpS2);
+	check_map(mpF, mpS);
+	check_map(mpF2, mpS2);
+
+	swap(mpF, mpF2);
+	swap(mpS, mpS2);
 	check_map(mpF, mpS);
 	check_map(mpF2, mpS2);
 

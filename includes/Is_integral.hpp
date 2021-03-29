@@ -51,7 +51,5 @@ struct is_integral<unsigned long long> { typedef int type; };
 
 }
 
-// template <typename T , typename U>
-// struct ft::is_integral< std::pair< T, U> > { typedef int type; };
 
 #endif

@@ -11,6 +11,9 @@ namespace ft
 // ************************************   LIST   ************************************
 // **********************************************************************************
 
+template <typename T>
+class Node;
+
 template <typename T, typename PointerType>
 	class ListIterator
 	{
@@ -84,7 +87,7 @@ template <typename T, typename PointerType>
 			ListConstIterator(void): _ptr(0) {};
 			ListConstIterator(PointerType ptr): _ptr(ptr) {};
 			ListConstIterator(const ListConstIterator & src): _ptr(src._ptr) {};
-			ListConstIterator(const ListIterator<T, PointerType> & src): _ptr(src.getPtr()) {};
+			ListConstIterator(const ListIterator<T, Node< T > *> & src): _ptr(reinterpret_cast<ft::Node<const T> *>(src.getPtr())) {};
 			~ListConstIterator(void) {};
 
 			ListConstIterator &	operator++(void)// pre increment
@@ -112,8 +115,8 @@ template <typename T, typename PointerType>
 				return (temp);
 			}
 
-			T &	operator*(void) {return _ptr->value;}
-			T *	operator->(void) {return &(_ptr->value);}
+			value_type &	operator*(void) {return _ptr->value;}
+			value_type *	operator->(void) {return &(_ptr->value);}
 
 			ListConstIterator & operator=(ListConstIterator & rhs)
 			{
@@ -158,9 +161,9 @@ template <typename T, typename PointerType>
 			{
 				ListReverseIterator	temp(*this);
 				++(*this);
-				return (temp);	// quel comportement apres end ?
+				return (temp);
 			}
-			ListReverseIterator &	operator--(void) // quel comportement avant begin ?
+			ListReverseIterator &	operator--(void)
 			{
 				if (_ptr && _ptr->next)
 					_ptr = _ptr->next;
@@ -206,7 +209,7 @@ template <typename T, typename PointerType>
 			ListConstReverseIterator(void): _ptr(0) {};
 			ListConstReverseIterator(PointerType ptr): _ptr(ptr) {};
 			ListConstReverseIterator(const ListConstReverseIterator & src): _ptr(src._ptr) {};
-			ListConstReverseIterator(const ListReverseIterator<T, PointerType> & src): _ptr(src.getPtr()) {};
+			ListConstReverseIterator(const ListReverseIterator<T, Node< T > *> & src): _ptr(reinterpret_cast<ft::Node<const T> *>(src.getPtr())) {};
 			~ListConstReverseIterator(void) {};
 
 			ListConstReverseIterator &	operator++(void)	// pre increment
@@ -219,9 +222,9 @@ template <typename T, typename PointerType>
 			{
 				ListConstReverseIterator	temp(*this);
 				++(*this);
-				return (temp);	// quel comportement apres end ?
+				return (temp);
 			}
-			ListConstReverseIterator &	operator--(void) // quel comportement avant begin ?
+			ListConstReverseIterator &	operator--(void)
 			{
 				if (_ptr && _ptr->next)
 					_ptr = _ptr->next;
@@ -234,8 +237,8 @@ template <typename T, typename PointerType>
 				return (temp);
 			}
 
-			T &	operator*(void) {return _ptr->value;}
-			T *	operator->(void) {return &(_ptr->value);}
+			value_type &	operator*(void) {return _ptr->value;}
+			value_type *	operator->(void) {return &(_ptr->value);}
 
 			ListConstReverseIterator & operator=(ListConstReverseIterator const & rhs)
 			{
@@ -424,14 +427,6 @@ template <typename T>
 				_array = rhs._array;
 				return (*this);
 			}
-
-			// VectorConstIterator & operator=(VectorIterator<T> const & rhs)
-			// {
-			// 	_index = rhs._index;
-			// 	_size = rhs._size;
-			// 	_array = rhs._array;
-			// 	return (*this);
-			// }
 
 			bool operator==(VectorConstIterator const & rhs) const {return (_index == rhs._index && _size == rhs._size && _array == rhs._array);}
 			bool operator!=(VectorConstIterator const & rhs) const {return (_index != rhs._index || _size != rhs._size || _array != rhs._array);}
