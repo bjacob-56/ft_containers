@@ -57,7 +57,8 @@ public:
 	
 	explicit Vector (size_type n, const value_type& val = value_type(), const allocator_type& alloc = allocator_type()): _array(NULL), _size(0), _capacity(0), _alloc(alloc)
 	{
-		_capacity = find_next_power2(n);
+		// _capacity = find_next_power2(n);
+		_capacity = n;
 		_array = _alloc.allocate(_capacity);
 		while (_size < _capacity)
 			_alloc.construct(_array + _size++, T());
@@ -67,7 +68,7 @@ public:
 	}
 
 	template <class InputIterator>
-	Vector (InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type()): _array(NULL), _size(0), _capacity(1), _alloc(alloc)
+	Vector (InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type()): _array(NULL), _size(0), _capacity(0), _alloc(alloc)
 	{constructor_prototype(first, last, typename ft::is_integral<InputIterator>::type());}
 
 	Vector (const Vector& x): _array(NULL), _size(0), _capacity(0), _alloc(allocator_type())
@@ -459,7 +460,8 @@ private:
 	template <class InputIterator>
 	void	constructor_prototype (InputIterator first, InputIterator last, int)
 	{
-		_capacity = find_next_power2(first);
+		// _capacity = find_next_power2(first);
+		_capacity = first;
 		_array = _alloc.allocate(_capacity);
 		while (_size < _capacity)
 			_alloc.construct(_array + _size++, T());
@@ -478,7 +480,7 @@ private:
 			temp++;
 			_capacity++;
 		}
-		_capacity = find_next_power2(_capacity);;
+		// _capacity = find_next_power2(_capacity);
 		_array = _alloc.allocate(_capacity);
 		while (_size < _capacity)
 			_alloc.construct(_array + _size++, T());
