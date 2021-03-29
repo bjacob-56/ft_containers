@@ -498,115 +498,115 @@ void	vector_check_element_access(void)
 	std::cout << "\n";
 }
 
-// void	vector_check_modifiers(void)
-// {
-// 	std::cout << "\033[1;36m\n===== Modifiers =====\033[0m\n";
+void	vector_check_modifiers(void)
+{
+	std::cout << "\033[1;36m\n===== Modifiers =====\033[0m\n";
 
-// 	std::cout << "  --- Assign ---\n";
-// 	ft::Vector<int>	vectF;
-// 	std::vector<int>	vectS;
+	std::cout << "  --- Assign ---\n";
+	ft::Vector<int>	vectF;
+	std::vector<int>	vectS;
 
-// 	vectF.assign(5, 42);
-// 	vectS.assign(5, 42);
-// 	check_vector(vectF, vectS);
+	vectF.assign(5, 42);
+	vectS.assign(5, 42);
+	check_vector(vectF, vectS);
 
-// 	ft::Vector<int>	vectF2;
-// 	std::vector<int>	vectS2;
+	ft::Vector<int>	vectF2;
+	std::vector<int>	vectS2;
 
-// 	ft::Vector<int>::iterator		itbF = vectF.begin()++;
-// 	ft::Vector<int>::iterator		iteF = vectF.end()--;
-// 	std::vector<int>::iterator	itbS = vectS.begin()++;
-// 	std::vector<int>::iterator	iteS = vectS.end()--;
+	ft::Vector<int>::iterator		itbF = vectF.begin()++;
+	ft::Vector<int>::iterator		iteF = vectF.end()--;
+	std::vector<int>::iterator	itbS = vectS.begin()++;
+	std::vector<int>::iterator	iteS = vectS.end()--;
 	
-// 	vectF.assign(itbF, iteF);
-// 	vectS.assign(itbS, iteS);
-// 	check_vector(vectF2, vectS2, 1);
+	vectF.assign(itbF, iteF);
+	vectS.assign(itbS, iteS);
+	check_vector(vectF2, vectS2, 1);
 
-// 	std::cout << "\n  --- Push/Pop_Back ---\n";
-
-
-// 	vectF2.push_back(3);
-// 	vectF2.push_back(5);
-// 	vectS2.push_back(3);
-// 	vectS2.push_back(5);
-// 	check_vector(vectF2, vectS2);
+	std::cout << "\n  --- Push/Pop_Back ---\n";
 
 
-// 	vectF2.pop_back();
-// 	vectS2.pop_back();
-// 	check_vector(vectF2, vectS2);
+	vectF2.push_back(3);
+	vectF2.push_back(5);
+	vectS2.push_back(3);
+	vectS2.push_back(5);
+	check_vector(vectF2, vectS2);
 
 
-// 	std::cout << "\n  --- Insert ---\n";
-
-// 	ft::Vector<int>::iterator		itbF2 = ++vectF2.begin();
-// 	std::vector<int>::iterator	itbS2 = ++vectS2.begin();
-
-// 	itbF2 = vectF2.insert(itbF2, 56);
-// 	itbS2 = vectS2.insert(itbS2, 56);
-// 	check_vector(vectF2, vectS2);
-
-// 	vectF2.insert(itbF2, 5, 93);
-// 	vectS2.insert(itbS2, 5, 93);
-// 	check_vector(vectF2, vectS2);
-
-// 	itbF2 = ++vectF2.begin();
-// 	itbS2 = ++vectS2.begin();
-
-// 	vectF2.insert(itbF2, itbF, iteF);
-// 	vectS2.insert(itbS2, itbS, iteS);
-// 	check_vector(vectF2, vectS2);
-
-// 	std::cout << "\n  --- Erase ---\n";
-
-// 	itbF2 = ++vectF2.begin();
-// 	itbS2 = ++vectS2.begin();
-
-// 	itbF2 = vectF2.erase(--itbF2);
-// 	itbS2 = vectS2.erase(--itbS2);
-// 	check_vector(vectF2, vectS2);
-
-// 	ft::Vector<int>::iterator		iteF2 = --vectF2.end();
-// 	std::vector<int>::iterator	iteS2 = --vectS2.end();
-
-// 	itbF2 = ++vectF2.begin();
-// 	itbS2 = ++vectS2.begin();
-
-// 	vectF2.erase(itbF2, iteF2);
-// 	vectS2.erase(itbS2, iteS2);
-// 	check_vector(vectF2, vectS2);
+	vectF2.pop_back();
+	vectS2.pop_back();
+	check_vector(vectF2, vectS2);
 
 
-// 	std::cout << "\n  --- Swap ---\n";
-// 	vectF.swap(vectF2);
-// 	vectS.swap(vectS2);
-// 	check_vector(vectF, vectS);
-// 	check_vector(vectF2, vectS2);
+	std::cout << "\n  --- Insert ---\n";
 
-// 	swap(vectF, vectF2);
-// 	swap(vectS, vectS2);
-// 	check_vector(vectF, vectS);
-// 	check_vector(vectF2, vectS2);
+	ft::Vector<int>::iterator		itbF2 = ++vectF2.begin();
+	std::vector<int>::iterator	itbS2 = ++vectS2.begin();
 
-// 	std::cout << "\n  --- Resize ---\n";
-// 	vectF2.resize(0);
-// 	vectS2.resize(0);
-// 	check_vector(vectF2, vectS2);
+	itbF2 = vectF2.insert(itbF2, 56);
+	itbS2 = vectS2.insert(itbS2, 56);
+	check_vector(vectF2, vectS2);
+
+	vectF2.insert(itbF2, 5, 93);
+	vectS2.insert(itbS2, 5, 93);
+	check_vector(vectF2, vectS2);
+
+	itbF2 = ++vectF2.begin();
+	itbS2 = ++vectS2.begin();
+
+	vectF2.insert(itbF2, itbF, iteF);
+	vectS2.insert(itbS2, itbS, iteS);
+	check_vector(vectF2, vectS2);
+
+	std::cout << "\n  --- Erase ---\n";
+
+	itbF2 = ++vectF2.begin();
+	itbS2 = ++vectS2.begin();
+
+	itbF2 = vectF2.erase(--itbF2);
+	itbS2 = vectS2.erase(--itbS2);
+	check_vector(vectF2, vectS2);
+
+	ft::Vector<int>::iterator		iteF2 = --vectF2.end();
+	std::vector<int>::iterator	iteS2 = --vectS2.end();
+
+	itbF2 = ++vectF2.begin();
+	itbS2 = ++vectS2.begin();
+
+	vectF2.erase(itbF2, iteF2);
+	vectS2.erase(itbS2, iteS2);
+	check_vector(vectF2, vectS2);
+
+
+	std::cout << "\n  --- Swap ---\n";
+	vectF.swap(vectF2);
+	vectS.swap(vectS2);
+	check_vector(vectF, vectS);
+	check_vector(vectF2, vectS2);
+
+	swap(vectF, vectF2);
+	swap(vectS, vectS2);
+	check_vector(vectF, vectS);
+	check_vector(vectF2, vectS2);
+
+	std::cout << "\n  --- Resize ---\n";
+	vectF2.resize(0);
+	vectS2.resize(0);
+	check_vector(vectF2, vectS2);
 	
-// 	vectF2.resize(12, -42);
-// 	vectS2.resize(12, -42);
-// 	check_vector(vectF2, vectS2);
+	vectF2.resize(12, -42);
+	vectS2.resize(12, -42);
+	check_vector(vectF2, vectS2);
 
-// 	std::cout << "\n  --- Clear ---\n";
-// 	vectF.clear();
-// 	vectF2.clear();
-// 	vectS.clear();
-// 	vectS2.clear();
-// 	check_vector(vectF, vectS);
-// 	check_vector(vectF2, vectS2);
+	std::cout << "\n  --- Clear ---\n";
+	vectF.clear();
+	vectF2.clear();
+	vectS.clear();
+	vectS2.clear();
+	check_vector(vectF, vectS);
+	check_vector(vectF2, vectS2);
 
-// 	std::cout << "\n";
-// }
+	std::cout << "\n";
+}
 
 void	vector_check_modifiers_string(void)
 {
@@ -650,14 +650,15 @@ void	vector_check_modifiers_string(void)
 
 	std::cout << "\n  --- Insert ---\n";
 
-std::cout << "p0\n";
+// std::cout << "p0\n";
 	ft::Vector<std::string>::iterator		itbF2 = ++vectF2.begin();
+	// ft::Vector<std::string>::iterator		itbF2 = vectF2.begin();
 	std::vector<std::string>::iterator	itbS2 = ++vectS2.begin();
-std::cout << "p1\n";
-std::cout << "size = " << vectF2.size() << ", capacity = " << vectF2.capacity() << "\n";
+// std::cout << "p1\n";
+// std::cout << "size = " << vectF2.size() << ", capacity = " << vectF2.capacity() << "\n";
 
 	itbF2 = vectF2.insert(itbF2, "42");
-std::cout << "p2\n";
+// std::cout << "p2\n";
 	itbS2 = vectS2.insert(itbS2, "42");
 	check_vector(vectF2, vectS2);
 
@@ -973,10 +974,21 @@ void	vector_check_comparison_string(void)
 
 	ft::Vector<std::string>	vectF2;
 	std::vector<std::string>	vectS2;
+std::cout << "p0\n";
 
-	vectF.push_back("abc");
-	vectF.push_back("abcd");
-	vectF.push_back("abce");
+	std::string s0 = "abc";
+	std::string s1 = "abcd";
+	std::string s2 = "abce";
+
+	// vectF.push_back("abc");
+	vectF.push_back(s0);
+std::cout << "p1, size = " << vectF.size() << ", capacity = " << vectF.capacity() << "\n";
+	// vectF.push_back("abcd");
+	vectF.push_back(s1);
+std::cout << "p2, size = " << vectF.size() << ", capacity = " << vectF.capacity() << "\n";
+	// vectF.push_back("abce");
+	vectF.push_back(s2);
+std::cout << "p3\n";
 
 	vectF2.push_back("abc");
 	vectF2.push_back("abcd");

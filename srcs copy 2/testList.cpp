@@ -1,73 +1,7 @@
 #include "utils_main.hpp"
 
 template <typename T>
-std::stringstream stream_list(ft::List<T> & lst)
-{
-	std::stringstream ss;
-
-	typename ft::List<T>::iterator	it;
-	it = lst.begin();
-	while (it != lst.end())
-		ss << "> " << *(it++) << "\n";
-	ss << "\n";
-	return (ss);
-}
-
-template <typename T>
-void	display_list(ft::List<T> & lst)
-{
-	typename ft::List<T>::iterator	it;
-	it = lst.begin();
-	std::cout << "[";
-	while (it != lst.end())
-	{
-		std::cout << "" << *(it++);
-		if (it != lst.end())
-			std::cout << ", ";
-	}
-	std::cout << "]\n";
-}
-
-template <typename T>
-void	reverse_display_list(ft::List<T> & lst)
-{
-	typename ft::List<T>::reverse_iterator	rit = lst.rbegin();
-
-	while (rit != lst.rend())
-		std::cout << "> " << *(rit++) << "\n";
-	std::cout << "\n";
-}
-
-template <typename T>
-std::stringstream	stream_real_list(std::list<T> & lst)
-{
-	std::stringstream ss;
-
-	typename std::list<T>::iterator	it;
-	it = lst.begin();
-	while (it != lst.end())
-		ss << "> " << *(it++) << "\n";
-	ss << "\n";
-	return (ss);
-}
-
-template <typename T>
-void	display_real_list(std::list<T> & lst)
-{
-	typename std::list<T>::iterator	it;
-	it = lst.begin();
-	std::cout << "[";
-	while (it != lst.end())
-	{
-		std::cout << "" << *(it++);
-		if (it != lst.end())
-			std::cout << ", ";
-	}
-	std::cout << "]\n";
-}
-
-template <typename T>
-void	check_list(ft::List<T> & myLst, std::list<T> & realLst, int clearFlag = 0)
+void	check_list(ft::List<T> & myLst, std::list<T> & realLst, int print_value, int print_error, int *nb_OK, int *nb_KO, int clearFlag = 0)
 {
 	std::stringstream ss_ft;
 	std::stringstream ss_std;
@@ -95,12 +29,12 @@ void	check_list(ft::List<T> & myLst, std::list<T> & realLst, int clearFlag = 0)
 	if (!ss_std.str().compare(ss_ft.str()))
 	{
 		std::cout << "\033[1;32mOK \033[0m";
-		nb_OK++;
+		(*nb_OK)++;
 	}
 	else
 	{
 		std::cout << "\033[1;31mKO \033[0m";
-		nb_KO++;
+		(*nb_KO)++;
 	}
 
 	if (print_value)
@@ -124,7 +58,7 @@ void	check_list(ft::List<T> & myLst, std::list<T> & realLst, int clearFlag = 0)
 }
 
 template <typename T>
-void	check_list_const(const ft::List<T> & myLst, const std::list<T> & realLst)
+void	check_list_const(const ft::List<T> & myLst, const std::list<T> & realLst, int print_value, int print_error, int *nb_OK, int *nb_KO)
 {
 	std::stringstream ss_ft;
 	std::stringstream ss_std;
@@ -152,12 +86,12 @@ void	check_list_const(const ft::List<T> & myLst, const std::list<T> & realLst)
 	if (!ss_std.str().compare(ss_ft.str()))
 	{
 		std::cout << "\033[1;32mOK \033[0m";
-		nb_OK++;
+		(*nb_OK)++;
 	}
 	else
 	{
 		std::cout << "\033[1;31mKO \033[0m";
-		nb_KO++;
+		(*nb_KO)++;
 	}
 
 	if (print_value)
@@ -175,7 +109,7 @@ void	check_list_const(const ft::List<T> & myLst, const std::list<T> & realLst)
 }
 
 template <typename T>
-void	check_list_reverse(ft::List<T> & myLst, std::list<T> & realLst, int clearFlag = 0)
+void	check_list_reverse(ft::List<T> & myLst, std::list<T> & realLst, int print_value, int print_error, int *nb_OK, int *nb_KO, int clearFlag = 0)
 {
 	std::stringstream ss_ft;
 	std::stringstream ss_std;
@@ -203,12 +137,12 @@ void	check_list_reverse(ft::List<T> & myLst, std::list<T> & realLst, int clearFl
 	if (!ss_std.str().compare(ss_ft.str()))
 	{
 		std::cout << "\033[1;32mOK \033[0m";
-		nb_OK++;
+		(*nb_OK)++;
 	}
 	else
 	{
 		std::cout << "\033[1;31mKO \033[0m";
-		nb_KO++;
+		(*nb_KO)++;
 	}
 
 	if (print_value)
@@ -233,7 +167,7 @@ void	check_list_reverse(ft::List<T> & myLst, std::list<T> & realLst, int clearFl
 
 
 template <typename T>
-void	check_list_const_reverse(const ft::List<T> & myLst, const std::list<T> & realLst)
+void	check_list_const_reverse(const ft::List<T> & myLst, const std::list<T> & realLst, int print_value, int print_error, int *nb_OK, int *nb_KO)
 {
 	std::stringstream ss_ft;
 	std::stringstream ss_std;
@@ -261,12 +195,12 @@ void	check_list_const_reverse(const ft::List<T> & myLst, const std::list<T> & re
 	if (!ss_std.str().compare(ss_ft.str()))
 	{
 		std::cout << "\033[1;32mOK \033[0m";
-		nb_OK++;
+		(*nb_OK)++;
 	}
 	else
 	{
 		std::cout << "\033[1;31mKO \033[0m";
-		nb_KO++;
+		(*nb_KO)++;
 	}
 
 	if (print_value)
@@ -284,17 +218,17 @@ void	check_list_const_reverse(const ft::List<T> & myLst, const std::list<T> & re
 }
 
 template <typename T>
-static void	check_value(T & valF, T & valS)
+static void	check_value(T & valF, T & valS, int print_value, int print_error, int *nb_OK, int *nb_KO)
 {
 	if (valF == valS)
 	{
 		std::cout << "\033[1;32mOK \033[0m";
-		nb_OK++;
+		(*nb_OK)++;
 	}
 	else
 	{
 		std::cout << "\033[1;31mKO \033[0m";
-		nb_KO++;
+		(*nb_KO)++;
 	}
 
 	if (print_value)
@@ -316,17 +250,17 @@ static void	check_value(T & valF, T & valS)
 // ************************************************************* //
 
 
-void	list_check_constructors(void)
+void	list_check_constructors(int print_value, int print_error, int *nb_OK, int *nb_KO)
 {
 	std::cout << "\033[1;36m\n===== Constructors =====\033[0m\n";
 
 	ft::List<int>	lstF;
 	std::list<int>	lstS;
-	check_list(lstF, lstS);
+	check_list(lstF, lstS, print_value, print_error, nb_OK, nb_KO);
 
 	ft::List<int>	lstF2(5, 42);
 	std::list<int>	lstS2(5, 42);
-	check_list(lstF2, lstS2);
+	check_list(lstF2, lstS2, print_value, print_error, nb_OK, nb_KO);
 
 	ft::List<int>::iterator		itbF = lstF2.begin()++;
 	ft::List<int>::iterator		iteF = lstF2.end();
@@ -335,30 +269,30 @@ void	list_check_constructors(void)
 
 	ft::List<int>	lstF3(itbF, iteF);
 	std::list<int>	lstS3(itbS, iteS);
-	check_list(lstF3, lstS3);
+	check_list(lstF3, lstS3, print_value, print_error, nb_OK, nb_KO);
 
 	ft::List<int>	lstF4(lstF3);
 	std::list<int>	lstS4(lstS3);
-	check_list(lstF4, lstS4);
+	check_list(lstF4, lstS4, print_value, print_error, nb_OK, nb_KO);
 
 	lstF = lstF4;
 	lstS2 = lstS4;
-	check_list(lstF, lstS2);
+	check_list(lstF, lstS2, print_value, print_error, nb_OK, nb_KO);
 
 	std::cout << "\n";
 }
 
-void	list_check_constructors_string(void)
+void	list_check_constructors_string(int print_value, int print_error, int *nb_OK, int *nb_KO)
 {
 	std::cout << "\033[1;36m\n===== Constructors string =====\033[0m\n";
 
 	ft::List<std::string>	lstF;
 	std::list<std::string>	lstS;
-	check_list(lstF, lstS);
+	check_list(lstF, lstS, print_value, print_error, nb_OK, nb_KO);
 
 	ft::List<std::string>	lstF2(5, "test");
 	std::list<std::string>	lstS2(5, "test");
-	check_list(lstF2, lstS2);
+	check_list(lstF2, lstS2, print_value, print_error, nb_OK, nb_KO);
 
 	ft::List<std::string>::iterator		itbF = lstF2.begin()++;
 	ft::List<std::string>::iterator		iteF = lstF2.end();
@@ -367,21 +301,21 @@ void	list_check_constructors_string(void)
 
 	ft::List<std::string>	lstF3(itbF, iteF);
 	std::list<std::string>	lstS3(itbS, iteS);
-	check_list(lstF3, lstS3);
+	check_list(lstF3, lstS3, print_value, print_error, nb_OK, nb_KO);
 
 	ft::List<std::string>	lstF4(lstF3);
 	std::list<std::string>	lstS4(lstS3);
-	check_list(lstF4, lstS4);
+	check_list(lstF4, lstS4, print_value, print_error, nb_OK, nb_KO);
 
 	lstF = lstF4;
 	lstS2 = lstS4;
-	check_list(lstF, lstS2);
+	check_list(lstF, lstS2, print_value, print_error, nb_OK, nb_KO);
 
 	std::cout << "\n";
 }
 
 
-void	list_check_iterators(void)
+void	list_check_iterators(int print_value, int print_error, int *nb_OK, int *nb_KO)
 {
 	std::cout << "\033[1;36m\n===== Iterators =====\033[0m\n";
 
@@ -395,10 +329,10 @@ void	list_check_iterators(void)
 	lstS.push_back("ab");
 	lstS.push_back("abcde");
 
-	check_list	(lstF, lstS);
-	check_list_const(lstF, lstS);
-	check_list_reverse(lstF, lstS);
-	check_list_const_reverse(lstF, lstS);
+	check_list	(lstF, lstS, print_value, print_error, nb_OK, nb_KO);
+	check_list_const(lstF, lstS, print_value, print_error, nb_OK, nb_KO);
+	check_list_reverse(lstF, lstS, print_value, print_error, nb_OK, nb_KO);
+	check_list_const_reverse(lstF, lstS, print_value, print_error, nb_OK, nb_KO);
 
 	ft::List<std::string>::iterator		itbF = ++lstF.begin();
 	ft::List<std::string>::iterator		iteF = --lstF.end();
@@ -410,16 +344,16 @@ void	list_check_iterators(void)
 
 	valF = itbF->length();
 	valS = itbS->length();
-	check_value(valF, valS);
+	check_value(valF, valS, print_value, print_error, nb_OK, nb_KO);
 
 	valF = iteF->length();
 	valS = iteS->length();
-	check_value(valF, valS);
+	check_value(valF, valS, print_value, print_error, nb_OK, nb_KO);
 
 	std::cout << "\n";
 }
 
-void	list_check_capacity(void)
+void	list_check_capacity(int print_value, int print_error, int *nb_OK, int *nb_KO)
 {
 	std::cout << "\033[1;36m\n===== Capacity =====\033[0m\n";
 
@@ -431,14 +365,14 @@ void	list_check_capacity(void)
 
 	valF = lstF.max_size();
 	valS = lstS.max_size();
-	check_value(valF, valS);
+	check_value(valF, valS, print_value, print_error, nb_OK, nb_KO);
 
 	valF = lstF.empty();
 	valS = lstS.empty();
-	check_value(valF, valS);
+	check_value(valF, valS, print_value, print_error, nb_OK, nb_KO);
 	valF = lstF.size();
 	valS = lstS.size();
-	check_value(valF, valS);
+	check_value(valF, valS, print_value, print_error, nb_OK, nb_KO);
 
 	lstF.push_back(1);
 	lstF.push_back(2);
@@ -449,16 +383,16 @@ void	list_check_capacity(void)
 
 	valF = lstF.empty();
 	valS = lstS.empty();
-	check_value(valF, valS);
+	check_value(valF, valS, print_value, print_error, nb_OK, nb_KO);
 
 	valF = lstF.size();
 	valS = lstS.size();
-	check_value(valF, valS);
+	check_value(valF, valS, print_value, print_error, nb_OK, nb_KO);
 
 	std::cout << "\n";
 }
 
-void	list_check_element_access(void)
+void	list_check_element_access(int print_value, int print_error, int *nb_OK, int *nb_KO)
 {
 	std::cout << "\033[1;36m\n===== Element access =====\033[0m\n";
 
@@ -477,24 +411,24 @@ void	list_check_element_access(void)
 
 	valF = lstF.front();
 	valS = lstS.front();
-	check_value(valF, valS);
+	check_value(valF, valS, print_value, print_error, nb_OK, nb_KO);
 
 	const int		cvalF = lstF.front();
 	const int		cvalS = lstS.front();
-	check_value(cvalF, cvalS);
+	check_value(cvalF, cvalS, print_value, print_error, nb_OK, nb_KO);
 
 	valF = lstF.back();
 	valS = lstS.back();
-	check_value(valF, valS);
+	check_value(valF, valS, print_value, print_error, nb_OK, nb_KO);
 
 	const int	cvalF2 = lstF.back();
 	const int	cvalS2 = lstS.back();
-	check_value(cvalF2, cvalS2);
+	check_value(cvalF2, cvalS2, print_value, print_error, nb_OK, nb_KO);
 
 	std::cout << "\n";
 }
 
-void	list_check_modifiers(void)
+void	list_check_modifiers(int print_value, int print_error, int *nb_OK, int *nb_KO)
 {
 	std::cout << "\033[1;36m\n===== Modifiers =====\033[0m\n";
 
@@ -504,7 +438,7 @@ void	list_check_modifiers(void)
 
 	lstF.assign(5, 42);
 	lstS.assign(5, 42);
-	check_list(lstF, lstS);
+	check_list(lstF, lstS, print_value, print_error, nb_OK, nb_KO);
 
 	ft::List<int>	lstF2;
 	std::list<int>	lstS2;
@@ -516,7 +450,7 @@ void	list_check_modifiers(void)
 	
 	lstF.assign(itbF, iteF);
 	lstS.assign(itbS, iteS);
-	check_list(lstF2, lstS2, 1);
+	check_list(lstF2, lstS2, print_value, print_error, nb_OK, nb_KO, 1);
 
 	std::cout << "\n  --- Push/Pop_Front/Back ---\n";
 
@@ -524,21 +458,21 @@ void	list_check_modifiers(void)
 	lstF2.push_front(1);
 	lstS2.push_front(2);
 	lstS2.push_front(1);
-	check_list(lstF2, lstS2);
+	check_list(lstF2, lstS2, print_value, print_error, nb_OK, nb_KO);
 
 	lstF2.push_back(3);
 	lstF2.push_back(5);
 	lstS2.push_back(3);
 	lstS2.push_back(5);
-	check_list(lstF2, lstS2);
+	check_list(lstF2, lstS2, print_value, print_error, nb_OK, nb_KO);
 
 	lstF2.pop_front();
 	lstS2.pop_front();
-	check_list(lstF2, lstS2);
+	check_list(lstF2, lstS2, print_value, print_error, nb_OK, nb_KO);
 
 	lstF2.pop_back();
 	lstS2.pop_back();
-	check_list(lstF2, lstS2);
+	check_list(lstF2, lstS2, print_value, print_error, nb_OK, nb_KO);
 
 
 	std::cout << "\n  --- Insert ---\n";
@@ -548,20 +482,20 @@ void	list_check_modifiers(void)
 
 	itbF2 = lstF2.insert(itbF2, 56);
 	itbS2 = lstS2.insert(itbS2, 56);
-	check_list(lstF2, lstS2);
+	check_list(lstF2, lstS2, print_value, print_error, nb_OK, nb_KO);
 
 	lstF2.insert(itbF2, 5, 93);
 	lstS2.insert(itbS2, 5, 93);
-	check_list(lstF2, lstS2);
+	check_list(lstF2, lstS2, print_value, print_error, nb_OK, nb_KO);
 
 	lstF2.insert(itbF2, itbF, iteF);
 	lstS2.insert(itbS2, itbS, iteS);
-	check_list(lstF2, lstS2);
+	check_list(lstF2, lstS2, print_value, print_error, nb_OK, nb_KO);
 
 	std::cout << "\n  --- Erase ---\n";
 	itbF2 = lstF2.erase(--itbF2);
 	itbS2 = lstS2.erase(--itbS2);
-	check_list(lstF2, lstS2);
+	check_list(lstF2, lstS2, print_value, print_error, nb_OK, nb_KO);
 
 	ft::List<int>::iterator		iteF2 = --lstF2.end();
 	std::list<int>::iterator	iteS2 = --lstS2.end();
@@ -571,41 +505,41 @@ void	list_check_modifiers(void)
 
 	lstF2.erase(itbF2, iteF2);
 	lstS2.erase(itbS2, iteS2);
-	check_list(lstF2, lstS2);
+	check_list(lstF2, lstS2, print_value, print_error, nb_OK, nb_KO);
 
 
 	std::cout << "\n  --- Swap ---\n";
 	lstF.swap(lstF2);
 	lstS.swap(lstS2);
-	check_list(lstF, lstS);
-	check_list(lstF2, lstS2);
+	check_list(lstF, lstS, print_value, print_error, nb_OK, nb_KO);
+	check_list(lstF2, lstS2, print_value, print_error, nb_OK, nb_KO);
 
 	swap(lstF, lstF2);
 	swap(lstS, lstS2);
-	check_list(lstF, lstS);
-	check_list(lstF2, lstS2);
+	check_list(lstF, lstS, print_value, print_error, nb_OK, nb_KO);
+	check_list(lstF2, lstS2, print_value, print_error, nb_OK, nb_KO);
 
 	std::cout << "\n  --- Resize ---\n";
 	lstF2.resize(0);
 	lstS2.resize(0);
-	check_list(lstF2, lstS2);
+	check_list(lstF2, lstS2, print_value, print_error, nb_OK, nb_KO);
 	
 	lstF2.resize(12, -42);
 	lstS2.resize(12, -42);
-	check_list(lstF2, lstS2);
+	check_list(lstF2, lstS2, print_value, print_error, nb_OK, nb_KO);
 
 	std::cout << "\n  --- Clear ---\n";
 	lstF.clear();
 	lstF2.clear();
 	lstS.clear();
 	lstS2.clear();
-	check_list(lstF, lstS);
-	check_list(lstF2, lstS2);
+	check_list(lstF, lstS, print_value, print_error, nb_OK, nb_KO);
+	check_list(lstF2, lstS2, print_value, print_error, nb_OK, nb_KO);
 
 	std::cout << "\n";
 }
 
-void	list_check_modifiers_string(void)
+void	list_check_modifiers_string(int print_value, int print_error, int *nb_OK, int *nb_KO)
 {
 	std::cout << "\033[1;36m\n===== Modifiers string =====\033[0m\n";
 
@@ -615,7 +549,7 @@ void	list_check_modifiers_string(void)
 
 	lstF.assign(5, "test");
 	lstS.assign(5, "test");
-	check_list(lstF, lstS);
+	check_list(lstF, lstS, print_value, print_error, nb_OK, nb_KO);
 
 	ft::List<std::string>	lstF2;
 	std::list<std::string>	lstS2;
@@ -627,7 +561,7 @@ void	list_check_modifiers_string(void)
 	
 	lstF.assign(itbF, iteF);
 	lstS.assign(itbS, iteS);
-	check_list(lstF2, lstS2, 1);
+	check_list(lstF2, lstS2, print_value, print_error, nb_OK, nb_KO, 1);
 
 	std::cout << "\n  --- Push/Pop_Front/Back ---\n";
 
@@ -635,21 +569,21 @@ void	list_check_modifiers_string(void)
 	lstF2.push_front("tree");
 	lstS2.push_front("bla");
 	lstS2.push_front("tree");
-	check_list(lstF2, lstS2);
+	check_list(lstF2, lstS2, print_value, print_error, nb_OK, nb_KO);
 
 	lstF2.push_back("What is this?");
 	lstF2.push_back("Yellow Sub");
 	lstS2.push_back("What is this?");
 	lstS2.push_back("Yellow Sub");
-	check_list(lstF2, lstS2);
+	check_list(lstF2, lstS2, print_value, print_error, nb_OK, nb_KO);
 
 	lstF2.pop_front();
 	lstS2.pop_front();
-	check_list(lstF2, lstS2);
+	check_list(lstF2, lstS2, print_value, print_error, nb_OK, nb_KO);
 
 	lstF2.pop_back();
 	lstS2.pop_back();
-	check_list(lstF2, lstS2);
+	check_list(lstF2, lstS2, print_value, print_error, nb_OK, nb_KO);
 
 
 	std::cout << "\n  --- Insert ---\n";
@@ -659,20 +593,20 @@ void	list_check_modifiers_string(void)
 
 	itbF2 = lstF2.insert(itbF2, "42");
 	itbS2 = lstS2.insert(itbS2, "42");
-	check_list(lstF2, lstS2);
+	check_list(lstF2, lstS2, print_value, print_error, nb_OK, nb_KO);
 
 	lstF2.insert(itbF2, 5, "Ab64");
 	lstS2.insert(itbS2, 5, "Ab64");
-	check_list(lstF2, lstS2);
+	check_list(lstF2, lstS2, print_value, print_error, nb_OK, nb_KO);
 
 	lstF2.insert(itbF2, itbF, iteF);
 	lstS2.insert(itbS2, itbS, iteS);
-	check_list(lstF2, lstS2);
+	check_list(lstF2, lstS2, print_value, print_error, nb_OK, nb_KO);
 
 	std::cout << "\n  --- Erase ---\n";
 	itbF2 = lstF2.erase(--itbF2);
 	itbS2 = lstS2.erase(--itbS2);
-	check_list(lstF2, lstS2);
+	check_list(lstF2, lstS2, print_value, print_error, nb_OK, nb_KO);
 
 	ft::List<std::string>::iterator		iteF2 = --lstF2.end();
 	std::list<std::string>::iterator	iteS2 = --lstS2.end();
@@ -682,41 +616,41 @@ void	list_check_modifiers_string(void)
 
 	lstF2.erase(itbF2, iteF2);
 	lstS2.erase(itbS2, iteS2);
-	check_list(lstF2, lstS2);
+	check_list(lstF2, lstS2, print_value, print_error, nb_OK, nb_KO);
 
 
 	std::cout << "\n  --- Swap ---\n";
 	lstF.swap(lstF2);
 	lstS.swap(lstS2);
-	check_list(lstF, lstS);
-	check_list(lstF2, lstS2);
+	check_list(lstF, lstS, print_value, print_error, nb_OK, nb_KO);
+	check_list(lstF2, lstS2, print_value, print_error, nb_OK, nb_KO);
 
 	swap(lstF, lstF2);
 	swap(lstS, lstS2);
-	check_list(lstF, lstS);
-	check_list(lstF2, lstS2);
+	check_list(lstF, lstS, print_value, print_error, nb_OK, nb_KO);
+	check_list(lstF2, lstS2, print_value, print_error, nb_OK, nb_KO);
 
 	std::cout << "\n  --- Resize ---\n";
 	lstF2.resize(0);
 	lstS2.resize(0);
-	check_list(lstF2, lstS2);
+	check_list(lstF2, lstS2, print_value, print_error, nb_OK, nb_KO);
 	
 	lstF2.resize(12, "new str");
 	lstS2.resize(12, "new str");
-	check_list(lstF2, lstS2);
+	check_list(lstF2, lstS2, print_value, print_error, nb_OK, nb_KO);
 
 	std::cout << "\n  --- Clear ---\n";
 	lstF.clear();
 	lstF2.clear();
 	lstS.clear();
 	lstS2.clear();
-	check_list(lstF, lstS);
-	check_list(lstF2, lstS2);
+	check_list(lstF, lstS, print_value, print_error, nb_OK, nb_KO);
+	check_list(lstF2, lstS2, print_value, print_error, nb_OK, nb_KO);
 
 	std::cout << "\n";
 }
 
-void	list_check_operations(void)
+void	list_check_operations(int print_value, int print_error, int *nb_OK, int *nb_KO)
 {
 	std::cout << "\033[1;36m\n===== Operations =====\033[0m\n";
 
@@ -746,8 +680,8 @@ void	list_check_operations(void)
 
 	lstF.splice(itbF, lstF2);
 	lstS.splice(itbS, lstS2);
-	check_list(lstF, lstS);
-	check_list(lstF2, lstS2);
+	check_list(lstF, lstS, print_value, print_error, nb_OK, nb_KO);
+	check_list(lstF2, lstS2, print_value, print_error, nb_OK, nb_KO);
 
 	lstF2.push_back(6);
 	lstF2.push_back(7);
@@ -763,13 +697,13 @@ void	list_check_operations(void)
 
 	lstF.splice(lstF.end(), lstF2, ++lstF2.begin());
 	lstS.splice(lstS.end(), lstS2, ++lstS2.begin());
-	check_list(lstF, lstS);
-	check_list(lstF2, lstS2);
+	check_list(lstF, lstS, print_value, print_error, nb_OK, nb_KO);
+	check_list(lstF2, lstS2, print_value, print_error, nb_OK, nb_KO);
 
 	lstF.splice(lstF.end(), lstF2, ++lstF2.begin(), --lstF2.end());
 	lstS.splice(lstS.end(), lstS2, ++lstS2.begin(), --lstS2.end());
-	check_list(lstF, lstS);
-	check_list(lstF2, lstS2);
+	check_list(lstF, lstS, print_value, print_error, nb_OK, nb_KO);
+	check_list(lstF2, lstS2, print_value, print_error, nb_OK, nb_KO);
 
 	std::cout << "\n  --- Remove/Remove_if ---\n";
 
@@ -778,21 +712,21 @@ void	list_check_operations(void)
 
 	lstF3.remove(2);
 	lstS3.remove(2);
-	check_list(lstF3, lstS3);
+	check_list(lstF3, lstS3, print_value, print_error, nb_OK, nb_KO);
 
 	lstF.push_back(2);
 	lstS.push_back(2);
 	lstF.remove(2);
 	lstS.remove(2);
-	check_list(lstF, lstS);
+	check_list(lstF, lstS, print_value, print_error, nb_OK, nb_KO);
 
 	lstF.remove(2);
 	lstS.remove(2);
-	check_list(lstF, lstS);
+	check_list(lstF, lstS, print_value, print_error, nb_OK, nb_KO);
 
 	lstF.remove_if(is_even);
 	lstS.remove_if(is_even);
-	check_list(lstF, lstS);
+	check_list(lstF, lstS, print_value, print_error, nb_OK, nb_KO);
 
 	std::cout << "\n  --- Unique ---\n";
 
@@ -810,17 +744,17 @@ void	list_check_operations(void)
 	lstS.push_front(-10);
 	lstF.unique();
 	lstS.unique();
-	check_list(lstF, lstS);
+	check_list(lstF, lstS, print_value, print_error, nb_OK, nb_KO);
 
 	lstF.unique(are_factor_five);
 	lstS.unique(are_factor_five);
-	check_list(lstF, lstS);
+	check_list(lstF, lstS, print_value, print_error, nb_OK, nb_KO);
 
 	std::cout << "\n  --- Merge ---\n";
 	lstF.merge(lstF2);
 	lstS.merge(lstS2);
-	check_list(lstF, lstS);
-	check_list(lstF2, lstS2);
+	check_list(lstF, lstS, print_value, print_error, nb_OK, nb_KO);
+	check_list(lstF2, lstS2, print_value, print_error, nb_OK, nb_KO);
 
 	lstF2.push_back(8);
 	lstF2.push_back(4);
@@ -834,8 +768,8 @@ void	list_check_operations(void)
 	lstS.reverse();
 	lstF.merge(lstF2, is_greater);
 	lstS.merge(lstS2, is_greater);
-	check_list(lstF, lstS);
-	check_list(lstF2, lstS2);
+	check_list(lstF, lstS, print_value, print_error, nb_OK, nb_KO);
+	check_list(lstF2, lstS2, print_value, print_error, nb_OK, nb_KO);
 
 	std::cout << "\n  --- Sort ---\n";
 
@@ -857,7 +791,7 @@ void	list_check_operations(void)
 
 	lstF2.sort();
 	lstS2.sort();
-	check_list(lstF2, lstS2);
+	check_list(lstF2, lstS2, print_value, print_error, nb_OK, nb_KO);
 
 	lstF2.clear();
 	lstS2.clear();
@@ -880,21 +814,21 @@ void	list_check_operations(void)
 
 	lstF2.sort(is_greater);
 	lstS2.sort(is_greater);
-	check_list(lstF2, lstS2);
+	check_list(lstF2, lstS2, print_value, print_error, nb_OK, nb_KO);
 
 	std::cout << "\n  --- Reverse ---\n";
 
 	lstF2.reverse();
 	lstS2.reverse();
-	check_list(lstF2, lstS2);
+	check_list(lstF2, lstS2, print_value, print_error, nb_OK, nb_KO);
 
 	lstF2.reverse();
 	lstS2.reverse();
-	check_list(lstF2, lstS2);
+	check_list(lstF2, lstS2, print_value, print_error, nb_OK, nb_KO);
 
 }
 
-void	list_check_operations_string(void)
+void	list_check_operations_string(int print_value, int print_error, int *nb_OK, int *nb_KO)
 {
 	std::cout << "\033[1;36m\n===== Operations String =====\033[0m\n";
 
@@ -924,8 +858,8 @@ void	list_check_operations_string(void)
 
 	lstF.splice(itbF, lstF2);
 	lstS.splice(itbS, lstS2);
-	check_list(lstF, lstS);
-	check_list(lstF2, lstS2);
+	check_list(lstF, lstS, print_value, print_error, nb_OK, nb_KO);
+	check_list(lstF2, lstS2, print_value, print_error, nb_OK, nb_KO);
 
 	lstF2.push_back("abce");
 	lstF2.push_back("abcf");
@@ -941,13 +875,13 @@ void	list_check_operations_string(void)
 
 	lstF.splice(lstF.end(), lstF2, ++lstF2.begin());
 	lstS.splice(lstS.end(), lstS2, ++lstS2.begin());
-	check_list(lstF, lstS);
-	check_list(lstF2, lstS2);
+	check_list(lstF, lstS, print_value, print_error, nb_OK, nb_KO);
+	check_list(lstF2, lstS2, print_value, print_error, nb_OK, nb_KO);
 
 	lstF.splice(lstF.end(), lstF2, ++lstF2.begin(), --lstF2.end());
 	lstS.splice(lstS.end(), lstS2, ++lstS2.begin(), --lstS2.end());
-	check_list(lstF, lstS);
-	check_list(lstF2, lstS2);
+	check_list(lstF, lstS, print_value, print_error, nb_OK, nb_KO);
+	check_list(lstF2, lstS2, print_value, print_error, nb_OK, nb_KO);
 
 	std::cout << "\n  --- Remove/Remove_if ---\n";
 
@@ -956,21 +890,21 @@ void	list_check_operations_string(void)
 
 	lstF3.remove("abc");
 	lstS3.remove("abc");
-	check_list(lstF3, lstS3);
+	check_list(lstF3, lstS3, print_value, print_error, nb_OK, nb_KO);
 
 	lstF.push_back("abc");
 	lstS.push_back("abc");
 	lstF.remove("abc");
 	lstS.remove("abc");
-	check_list(lstF, lstS);
+	check_list(lstF, lstS, print_value, print_error, nb_OK, nb_KO);
 
 	lstF.remove("abc");
 	lstS.remove("abc");
-	check_list(lstF, lstS);
+	check_list(lstF, lstS, print_value, print_error, nb_OK, nb_KO);
 
 	lstF.remove_if(has_length_3);
 	lstS.remove_if(has_length_3);
-	check_list(lstF, lstS);
+	check_list(lstF, lstS, print_value, print_error, nb_OK, nb_KO);
 
 	std::cout << "\n  --- Unique ---\n";
 
@@ -988,17 +922,17 @@ void	list_check_operations_string(void)
 	lstS.push_front("bcc");
 	lstF.unique();
 	lstS.unique();
-	check_list(lstF, lstS);
+	check_list(lstF, lstS, print_value, print_error, nb_OK, nb_KO);
 
 	lstF.unique(same_length);
 	lstS.unique(same_length);
-	check_list(lstF, lstS);
+	check_list(lstF, lstS, print_value, print_error, nb_OK, nb_KO);
 
 	std::cout << "\n  --- Merge ---\n";
 	lstF.merge(lstF2);
 	lstS.merge(lstS2);
-	check_list(lstF, lstS);
-	check_list(lstF2, lstS2);
+	check_list(lstF, lstS, print_value, print_error, nb_OK, nb_KO);
+	check_list(lstF2, lstS2, print_value, print_error, nb_OK, nb_KO);
 
 	lstF2.push_back("abcg");
 	lstF2.push_back("abch");
@@ -1010,13 +944,13 @@ void	list_check_operations_string(void)
 
 	lstF.reverse();
 	lstS.reverse();
-	check_list(lstF, lstS);
+	check_list(lstF, lstS, print_value, print_error, nb_OK, nb_KO);
 
 
 	lstF.merge(lstF2, same_length);
 	lstS.merge(lstS2, same_length);
-	check_list(lstF, lstS);
-	check_list(lstF2, lstS2);
+	check_list(lstF, lstS, print_value, print_error, nb_OK, nb_KO);
+	check_list(lstF2, lstS2, print_value, print_error, nb_OK, nb_KO);
 
 	std::cout << "\n  --- Sort ---\n";
 
@@ -1032,7 +966,7 @@ void	list_check_operations_string(void)
 
 	lstF2.sort();
 	lstS2.sort();
-	check_list(lstF2, lstS2);
+	check_list(lstF2, lstS2, print_value, print_error, nb_OK, nb_KO);
 
 	lstF2.clear();
 	lstS2.clear();
@@ -1055,25 +989,25 @@ void	list_check_operations_string(void)
 
 	lstF2.sort(same_length);
 	lstS2.sort(same_length);
-	check_list(lstF2, lstS2);
+	check_list(lstF2, lstS2, print_value, print_error, nb_OK, nb_KO);
 
 	lstF2.sort(is_greaters);
 	lstS2.sort(is_greaters);
-	check_list(lstF2, lstS2);
+	check_list(lstF2, lstS2, print_value, print_error, nb_OK, nb_KO);
 
 	std::cout << "\n  --- Reverse ---\n";
 
 	lstF2.reverse();
 	lstS2.reverse();
-	check_list(lstF2, lstS2);
+	check_list(lstF2, lstS2, print_value, print_error, nb_OK, nb_KO);
 
 	lstF2.reverse();
 	lstS2.reverse();
-	check_list(lstF2, lstS2);
+	check_list(lstF2, lstS2, print_value, print_error, nb_OK, nb_KO);
 
 }
 
-void	list_check_comparison(void)
+void	list_check_comparison(int print_value, int print_error, int *nb_OK, int *nb_KO)
 {
 	std::cout << "\033[1;36m\n===== Comparison =====\033[0m\n";
 
@@ -1103,13 +1037,13 @@ void	list_check_comparison(void)
 
 	valF = (lstF == lstF2);
 	valS = (lstS == lstS2);
-	check_value(valF, valS);
+	check_value(valF, valS, print_value, print_error, nb_OK, nb_KO);
 
 	lstF2.push_back(6);
 	lstS2.push_back(6);
 	valF = (lstF == lstF2);
 	valS = (lstS == lstS2);
-	check_value(valF, valS);
+	check_value(valF, valS, print_value, print_error, nb_OK, nb_KO);
 
 	lstF2.pop_back();
 	lstS2.pop_back();
@@ -1117,7 +1051,7 @@ void	list_check_comparison(void)
 	lstS2.push_back(4);
 	valF = (lstF == lstF2);
 	valS = (lstS == lstS2);
-	check_value(valF, valS);
+	check_value(valF, valS, print_value, print_error, nb_OK, nb_KO);
 
 	std::cout << "\n  ---  !=  ---\n";
 	lstF.clear();
@@ -1141,13 +1075,13 @@ void	list_check_comparison(void)
 
 	valF = (lstF != lstF2);
 	valS = (lstS != lstS2);
-	check_value(valF, valS);
+	check_value(valF, valS, print_value, print_error, nb_OK, nb_KO);
 
 	lstF2.push_back(6);
 	lstS2.push_back(6);
 	valF = (lstF != lstF2);
 	valS = (lstS != lstS2);
-	check_value(valF, valS);
+	check_value(valF, valS, print_value, print_error, nb_OK, nb_KO);
 
 	lstF2.pop_back();
 	lstS2.pop_back();
@@ -1155,7 +1089,7 @@ void	list_check_comparison(void)
 	lstS2.push_back(4);
 	valF = (lstF != lstF2);
 	valS = (lstS != lstS2);
-	check_value(valF, valS);
+	check_value(valF, valS, print_value, print_error, nb_OK, nb_KO);
 
 	std::cout << "\n  ---  >  ---\n";
 	lstF.clear();
@@ -1179,13 +1113,13 @@ void	list_check_comparison(void)
 
 	valF = (lstF > lstF2);
 	valS = (lstS > lstS2);
-	check_value(valF, valS);
+	check_value(valF, valS, print_value, print_error, nb_OK, nb_KO);
 
 	lstF2.push_back(6);
 	lstS2.push_back(6);
 	valF = (lstF > lstF2);
 	valS = (lstS > lstS2);
-	check_value(valF, valS);
+	check_value(valF, valS, print_value, print_error, nb_OK, nb_KO);
 
 	lstF2.pop_back();
 	lstS2.pop_back();
@@ -1193,7 +1127,7 @@ void	list_check_comparison(void)
 	lstS2.push_back(4);
 	valF = (lstF > lstF2);
 	valS = (lstS > lstS2);
-	check_value(valF, valS);
+	check_value(valF, valS, print_value, print_error, nb_OK, nb_KO);
 
 	std::cout << "\n  ---  <  ---\n";
 	lstF.clear();
@@ -1217,13 +1151,13 @@ void	list_check_comparison(void)
 
 	valF = (lstF < lstF2);
 	valS = (lstS < lstS2);
-	check_value(valF, valS);
+	check_value(valF, valS, print_value, print_error, nb_OK, nb_KO);
 
 	lstF2.push_back(6);
 	lstS2.push_back(6);
 	valF = (lstF < lstF2);
 	valS = (lstS < lstS2);
-	check_value(valF, valS);
+	check_value(valF, valS, print_value, print_error, nb_OK, nb_KO);
 
 	lstF2.pop_back();
 	lstS2.pop_back();
@@ -1231,7 +1165,7 @@ void	list_check_comparison(void)
 	lstS2.push_back(4);
 	valF = (lstF < lstF2);
 	valS = (lstS < lstS2);
-	check_value(valF, valS);
+	check_value(valF, valS, print_value, print_error, nb_OK, nb_KO);
 
 	std::cout << "\n  ---  >=  ---\n";
 	lstF.clear();
@@ -1255,13 +1189,13 @@ void	list_check_comparison(void)
 
 	valF = (lstF >= lstF2);
 	valS = (lstS >= lstS2);
-	check_value(valF, valS);
+	check_value(valF, valS, print_value, print_error, nb_OK, nb_KO);
 
 	lstF2.push_back(6);
 	lstS2.push_back(6);
 	valF = (lstF >= lstF2);
 	valS = (lstS >= lstS2);
-	check_value(valF, valS);
+	check_value(valF, valS, print_value, print_error, nb_OK, nb_KO);
 
 	lstF2.pop_back();
 	lstS2.pop_back();
@@ -1269,7 +1203,7 @@ void	list_check_comparison(void)
 	lstS2.push_back(4);
 	valF = (lstF >= lstF2);
 	valS = (lstS >= lstS2);
-	check_value(valF, valS);
+	check_value(valF, valS, print_value, print_error, nb_OK, nb_KO);
 
 	std::cout << "\n  ---  <=  ---\n";
 	lstF.clear();
@@ -1293,13 +1227,13 @@ void	list_check_comparison(void)
 
 	valF = (lstF <= lstF2);
 	valS = (lstS <= lstS2);
-	check_value(valF, valS);
+	check_value(valF, valS, print_value, print_error, nb_OK, nb_KO);
 
 	lstF2.push_back(6);
 	lstS2.push_back(6);
 	valF = (lstF <= lstF2);
 	valS = (lstS <= lstS2);
-	check_value(valF, valS);
+	check_value(valF, valS, print_value, print_error, nb_OK, nb_KO);
 
 	lstF2.pop_back();
 	lstS2.pop_back();
@@ -1307,13 +1241,13 @@ void	list_check_comparison(void)
 	lstS2.push_back(4);
 	valF = (lstF <= lstF2);
 	valS = (lstS <= lstS2);
-	check_value(valF, valS);
+	check_value(valF, valS, print_value, print_error, nb_OK, nb_KO);
 
 	std::cout << "\n";
 
 }
 
-void	list_check_comparison_string(void)
+void	list_check_comparison_string(int print_value, int print_error, int *nb_OK, int *nb_KO)
 {
 	std::cout << "\033[1;36m\n===== Comparison string =====\033[0m\n";
 
@@ -1343,13 +1277,13 @@ void	list_check_comparison_string(void)
 
 	valF = (lstF == lstF2);
 	valS = (lstS == lstS2);
-	check_value(valF, valS);
+	check_value(valF, valS, print_value, print_error, nb_OK, nb_KO);
 
 	lstF2.push_back("ab");
 	lstS2.push_back("ab");
 	valF = (lstF == lstF2);
 	valS = (lstS == lstS2);
-	check_value(valF, valS);
+	check_value(valF, valS, print_value, print_error, nb_OK, nb_KO);
 
 	lstF2.pop_back();
 	lstS2.pop_back();
@@ -1357,7 +1291,7 @@ void	list_check_comparison_string(void)
 	lstS2.push_back("abce");
 	valF = (lstF == lstF2);
 	valS = (lstS == lstS2);
-	check_value(valF, valS);
+	check_value(valF, valS, print_value, print_error, nb_OK, nb_KO);
 
 	std::cout << "\n  ---  !=  ---\n";
 	lstF.clear();
@@ -1381,13 +1315,13 @@ void	list_check_comparison_string(void)
 
 	valF = (lstF != lstF2);
 	valS = (lstS != lstS2);
-	check_value(valF, valS);
+	check_value(valF, valS, print_value, print_error, nb_OK, nb_KO);
 
 	lstF2.push_back("ab");
 	lstS2.push_back("ab");
 	valF = (lstF != lstF2);
 	valS = (lstS != lstS2);
-	check_value(valF, valS);
+	check_value(valF, valS, print_value, print_error, nb_OK, nb_KO);
 
 	lstF2.pop_back();
 	lstS2.pop_back();
@@ -1395,7 +1329,7 @@ void	list_check_comparison_string(void)
 	lstS2.push_back("abce");
 	valF = (lstF != lstF2);
 	valS = (lstS != lstS2);
-	check_value(valF, valS);
+	check_value(valF, valS, print_value, print_error, nb_OK, nb_KO);
 
 	std::cout << "\n  ---  >  ---\n";
 	lstF.clear();
@@ -1419,13 +1353,13 @@ void	list_check_comparison_string(void)
 
 	valF = (lstF > lstF2);
 	valS = (lstS > lstS2);
-	check_value(valF, valS);
+	check_value(valF, valS, print_value, print_error, nb_OK, nb_KO);
 
 	lstF2.push_back("ab");
 	lstS2.push_back("ab");
 	valF = (lstF > lstF2);
 	valS = (lstS > lstS2);
-	check_value(valF, valS);
+	check_value(valF, valS, print_value, print_error, nb_OK, nb_KO);
 
 	lstF2.pop_back();
 	lstS2.pop_back();
@@ -1433,7 +1367,7 @@ void	list_check_comparison_string(void)
 	lstS2.push_back("abce");
 	valF = (lstF > lstF2);
 	valS = (lstS > lstS2);
-	check_value(valF, valS);
+	check_value(valF, valS, print_value, print_error, nb_OK, nb_KO);
 
 	std::cout << "\n  ---  <  ---\n";
 	lstF.clear();
@@ -1457,13 +1391,13 @@ void	list_check_comparison_string(void)
 
 	valF = (lstF < lstF2);
 	valS = (lstS < lstS2);
-	check_value(valF, valS);
+	check_value(valF, valS, print_value, print_error, nb_OK, nb_KO);
 
 	lstF2.push_back("ab");
 	lstS2.push_back("ab");
 	valF = (lstF < lstF2);
 	valS = (lstS < lstS2);
-	check_value(valF, valS);
+	check_value(valF, valS, print_value, print_error, nb_OK, nb_KO);
 
 	lstF2.pop_back();
 	lstS2.pop_back();
@@ -1471,7 +1405,7 @@ void	list_check_comparison_string(void)
 	lstS2.push_back("abce");
 	valF = (lstF < lstF2);
 	valS = (lstS < lstS2);
-	check_value(valF, valS);
+	check_value(valF, valS, print_value, print_error, nb_OK, nb_KO);
 
 	std::cout << "\n  ---  >=  ---\n";
 	lstF.clear();
@@ -1495,13 +1429,13 @@ void	list_check_comparison_string(void)
 
 	valF = (lstF >= lstF2);
 	valS = (lstS >= lstS2);
-	check_value(valF, valS);
+	check_value(valF, valS, print_value, print_error, nb_OK, nb_KO);
 
 	lstF2.push_back("ab");
 	lstS2.push_back("ab");
 	valF = (lstF >= lstF2);
 	valS = (lstS >= lstS2);
-	check_value(valF, valS);
+	check_value(valF, valS, print_value, print_error, nb_OK, nb_KO);
 
 	lstF2.pop_back();
 	lstS2.pop_back();
@@ -1509,7 +1443,7 @@ void	list_check_comparison_string(void)
 	lstS2.push_back("abce");
 	valF = (lstF >= lstF2);
 	valS = (lstS >= lstS2);
-	check_value(valF, valS);
+	check_value(valF, valS, print_value, print_error, nb_OK, nb_KO);
 
 	std::cout << "\n  ---  <=  ---\n";
 	lstF.clear();
@@ -1533,13 +1467,13 @@ void	list_check_comparison_string(void)
 
 	valF = (lstF <= lstF2);
 	valS = (lstS <= lstS2);
-	check_value(valF, valS);
+	check_value(valF, valS, print_value, print_error, nb_OK, nb_KO);
 
 	lstF2.push_back("ab");
 	lstS2.push_back("ab");
 	valF = (lstF <= lstF2);
 	valS = (lstS <= lstS2);
-	check_value(valF, valS);
+	check_value(valF, valS, print_value, print_error, nb_OK, nb_KO);
 
 	lstF2.pop_back();
 	lstS2.pop_back();
@@ -1547,7 +1481,7 @@ void	list_check_comparison_string(void)
 	lstS2.push_back("abce");
 	valF = (lstF <= lstF2);
 	valS = (lstS <= lstS2);
-	check_value(valF, valS);
+	check_value(valF, valS, print_value, print_error, nb_OK, nb_KO);
 
 	std::cout << "\n";
 

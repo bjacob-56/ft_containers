@@ -6,6 +6,7 @@
 # include <limits>
 # include <exception>
 # include <stdexcept>
+# include <memory>
 
 # include "Iterator.hpp"
 # include "Is_integral.hpp"
@@ -24,7 +25,7 @@ namespace ft
 	template <typename T>
 	class VectorConstReverseIterator;
 
-template <typename T, class Alloc= std::allocator<T> >
+template <typename T, class Alloc = std::allocator<T> >
 class Vector
 {
 public:
@@ -45,30 +46,34 @@ public:
 	typedef	size_t size_type;
 
 private:
-	T*				_array;
+	T *				_array;
 	size_t			_size;
 	size_t			_capacity;
 	allocator_type	_alloc;
 
 public:
 	
-	explicit Vector (const allocator_type& alloc = allocator_type()): _array(0), _size(0), _capacity(0), _alloc(alloc) {}
+	explicit Vector (const allocator_type& alloc = allocator_type()): _array(NULL), _size(0), _capacity(0), _alloc(alloc) {}
 	
-	// Vector (size_type n, const value_type& val = value_type(), const allocator_type& alloc = allocator_type()): _size(0), _capacity(2 * n), _alloc(alloc)
-	explicit Vector (size_type n, const value_type& val = value_type(), const allocator_type& alloc = allocator_type()): _size(0), _capacity(2 * n), _alloc(alloc)
+	explicit Vector (size_type n, const value_type& val = value_type(), const allocator_type& alloc = allocator_type()): _array(NULL), _size(0), _capacity(2 * n), _alloc(alloc)
 	{
-		T temp(val);
-		_array = _alloc.allocate(2 * n);
+		_array = _alloc.allocate(_capacity);
+		while (_size < _capacity)
+			_alloc.construct(_array + _size++, T());
+		_size = 0;
 		while (_size < n)
-			_array[_size++] = temp;
-			// this->push_back(temp);
+			_array[_size++] = val;
+		while (_size < _capacity)
+			_array[_size++] = T();
+		_size = n;
+
 	}
 
 	template <class InputIterator>
-	Vector (InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type()): _size(0), _capacity(0), _alloc(alloc)
+	Vector (InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type()): _array(NULL), _size(0), _capacity(0), _alloc(alloc)
 	{constructor_prototype(first, last, typename ft::is_integral<InputIterator>::type());}
 
-	Vector (const Vector& x): _array(0), _size(0), _capacity(0), _alloc(allocator_type())
+	Vector (const Vector& x): _array(NULL), _size(0), _capacity(0), _alloc(allocator_type())
 	{*this = x;}
 
 
@@ -121,8 +126,11 @@ public:
 				_alloc.deallocate(_array, _capacity);
 			else
 				_capacity = 1;
-			_array = _alloc.allocate(2 * _capacity);
-			_capacity = 2 * _capacity;
+			_capacity *= 2;
+			_array = _alloc.allocate(_capacity);
+			while (_size < _capacity)
+				_alloc.construct(_array + _size++, T());
+			_size = 0;
 		}
 		_size = 0;
 		while (_size < x._size)
@@ -130,6 +138,9 @@ public:
 			_array[_size] = x._array[_size];
 			_size++;
 		}
+		while (_size < _capacity)
+			_array[_size++] = T();
+		_size = x._size;
 		return (*this);
 	}
 
@@ -236,17 +247,18 @@ public:
 
 	void	push_back (const value_type & val)
 	{
-		if (!_array)
+		if (_array == NULL)
 			this->initiate_first_elem(val);
 		else if (_size < _capacity)
 			_array[_size++] = val;
 		else
 		{
-			value_type *	array_temp = new value_type[2 * _capacity];
-			copy_array(&array_temp, 2 * _capacity, _array, _size, _alloc);
-			array_temp[_size] = val;
-			_capacity = copy_array(&_array, _size, array_temp, _size + 1, _alloc);
-			_size++;
+			Vector temp(_capacity + 1);
+
+			temp = *this;
+			temp.push_back(val);
+
+			*this = temp;
 		}
 	}
 
@@ -355,13 +367,17 @@ private:
 
 	void	initiate_first_elem(const value_type & val)
 	{
-		_array = _alloc.allocate(2);
-		_array[0] = val;
-		_capacity = 1;
-		_size = 1;
+
+		_capacity = 2;
+		_array = _alloc.allocate(_capacity);
+		_size = 0;
+		while (_size < _capacity)
+			_alloc.construct(_array + _size++, T());
+		_size = 0;
+		_array[_size++] = val;
 	}
 
-	void	drift_right(iterator position, size_t len)
+	void	drift_right(iterator & position, size_t len)
 	{
 		iterator	it = this->begin();
 		size_t	i = 0;
@@ -373,8 +389,9 @@ private:
 		}
 		if (it != position)
 			return ;
-	
+
 		Vector	temp(_size + len);
+
 		size_t	index = 0;
 		while (index < i)
 		{
@@ -389,7 +406,7 @@ private:
 		*this = temp;
 	}
 
-	void	drift_left(iterator position, size_t len)
+	void	drift_left(iterator & position, size_t len)
 	{
 		iterator	it = this->begin();
 		size_t	i = 0;
@@ -421,8 +438,10 @@ private:
 		while (capacity < src_len)
 		{
 			alloc.deallocate(*array_dest, capacity);
-			*array_dest = alloc.allocate(capacity * 2);
 			capacity *= 2;
+			*array_dest = alloc.allocate(capacity);
+			for (size_t i = 0 ; i < _capacity ; i++)
+				_alloc.construct(*array_dest + i, T());
 		}
 		for (size_t i = 0 ; i < src_len ; i++)
 			(*array_dest)[i] = array_src[i];
@@ -438,6 +457,9 @@ private:
 		_capacity = first;
 		_array = _alloc.allocate(_capacity);
 		while (_size < _capacity)
+			_alloc.construct(_array + _size++, T());
+		_size = 0;
+		while (_size < _capacity)
 			_array[_size++] = last;
 	}
 
@@ -451,9 +473,13 @@ private:
 			temp++;
 			_capacity++;
 		}
+		_capacity *= 2;
 		_array = _alloc.allocate(_capacity);
+		while (_size < _capacity)
+			_alloc.construct(_array + _size++, T());
+		_size = 0;
 		while (first != last)
-			_array[_size++] = *first++;
+			_array[_size++] = *(first++);
 	}
 
 
@@ -464,15 +490,7 @@ private:
 	template <class InputIterator, class InputIterator2>
 	void assign_prototype (InputIterator & first, InputIterator2 & last, int)
 	{
-
-		std::cout << "p3\n";
 		Vector	temp(first, last);
-		std::cout << "p4\n";
-
-std::cout << "assign - _size = " << temp._size << ", _capacity = " << temp._capacity << "\n";
-std::cout << "assign - temp[3] = " << temp[3] << "\n";
-
-
 		*this = temp;
 	}
 
@@ -511,6 +529,10 @@ std::cout << "assign - temp[3] = " << temp[3] << "\n";
 	{
 		iterator	it = this->begin();
 		size_t	i = 0;
+		
+		Vector	vect_temp(first, last);
+		first = vect_temp.begin();
+		last = vect_temp.end();
 
 		while (it != position && i < _size)
 		{

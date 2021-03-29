@@ -1,10 +1,10 @@
 #include "utils_main.hpp"
 
-	int	print_value = 0;
-	int	print_error = 0;
+	int print_value = 0;
+	int print_error = 0;
 
-	int	nb_OK = 0;
-	int	nb_KO = 0;
+	int nb_OK = 0;
+	int nb_KO = 0;
 
 void	test_list()
 {
@@ -31,12 +31,12 @@ void	test_vector()
 	std::cout << "\033[1;36m============== VECTOR ===============\033[0m\n";
 	std::cout << "\033[1;36m=====================================\033[0m\n";
 
-	// vector_check_constructors();
-	// vector_check_constructors_string();
-	// vector_check_iterators();
-	// vector_check_capacity();
-	// vector_check_element_access();
-	// vector_check_modifiers();
+	vector_check_constructors();
+	vector_check_constructors_string();
+	vector_check_iterators();
+	vector_check_capacity();
+	vector_check_element_access();
+	vector_check_modifiers();
 	vector_check_modifiers_string();
 	vector_check_comparison();
 	vector_check_comparison_string();
@@ -101,6 +101,12 @@ void	print_total()
 int main(int argc, char **argv)
 {
 	std::string str_test;
+
+	// int	print_value = 0;
+	// int	print_error = 0;
+
+	// int	nb_OK = 0;
+	// int	nb_KO = 0;
 
 	if (argc >= 2)
 		str_test = std::string(argv[1]);

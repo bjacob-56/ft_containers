@@ -15,7 +15,7 @@ void	clear(std::stack<T, Container> myLst)
 }
 
 template <typename T, typename Container1, typename Container2 >
-void	check_stack(ft::Stack<T, Container1> myLst, std::stack<T, Container2> realLst)
+void	check_stack(ft::Stack<T, Container1> myLst, std::stack<T, Container2> realLst, int print_value, int print_error, int *nb_OK, int *nb_KO)
 {
 	std::stringstream ss_ft;
 	std::stringstream ss_std;
@@ -43,12 +43,12 @@ void	check_stack(ft::Stack<T, Container1> myLst, std::stack<T, Container2> realL
 	if (!ss_std.str().compare(ss_ft.str()))
 	{
 		std::cout << "\033[1;32mOK \033[0m";
-		nb_OK++;
+		(*nb_OK)++;
 	}
 	else
 	{
 		std::cout << "\033[1;31mKO \033[0m";
-		nb_KO++;
+		(*nb_KO)++;
 	}
 	if (print_value)
 	{
@@ -66,17 +66,17 @@ void	check_stack(ft::Stack<T, Container1> myLst, std::stack<T, Container2> realL
 
 
 template <typename T>
-static void	check_value(T & valF, T & valS)
+static void	check_value(T & valF, T & valS, int print_value, int print_error, int *nb_OK, int *nb_KO)
 {
 	if (valF == valS)
 	{
 		std::cout << "\033[1;32mOK \033[0m";
-		nb_OK++;
+		(*nb_OK)++;
 	}
 	else
 	{
 		std::cout << "\033[1;31mKO \033[0m";
-		nb_KO++;
+		(*nb_KO)++;
 	}
 
 	if (print_value)
@@ -98,7 +98,7 @@ static void	check_value(T & valF, T & valS)
 // ************************************************************* //
 
 
-void	stack_check_constructor(void)
+void	stack_check_constructor(int print_value, int print_error, int *nb_OK, int *nb_KO)
 {
 	std::cout << "\033[1;36m\n===== Constructors =====\033[0m\n";
 
@@ -114,16 +114,16 @@ void	stack_check_constructor(void)
 
 	ft::Stack<int, ft::Vector<int> >	queF;
 	std::stack<int, std::vector<int> >	queS;
-	check_stack(queF, queS);
+	check_stack(queF, queS, print_value, print_error, nb_OK, nb_KO);
 
 	ft::Stack<int, ft::Vector<int> >	queF2(lstF);
 	std::stack<int, std::vector<int> >	queS2(lstS);
-	check_stack(queF2, queS2);
+	check_stack(queF2, queS2, print_value, print_error, nb_OK, nb_KO);
 
 	std::cout << "\n";
 }
 
-void	stack_check_capacity(void)
+void	stack_check_capacity(int print_value, int print_error, int *nb_OK, int *nb_KO)
 {
 	std::cout << "\033[1;36m\n===== Capacity =====\033[0m\n";
 
@@ -142,33 +142,33 @@ void	stack_check_capacity(void)
 
 	ft::Stack<int, ft::Vector<int> >	queF;
 	std::stack<int, std::vector<int> >	queS;
-	check_stack(queF, queS);
+	check_stack(queF, queS, print_value, print_error, nb_OK, nb_KO);
 
 	valF = queF.empty();
 	valS = queS.empty();
-	check_value(valF, valS);
+	check_value(valF, valS, print_value, print_error, nb_OK, nb_KO);
 
 	valF = queF.size();
 	valS = queS.size();
-	check_value(valF, valS);
+	check_value(valF, valS, print_value, print_error, nb_OK, nb_KO);
 
 	ft::Stack<int, ft::Vector<int> >	queF2(lstF);
 	std::stack<int, std::vector<int> >	queS2(lstS);
-	check_stack(queF2, queS2);
+	check_stack(queF2, queS2, print_value, print_error, nb_OK, nb_KO);
 
 	valF = queF2.empty();
 	valS = queS2.empty();
-	check_value(valF, valS);
+	check_value(valF, valS, print_value, print_error, nb_OK, nb_KO);
 
 	valF = queF2.size();
 	valS = queS2.size();
-	check_value(valF, valS);
+	check_value(valF, valS, print_value, print_error, nb_OK, nb_KO);
 
 	std::cout << "\n";
 }
 
 
-void	stack_check_element_access(void)
+void	stack_check_element_access(int print_value, int print_error, int *nb_OK, int *nb_KO)
 {
 	std::cout << "\033[1;36m\n===== Element access =====\033[0m\n";
 
@@ -190,11 +190,11 @@ void	stack_check_element_access(void)
 
 	valF = queF2.top();
 	valS = queS2.top();
-	check_value(valF, valS);
+	check_value(valF, valS, print_value, print_error, nb_OK, nb_KO);
 
 	const int	cvalF2 = queF2.top();
 	const int	cvalS2 = queS2.top();
-	check_value(cvalF2, cvalS2);
+	check_value(cvalF2, cvalS2, print_value, print_error, nb_OK, nb_KO);
 
 	queF2.push(4);
 	queS2.push(4);
@@ -204,12 +204,12 @@ void	stack_check_element_access(void)
 
 	valF = queF2.top();
 	valS = queS2.top();
-	check_value(valF, valS);
+	check_value(valF, valS, print_value, print_error, nb_OK, nb_KO);
 
 	std::cout << "\n";
 }
 
-void	stack_check_comparison(void)
+void	stack_check_comparison(int print_value, int print_error, int *nb_OK, int *nb_KO)
 {
 	std::cout << "\033[1;36m\n===== Comparison =====\033[0m\n";
 
@@ -242,17 +242,17 @@ void	stack_check_comparison(void)
 
 	valF = (queF == queF2);
 	valS = (queS == queS2);
-	check_value(valF, valS);
+	check_value(valF, valS, print_value, print_error, nb_OK, nb_KO);
 
 
-	check_stack(queF, queS);
-	check_stack(queF2, queS2);
+	check_stack(queF, queS, print_value, print_error, nb_OK, nb_KO);
+	check_stack(queF2, queS2, print_value, print_error, nb_OK, nb_KO);
 
 	queF2.push(6);
 	queS2.push(6);
 	valF = (queF == queF2);
 	valS = (queS == queS2);
-	check_value(valF, valS);
+	check_value(valF, valS, print_value, print_error, nb_OK, nb_KO);
 
 	queF2.pop();
 	queS2.pop();
@@ -260,7 +260,7 @@ void	stack_check_comparison(void)
 	queS2.push(4);
 	valF = (queF == queF2);
 	valS = (queS == queS2);
-	check_value(valF, valS);
+	check_value(valF, valS, print_value, print_error, nb_OK, nb_KO);
 
 	std::cout << "\n  ---  !=  ---\n";
 	clear(queF);
@@ -284,13 +284,13 @@ void	stack_check_comparison(void)
 
 	valF = (queF != queF2);
 	valS = (queS != queS2);
-	check_value(valF, valS);
+	check_value(valF, valS, print_value, print_error, nb_OK, nb_KO);
 
 	queF2.push(6);
 	queS2.push(6);
 	valF = (queF != queF2);
 	valS = (queS != queS2);
-	check_value(valF, valS);
+	check_value(valF, valS, print_value, print_error, nb_OK, nb_KO);
 
 	queF2.pop();
 	queS2.pop();
@@ -298,7 +298,7 @@ void	stack_check_comparison(void)
 	queS2.push(4);
 	valF = (queF != queF2);
 	valS = (queS != queS2);
-	check_value(valF, valS);
+	check_value(valF, valS, print_value, print_error, nb_OK, nb_KO);
 
 	std::cout << "\n  ---  >  ---\n";
 	clear(queF);
@@ -322,13 +322,13 @@ void	stack_check_comparison(void)
 
 	valF = (queF > queF2);
 	valS = (queS > queS2);
-	check_value(valF, valS);
+	check_value(valF, valS, print_value, print_error, nb_OK, nb_KO);
 
 	queF2.push(6);
 	queS2.push(6);
 	valF = (queF > queF2);
 	valS = (queS > queS2);
-	check_value(valF, valS);
+	check_value(valF, valS, print_value, print_error, nb_OK, nb_KO);
 
 	queF2.pop();
 	queS2.pop();
@@ -336,7 +336,7 @@ void	stack_check_comparison(void)
 	queS2.push(4);
 	valF = (queF > queF2);
 	valS = (queS > queS2);
-	check_value(valF, valS);
+	check_value(valF, valS, print_value, print_error, nb_OK, nb_KO);
 
 	std::cout << "\n  ---  <  ---\n";
 	clear(queF);
@@ -360,13 +360,13 @@ void	stack_check_comparison(void)
 
 	valF = (queF < queF2);
 	valS = (queS < queS2);
-	check_value(valF, valS);
+	check_value(valF, valS, print_value, print_error, nb_OK, nb_KO);
 
 	queF2.push(6);
 	queS2.push(6);
 	valF = (queF < queF2);
 	valS = (queS < queS2);
-	check_value(valF, valS);
+	check_value(valF, valS, print_value, print_error, nb_OK, nb_KO);
 
 	queF2.pop();
 	queS2.pop();
@@ -374,7 +374,7 @@ void	stack_check_comparison(void)
 	queS2.push(4);
 	valF = (queF < queF2);
 	valS = (queS < queS2);
-	check_value(valF, valS);
+	check_value(valF, valS, print_value, print_error, nb_OK, nb_KO);
 
 	std::cout << "\n  ---  >=  ---\n";
 	clear(queF);
@@ -398,13 +398,13 @@ void	stack_check_comparison(void)
 
 	valF = (queF >= queF2);
 	valS = (queS >= queS2);
-	check_value(valF, valS);
+	check_value(valF, valS, print_value, print_error, nb_OK, nb_KO);
 
 	queF2.push(6);
 	queS2.push(6);
 	valF = (queF >= queF2);
 	valS = (queS >= queS2);
-	check_value(valF, valS);
+	check_value(valF, valS, print_value, print_error, nb_OK, nb_KO);
 
 	queF2.pop();
 	queS2.pop();
@@ -412,7 +412,7 @@ void	stack_check_comparison(void)
 	queS2.push(4);
 	valF = (queF >= queF2);
 	valS = (queS >= queS2);
-	check_value(valF, valS);
+	check_value(valF, valS, print_value, print_error, nb_OK, nb_KO);
 
 	std::cout << "\n  ---  <=  ---\n";
 	clear(queF);
@@ -436,13 +436,13 @@ void	stack_check_comparison(void)
 
 	valF = (queF <= queF2);
 	valS = (queS <= queS2);
-	check_value(valF, valS);
+	check_value(valF, valS, print_value, print_error, nb_OK, nb_KO);
 
 	queF2.push(6);
 	queS2.push(6);
 	valF = (queF <= queF2);
 	valS = (queS <= queS2);
-	check_value(valF, valS);
+	check_value(valF, valS, print_value, print_error, nb_OK, nb_KO);
 
 	queF2.pop();
 	queS2.pop();
@@ -450,7 +450,7 @@ void	stack_check_comparison(void)
 	queS2.push(4);
 	valF = (queF <= queF2);
 	valS = (queS <= queS2);
-	check_value(valF, valS);
+	check_value(valF, valS, print_value, print_error, nb_OK, nb_KO);
 
 	std::cout << "\n";
 
