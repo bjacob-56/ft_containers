@@ -38,9 +38,9 @@ public:
 	typedef typename allocator_type::const_pointer const_pointer;
 	
 	typedef VectorIterator<T> iterator;
-	typedef VectorConstIterator<T> const_iterator;
+	typedef VectorConstIterator<const T> const_iterator;
 	typedef VectorReverseIterator<T> reverse_iterator;
-	typedef VectorConstReverseIterator<T> const_reverse_iterator;
+	typedef VectorConstReverseIterator<const T> const_reverse_iterator;
 	
 	typedef std::ptrdiff_t difference_type;
 	typedef	size_t size_type;
@@ -55,19 +55,22 @@ public:
 	
 	explicit Vector (const allocator_type& alloc = allocator_type()): _array(NULL), _size(0), _capacity(0), _alloc(alloc) {}
 	
-	explicit Vector (size_type n, const value_type& val = value_type(), const allocator_type& alloc = allocator_type()): _array(NULL), _size(0), _capacity(0), _alloc(alloc)
+	explicit Vector (size_type n, const value_type& val = value_type(), const allocator_type& alloc = allocator_type()): _array(NULL), _size(0), _capacity(2 * n), _alloc(alloc)
 	{
-		_capacity = find_next_power2(n);
 		_array = _alloc.allocate(_capacity);
 		while (_size < _capacity)
 			_alloc.construct(_array + _size++, T());
 		_size = 0;
 		while (_size < n)
 			_array[_size++] = val;
+		while (_size < _capacity)
+			_array[_size++] = T();
+		_size = n;
+
 	}
 
 	template <class InputIterator>
-	Vector (InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type()): _array(NULL), _size(0), _capacity(1), _alloc(alloc)
+	Vector (InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type()): _array(NULL), _size(0), _capacity(0), _alloc(alloc)
 	{constructor_prototype(first, last, typename ft::is_integral<InputIterator>::type());}
 
 	Vector (const Vector& x): _array(NULL), _size(0), _capacity(0), _alloc(allocator_type())
@@ -107,17 +110,9 @@ public:
 	}
 
 	reverse_iterator	rend(void)
-	{
-		if (_size > 0)
-			return (reverse_iterator(_array, _size, -1));
-		return (reverse_iterator());
-	}
+	{return (reverse_iterator(_array, _size, -1));}
 	const_reverse_iterator	rend(void) const
-	{
-		if (_size > 0)
-			return (const_reverse_iterator(reinterpret_cast< const T* >(_array), _size, -1));
-		return (const_reverse_iterator());
-	}
+	{return (const_reverse_iterator(reinterpret_cast< const T* >(_array), _size, -1));}
 
 
 // ========  Overload  ========
@@ -125,12 +120,18 @@ public:
 	Vector &	operator=(const Vector & x)
 	{
 		this->clear();
-		if (_array)
-			_alloc.deallocate(_array, _capacity);
-		_capacity = std::max(_capacity, find_next_power2(x._size));
-		_array = _alloc.allocate(_capacity);
-		while (_size < _capacity)
-			_alloc.construct(_array + _size++, T());
+		while (x._size > _capacity)
+		{
+			if (_array)
+				_alloc.deallocate(_array, _capacity);
+			else
+				_capacity = 1;
+			_capacity *= 2;
+			_array = _alloc.allocate(_capacity);
+			while (_size < _capacity)
+				_alloc.construct(_array + _size++, T());
+			_size = 0;
+		}
 		_size = 0;
 		while (_size < x._size)
 		{
@@ -170,14 +171,8 @@ public:
 	{
 		if (n <= _capacity)
 			return ;
-		Vector	temp(*this);
-		_alloc.deallocate(_array, _capacity);
-		_capacity = n;
-		_array = _alloc.allocate(_capacity);
-		_size = 0;
-		while (_size < _capacity)
-			_alloc.construct(_array + _size++, T());
-		_size = 0;
+		Vector	temp(n);
+		temp.assign(this->begin(), this->end());
 		*this = temp;
 	}
 
@@ -373,7 +368,7 @@ private:
 	void	initiate_first_elem(const value_type & val)
 	{
 
-		_capacity = 1;
+		_capacity = 2;
 		_array = _alloc.allocate(_capacity);
 		_size = 0;
 		while (_size < _capacity)
@@ -459,12 +454,12 @@ private:
 	template <class InputIterator>
 	void	constructor_prototype (InputIterator first, InputIterator last, int)
 	{
-		_capacity = find_next_power2(first);
+		_capacity = first;
 		_array = _alloc.allocate(_capacity);
 		while (_size < _capacity)
 			_alloc.construct(_array + _size++, T());
 		_size = 0;
-		while (first-- > 0)
+		while (_size < _capacity)
 			_array[_size++] = last;
 	}
 
@@ -478,7 +473,7 @@ private:
 			temp++;
 			_capacity++;
 		}
-		_capacity = find_next_power2(_capacity);;
+		_capacity *= 2;
 		_array = _alloc.allocate(_capacity);
 		while (_size < _capacity)
 			_alloc.construct(_array + _size++, T());
@@ -534,6 +529,10 @@ private:
 	{
 		iterator	it = this->begin();
 		size_t	i = 0;
+		
+		Vector	vect_temp(first, last);
+		first = vect_temp.begin();
+		last = vect_temp.end();
 
 		while (it != position && i < _size)
 		{
@@ -542,7 +541,7 @@ private:
 		}
 		
 		size_t	len = 0;
-		InputIterator	temp = first;
+		iterator	temp = first;
 		while (temp++ != last)
 			len++;
 
@@ -553,14 +552,6 @@ private:
 		size_t	count = 0;
 		while (first != last)
 			_array[i + count++] = *first++;
-	}
-
-	size_t find_next_power2(size_t capacity)
-	{
-		size_t res = 1;
-		while (res < capacity)
-			res *= 2;
-		return (res);		
 	}
 
 };

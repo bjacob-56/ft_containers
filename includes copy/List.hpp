@@ -459,7 +459,7 @@ public:
 	void splice (iterator position, List& x)
 	{
 		this->insert(position, x.begin(), x.end());
-		x.erase(x.begin(), x.end());
+		x.clear();
 	}
 
 	void splice (iterator position, List& x, iterator i)
@@ -478,9 +478,10 @@ public:
 
 	void remove (const value_type& val)
 	{
-		List::iterator	begin = this->begin();
+		List::iterator	begin(_begin);
+		List::iterator	end(_end);
 
-		while (begin != this->end())
+		while (begin != end)
 		{
 			if (*begin == val)
 				begin = this->erase(begin);
@@ -494,9 +495,10 @@ public:
 	template <class Predicate>
 	void remove_if (Predicate pred)
 	{
-		List::iterator	begin = this->begin();
+		List::iterator	begin(_begin);
+		List::iterator	end(_end);
 
-		while (begin != this->end())
+		while (begin != end)
 		{
 			if (pred(*begin) == true)
 				begin = this->erase(begin);
@@ -516,7 +518,7 @@ public:
 		if (_size > 1)
 		{
 			begin++;
-			while (begin != this->end())
+			while (begin != end)
 			{
 				if (*begin == *(begin_previous))
 					begin = this->erase(begin);
@@ -539,15 +541,10 @@ public:
 		if (_size > 1)
 		{
 			begin++;
-			while (begin != this->end())
+			while (begin != end)
 			{
-				// if (binary_pred(*begin, *begin_previous) == true) 
-				if (binary_pred(*begin_previous, *begin) == true) 
-				{
-					// begin++;
+				if (binary_pred(*begin, *begin_previous) == true)
 					begin = this->erase(begin);
-					// begin_previous++;
-				}
 				else
 				{
 					begin++;
@@ -567,9 +564,10 @@ public:
 		List::iterator	ite = x.end();
 		List::iterator	it_temp;
 		List::iterator	itt = this->begin();
+		List::iterator	itte = this->end();
 		while (it != ite)
 		{
-			while (itt != this->end() && *itt < *it)
+			while (itt != itte && *itt < *it)
 				itt++;
 			it_temp = ++it;
 			this->splice(itt, x, --it);
@@ -581,13 +579,16 @@ public:
 	template <class Compare>
 	void merge (List& x, Compare comp)
 	{
+		if (!this->is_sorted_comp(comp) || !x.is_sorted_comp(comp))
+			return ;
 		List::iterator	it = x.begin();
 		List::iterator	ite = x.end();
 		List::iterator	it_temp;
 		List::iterator	itt = this->begin();
+		List::iterator	itte = this->end();
 		while (it != ite)
 		{
-			while (itt != this->end() &&
+			while (itt != itte &&
 				comp(*itt, *it) == true &&
 				comp(*it, *itt) == false)
 				itt++;
@@ -700,8 +701,9 @@ protected:
 			return 1;
 		List::iterator	begin(_begin);
 		List::iterator	begin_previous(_begin);
+		List::iterator	end(_end);
 		begin++;
-		while (begin != this->end())
+		while (begin != end)
 		{
 			if (*begin < *(begin_previous))
 				return 0;
@@ -721,8 +723,9 @@ protected:
 			return 1;
 		List::iterator	begin(_begin);
 		List::iterator	begin_previous(_begin);
+		List::iterator	end(_end);
 		begin++;
-		while (begin != this->end())
+		while (begin != end)
 		{
 			if (comp(*begin, *begin_previous) == true &&
 				comp(*begin_previous, *begin) == false &&
@@ -850,25 +853,13 @@ protected:
 		{
 			while (first != last)
 			{
-
-				if (!_size)
-				{
-					initiate_first_elem(*(--last));
-					temp = _begin;
-					position = _begin;
-				}
-				else
-				{
 				new_node = new Node<T>(*(--last));
-
-				
 				temp->add_previous(new_node);
 				temp = new_node;
 				_size++;
-				}
 			}
 			if (position == _begin)
-				_begin = temp;
+				_begin = new_node;
 		}
 	}
 

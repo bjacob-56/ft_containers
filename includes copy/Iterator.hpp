@@ -65,8 +65,6 @@ template <typename T, typename PointerType>
 			bool operator==(PointerType const ptr) const {return (_ptr == ptr);}
 			bool operator!=(PointerType const ptr) const {return (_ptr != ptr);}
 
-			PointerType getPtr(void) const {return _ptr;}
-
 		private:
 			PointerType _ptr;
 	};
@@ -75,16 +73,10 @@ template <typename T, typename PointerType>
 	class ListConstIterator
 	{
 		public:
-			typedef const T         value_type;
-    		typedef std::ptrdiff_t  difference_type;
-    		typedef const T*   pointer;
-    		typedef const T& reference;
-    		typedef std::bidirectional_iterator_tag  iterator_category;
 
 			ListConstIterator(void): _ptr(0) {};
 			ListConstIterator(PointerType ptr): _ptr(ptr) {};
 			ListConstIterator(const ListConstIterator & src): _ptr(src._ptr) {};
-			ListConstIterator(const ListIterator<T, PointerType> & src): _ptr(src.getPtr()) {};
 			~ListConstIterator(void) {};
 
 			ListConstIterator &	operator++(void)// pre increment
@@ -126,8 +118,6 @@ template <typename T, typename PointerType>
 			bool operator==(PointerType const ptr) const {return (_ptr == ptr);}
 			bool operator!=(PointerType const ptr) const {return (_ptr != ptr);}
 
-			PointerType getPtr(void) const {return _ptr;}
-		
 		private:
 			PointerType _ptr;
 	};
@@ -137,12 +127,6 @@ template <typename T, typename PointerType>
 	class ListReverseIterator
 	{
 		public:
-			typedef T         value_type;
-    		typedef std::ptrdiff_t  difference_type;
-    		typedef T*   pointer;
-    		typedef T& reference;
-    		typedef std::bidirectional_iterator_tag  iterator_category;
-
 			ListReverseIterator(void): _ptr(0) {};
 			ListReverseIterator(PointerType ptr): _ptr(ptr) {};
 			ListReverseIterator(const ListReverseIterator & src): _ptr(src._ptr) {};
@@ -187,8 +171,6 @@ template <typename T, typename PointerType>
 			bool operator==(PointerType const ptr) const {return (_ptr == ptr);}
 			bool operator!=(PointerType const ptr) const {return (_ptr != ptr);}
 
-			PointerType getPtr(void) const {return _ptr;}
-
 		private:
 			PointerType _ptr;
 	};
@@ -197,16 +179,9 @@ template <typename T, typename PointerType>
 	class ListConstReverseIterator
 	{
 		public:
-			typedef const T         value_type;
-    		typedef std::ptrdiff_t  difference_type;
-    		typedef const T*   pointer;
-    		typedef const T& reference;
-    		typedef std::bidirectional_iterator_tag  iterator_category;
-
 			ListConstReverseIterator(void): _ptr(0) {};
 			ListConstReverseIterator(PointerType ptr): _ptr(ptr) {};
 			ListConstReverseIterator(const ListConstReverseIterator & src): _ptr(src._ptr) {};
-			ListConstReverseIterator(const ListReverseIterator<T, PointerType> & src): _ptr(src.getPtr()) {};
 			~ListConstReverseIterator(void) {};
 
 			ListConstReverseIterator &	operator++(void)	// pre increment
@@ -248,8 +223,6 @@ template <typename T, typename PointerType>
 			bool operator==(PointerType const ptr) const {return (_ptr == ptr);}
 			bool operator!=(PointerType const ptr) const {return (_ptr != ptr);}
 
-			PointerType getPtr(void) const {return _ptr;}
-
 		private:
 			PointerType _ptr;
 	};
@@ -264,11 +237,6 @@ template <typename T>
 	class VectorIterator
 	{
 		public:
-			typedef T         value_type;
-    		typedef std::ptrdiff_t  difference_type;
-    		typedef T*   pointer;
-    		typedef T& reference;
-    		typedef std::random_access_iterator_tag  iterator_category;
 
 			VectorIterator(void): _index(0), _size(0), _array(0) {};
 			VectorIterator(T* array, size_t size, size_t index = 0): _index(index), _size(size), _array(array) {};
@@ -300,8 +268,8 @@ template <typename T>
 				return (temp);
 			}
 
-			value_type &	operator*(void) {return _array[_index];}
-			value_type *	operator->(void) {return &(_array[_index]);}
+			T &	operator*(void) {return _array[_index];}
+			T *	operator->(void) {return &(_array[_index]);}
 
 			VectorIterator & operator=(VectorIterator const & rhs)
 			{
@@ -314,79 +282,20 @@ template <typename T>
 			bool operator==(VectorIterator const & rhs) const {return (_index == rhs._index && _size == rhs._size && _array == rhs._array);}
 			bool operator!=(VectorIterator const & rhs) const {return (_index != rhs._index || _size != rhs._size || _array != rhs._array);}
 
-
-
-			VectorIterator	operator+(difference_type n)
-			{
-				VectorIterator	res(*this);
-				if (_index + n <= _size)
-					res._index += n;
-				return (res);
-			}
-
-			VectorIterator	operator-(difference_type n)
-			{
-				VectorIterator	res(*this);
-				if (_index - n >= 0)
-					res._index -= n;
-				return (res);
-			}
-
-			VectorIterator &	operator+=(difference_type n)
-			{
-				while (n-- > 0)
-					((*this)++);
-				return (*this);
-			}
-
-			VectorIterator &	operator-=(difference_type n)
-			{
-				while (n-- > 0)
-					((*this)--);
-				return (*this);
-			}
-
-			difference_type	operator-(VectorIterator & rhs)
-			{
-				if (_size == rhs._size && _array == rhs._array)
-					return (_index - rhs._index);
-				return (0);
-			}
-
-			bool operator<(VectorIterator const & rhs) const {return (_index < rhs._index && _size == rhs._size && _array == rhs._array);}
-			bool operator>(VectorIterator const & rhs) const {return (_index > rhs._index && _size == rhs._size && _array == rhs._array);}
-			bool operator<=(VectorIterator const & rhs) const {return (_index <= rhs._index && _size == rhs._size && _array == rhs._array);}
-			bool operator>=(VectorIterator const & rhs) const {return (_index >= rhs._index && _size == rhs._size && _array == rhs._array);}
-
-			T &	operator[](difference_type n) {return *(*this + n);}
-
-			size_t getIndex(void) const {return _index;}
-			size_t getSize(void) const {return _size;}
-			value_type*	getArray(void) const {return _array;}
-
 		private:
 			size_t		_index;
 			size_t		_size;
-			value_type*			_array;
+			T*			_array;
 	};
-
-	template <typename T>
-	VectorIterator<T> &	operator+(std::ptrdiff_t n, VectorIterator<T> & it) {return it + n;}
 
 template <typename T>
 	class VectorConstIterator
 	{
 		public:
-			typedef const T         value_type;
-    		typedef std::ptrdiff_t  difference_type;
-    		typedef const value_type*   pointer;
-    		typedef const value_type& reference;
-    		typedef std::random_access_iterator_tag  iterator_category;
 
 			VectorConstIterator(void): _index(0), _size(0), _array(0) {};
-			VectorConstIterator(value_type* array, size_t size, size_t index = 0): _index(index), _size(size), _array(array) {};
+			VectorConstIterator(T* array, size_t size, size_t index = 0): _index(index), _size(size), _array(array) {};
 			VectorConstIterator(const VectorConstIterator & src): _index(src._index), _size(src._size), _array(src._array) {};
-			VectorConstIterator(const VectorIterator<T> & src): _index(src.getIndex()), _size(src.getSize()), _array(src.getArray()) {};
 			~VectorConstIterator(void) {};
 
 			VectorConstIterator &	operator++(void) // pre increment
@@ -414,8 +323,8 @@ template <typename T>
 				return (temp);
 			}
 
-			value_type &	operator*(void) {return _array[_index];}
-			value_type *	operator->(void) {return &(_array[_index]);}
+			T &	operator*(void) {return _array[_index];}
+			T *	operator->(void) {return &(_array[_index]);}
 
 			VectorConstIterator & operator=(VectorConstIterator const & rhs)
 			{
@@ -425,36 +334,19 @@ template <typename T>
 				return (*this);
 			}
 
-			// VectorConstIterator & operator=(VectorIterator<T> const & rhs)
-			// {
-			// 	_index = rhs._index;
-			// 	_size = rhs._size;
-			// 	_array = rhs._array;
-			// 	return (*this);
-			// }
-
 			bool operator==(VectorConstIterator const & rhs) const {return (_index == rhs._index && _size == rhs._size && _array == rhs._array);}
 			bool operator!=(VectorConstIterator const & rhs) const {return (_index != rhs._index || _size != rhs._size || _array != rhs._array);}
-		
-			size_t getIndex(void) const {return _index;}
-			size_t getSize(void) const {return _size;}
-			value_type*	getArray(void) const {return _array;}
-		
+
 		private:
 			size_t		_index;
 			size_t		_size;
-			value_type *			_array;
+			T*			_array;
 	};
 
 template <typename T>
 	class VectorReverseIterator
 	{
 		public:
-			typedef T         value_type;
-    		typedef std::ptrdiff_t  difference_type;
-    		typedef T*   pointer;
-    		typedef T& reference;
-    		typedef std::random_access_iterator_tag  iterator_category;
 
 			VectorReverseIterator(void): _index(0), _size(0), _array(0) {};
 			VectorReverseIterator(T* array, size_t size, size_t index = 0): _index(index), _size(size), _array(array) {};
@@ -486,13 +378,13 @@ template <typename T>
 				return (temp);
 			}
 
-			value_type &	operator*(void)
+			T &	operator*(void)
 			{
 				if (_index > 0)
 					return _array[_index];
 				return _array[0];
 			}
-			value_type *	operator->(void)
+			T *	operator->(void)
 			{
 				if (_index > 0)
 					return &(_array[_index]);
@@ -511,30 +403,20 @@ template <typename T>
 			bool operator==(VectorReverseIterator const & rhs) const {return (_index == rhs._index && _size == rhs._size && _array == rhs._array);}
 			bool operator!=(VectorReverseIterator const & rhs) const {return (_index != rhs._index || _size != rhs._size || _array != rhs._array);}
 
-			size_t getIndex(void) const {return _index;}
-			size_t getSize(void) const {return _size;}
-			value_type*	getArray(void) const {return _array;}
-
 		private:
 			int		_index;
 			size_t		_size;
-			value_type*			_array;
+			T*			_array;
 	};
 
 template <typename T>
-	class VectorConstReverseIterator: private VectorReverseIterator<T>
+	class VectorConstReverseIterator
 	{
 		public:
-			typedef const T         value_type;
-    		typedef std::ptrdiff_t  difference_type;
-    		typedef value_type *   pointer;
-    		typedef value_type & reference;
-    		typedef std::random_access_iterator_tag  iterator_category;
 
 			VectorConstReverseIterator(void): _index(0), _size(0), _array(0) {};
-			VectorConstReverseIterator(value_type* array, size_t size, size_t index = 0): _index(index), _size(size), _array(array) {};
+			VectorConstReverseIterator(T* array, size_t size, size_t index = 0): _index(index), _size(size), _array(array) {};
 			VectorConstReverseIterator(const VectorConstReverseIterator & src): _index(src._index), _size(src._size), _array(src._array) {};
-			VectorConstReverseIterator(const VectorReverseIterator<T> & src): _index(src.getIndex()), _size(src.getSize()), _array(src.getArray()) {};
 			~VectorConstReverseIterator(void) {};
 
 			VectorConstReverseIterator &	operator++(void) // pre increment
@@ -562,13 +444,13 @@ template <typename T>
 				return (temp);
 			}
 
-			value_type &	operator*(void)
+			T &	operator*(void)
 			{
 				if (_index > 0)
 					return _array[_index];
 				return _array[0];
 			}
-			value_type *	operator->(void)
+			T *	operator->(void)
 			{
 				if (_index > 0)
 					return &(_array[_index]);
@@ -586,14 +468,10 @@ template <typename T>
 			bool operator==(VectorConstReverseIterator const & rhs) const {return (_index == rhs._index && _size == rhs._size && _array == rhs._array);}
 			bool operator!=(VectorConstReverseIterator const & rhs) const {return (_index != rhs._index || _size != rhs._size || _array != rhs._array);}
 
-			size_t getIndex(void) const {return _index;}
-			size_t getSize(void) const {return _size;}
-			value_type*	getArray(void) const {return _array;}
-
 		private:
 			int		_index;
 			size_t		_size;
-			value_type*			_array;
+			T*			_array;
 	};
 
 }
