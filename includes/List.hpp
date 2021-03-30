@@ -307,6 +307,11 @@ public:
 		Node<T>	*	temp = _begin;
 		Node<T>	*	new_node = 0;
 
+		if (this->empty())
+		{
+			this->initiate_first_elem(val);
+			return (this->begin());
+		}
 		while (position != temp && temp != _end)
 			temp = temp->next;
 		if (position == temp)
