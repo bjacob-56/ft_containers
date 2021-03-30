@@ -72,7 +72,18 @@ public:
 	{constructor_prototype(first, last, typename ft::is_integral<InputIterator>::type());}
 
 	Vector (const Vector& x): _array(NULL), _size(0), _capacity(0), _alloc(allocator_type())
-	{*this = x;}
+	{
+		_capacity = x._capacity;
+		_array = _alloc.allocate(_capacity);
+		while (_size < _capacity)
+			_alloc.construct(_array + _size++, T());
+		_size = 0;
+		while (_size < x._size)
+		{
+			_array[_size] = x._array[_size];
+			_size++;
+		}
+	}
 
 
 	~Vector(void)

@@ -513,10 +513,10 @@ void	vector_check_modifiers(void)
 	ft::Vector<int>	vectF2;
 	std::vector<int>	vectS2;
 
-	ft::Vector<int>::iterator		itbF = vectF.begin()++;
-	ft::Vector<int>::iterator		iteF = vectF.end()--;
-	std::vector<int>::iterator	itbS = vectS.begin()++;
-	std::vector<int>::iterator	iteS = vectS.end()--;
+	ft::Vector<int>::iterator		itbF = ++vectF.begin();
+	ft::Vector<int>::iterator		iteF = --vectF.end();
+	std::vector<int>::iterator	itbS = ++vectS.begin();
+	std::vector<int>::iterator	iteS = --vectS.end();
 	
 	vectF.assign(itbF, iteF);
 	vectS.assign(itbS, iteS);
@@ -542,6 +542,7 @@ void	vector_check_modifiers(void)
 	ft::Vector<int>::iterator		itbF2 = ++vectF2.begin();
 	std::vector<int>::iterator	itbS2 = ++vectS2.begin();
 
+
 	itbF2 = vectF2.insert(itbF2, 56);
 	itbS2 = vectS2.insert(itbS2, 56);
 	check_vector(vectF2, vectS2);
@@ -552,6 +553,11 @@ void	vector_check_modifiers(void)
 
 	itbF2 = ++vectF2.begin();
 	itbS2 = ++vectS2.begin();
+
+	itbF = vectF.begin();
+	itbS = vectS.begin();
+	iteF = vectF.end();
+	iteS = vectS.end();
 
 	vectF2.insert(itbF2, itbF, iteF);
 	vectS2.insert(itbS2, itbS, iteS);
@@ -650,15 +656,10 @@ void	vector_check_modifiers_string(void)
 
 	std::cout << "\n  --- Insert ---\n";
 
-// std::cout << "p0\n";
 	ft::Vector<std::string>::iterator		itbF2 = ++vectF2.begin();
-	// ft::Vector<std::string>::iterator		itbF2 = vectF2.begin();
 	std::vector<std::string>::iterator	itbS2 = ++vectS2.begin();
-// std::cout << "p1\n";
-// std::cout << "size = " << vectF2.size() << ", capacity = " << vectF2.capacity() << "\n";
 
 	itbF2 = vectF2.insert(itbF2, "42");
-// std::cout << "p2\n";
 	itbS2 = vectS2.insert(itbS2, "42");
 	check_vector(vectF2, vectS2);
 
@@ -668,6 +669,11 @@ void	vector_check_modifiers_string(void)
 
 	itbF2 = ++vectF2.begin();
 	itbS2 = ++vectS2.begin();
+
+	itbF = vectF.begin();
+	itbS = vectS.begin();
+	iteF = vectF.end();
+	iteS = vectS.end();
 
 	vectF2.insert(itbF2, itbF, iteF);
 	vectS2.insert(itbS2, itbS, iteS);
@@ -974,21 +980,10 @@ void	vector_check_comparison_string(void)
 
 	ft::Vector<std::string>	vectF2;
 	std::vector<std::string>	vectS2;
-std::cout << "p0\n";
 
-	std::string s0 = "abc";
-	std::string s1 = "abcd";
-	std::string s2 = "abce";
-
-	// vectF.push_back("abc");
-	vectF.push_back(s0);
-std::cout << "p1, size = " << vectF.size() << ", capacity = " << vectF.capacity() << "\n";
-	// vectF.push_back("abcd");
-	vectF.push_back(s1);
-std::cout << "p2, size = " << vectF.size() << ", capacity = " << vectF.capacity() << "\n";
-	// vectF.push_back("abce");
-	vectF.push_back(s2);
-std::cout << "p3\n";
+	vectF.push_back("abc");
+	vectF.push_back("abcd");
+	vectF.push_back("abce");
 
 	vectF2.push_back("abc");
 	vectF2.push_back("abcd");
@@ -1210,6 +1205,86 @@ std::cout << "p3\n";
 	valF = (vectF <= vectF2);
 	valS = (vectS <= vectS2);
 	check_value(valF, valS);
+
+
+    // ft::Vector<int> v1;
+
+	// bool bool1;
+
+	// v1.push_back(1);
+    // bool1 = v1.size() == 1;
+	// std::cout << "bool1 = " << bool1 << "\n";
+    // bool1 = v1.capacity() >= 1;
+	// std::cout << "bool1 = " << bool1 << "\n";
+    // bool1 = v1[0] == 1;
+	// std::cout << "bool1 = " << bool1 << "\n";
+
+    // v1.push_back(2);
+    // bool1 = v1.size() == 2;
+	// std::cout << "bool1 = " << bool1 << "\n";
+    // bool1 = v1.capacity() >= 2;
+	// std::cout << "bool1 = " << bool1 << "\n";
+    // bool1 = v1[0] == 1;
+	// std::cout << "bool1 = " << bool1 << "\n";
+    // bool1 = v1[1] == 2;
+	// std::cout << "bool1 = " << bool1 << "\n";
+
+	// ft::Vector< ft::Vector<char*> > v4_copied;
+	// ft::Vector< ft::Vector<char*> > v4(v4_copied);
+    // std::cout << "capacities = " << v4.capacity()<< " and " << v4_copied.capacity()<< "\n";
+    // // ASSERT(v4.empty() == v4_copied.empty());
+    // ASSERT(v4.size() == v4_copied.size());
+    // ASSERT(v4.capacity() == v4_copied.capacity());
+
+
+    // std::string                     arr2[3] = {"bonjour", "je", "suis"};
+    // ft::Vector<std::string>         v2_duplicated(arr2, arr2 + 3);
+    // std::vector<std::string>         rv2_duplicated(arr2, arr2 + 3);
+
+	// ft::Vector<std::string> v2(10, "zzz");
+	// std::vector<std::string> rv2(10, "zzz");
+    // v2 = v2_duplicated;
+    // rv2 = rv2_duplicated;
+    // std::cout << "capacities = " << v2.capacity()<< " and " << v2_duplicated.capacity()<< "\n";
+    // std::cout << "real capacities = " << rv2.capacity()<< " and " << rv2_duplicated.capacity()<< "\n";
+
+	// std::cout << "real -> " << (rv2.begin() < rv2.end()) << "\n";
+	// std::cout << "ft -> " << (v2.begin() < v2.end()) << "\n";
+
+	// ft::Vector<std::string>::const_iterator		itF = --v2.end();
+	// ft::Vector<std::string>::iterator		itF2 = --v2.end();
+	// ft::Vector<std::string>::reverse_iterator		itF3 = v2.rbegin();
+
+	// std::vector<std::string>::const_iterator		itR = --rv2.end();
+	// std::vector<std::string>::iterator		itR2 = --rv2.end();
+	// // std::vector<std::string>::reverse_iterator		itR3 = rv2.rbegin();
+
+	// // std::cout << "real -> " << (rv2.rbegin() > rv2.rend()) << "\n";
+	// // std::cout << "ft -> " << (v2.rbegin() > v2.rend()) << "\n";
+
+	// std::cout << "real1 -> " << (itF == itF2) << " - " << (itR == itR2) << "\n";
+	// std::cout << "real1 -> " << (itF > itF2) << " - " << (itR > itR2) << "\n";
+	// // std::cout << "real2 -> " << (itF == itF3) << " - " << (itR == itR3) << "\n";
+	// // std::cout << "real3 -> " << (itF == ++itF3) << " - " << (itR == ++itR3) << "\n";
+	// // std::cout << "real4 -> " << (itF > itF3) << " - " << (itR > itR3) << "\n";
+
+	// std::cout << "test -> " << (1 == 1) << "\n";
+	// std::cout << "test -> " << (2 > 3) << "\n";
+
+
+
+
+	int                             arr1[5] = {1, 2, 3, 4, 5};
+    std::string                     arr2[3] = {"bonjour", "je", "suis"};
+    ft::Vector<int>                 v1_copied(arr1, arr1 + 5);
+    std::vector<int>                 rv1_copied(arr1, arr1 + 5);
+
+    ft::Vector<int> v1(v1_copied);
+    std::vector<int> rv1(rv1_copied);
+  
+    std::cout << v1.capacity() << " - " << v1_copied.capacity() << "\n";
+    std::cout << rv1.capacity() << " - " << rv1_copied.capacity() << "\n";
+
 
 	std::cout << "\n";
 
